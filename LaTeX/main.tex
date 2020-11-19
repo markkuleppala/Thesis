@@ -79,7 +79,7 @@
 % (ISO-8859-1 works). Change the latin1-option if you use UTF8 
 % (at some point LaTeX did not work with UTF8, but I'm not sure
 % what the current situation is) 
-\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
 % OT1 font encoding seems to work better than T1. Check the rendered
 % PDF file to see if the fonts are encoded properly as vectors (instead
 % of rendered bitmaps). You can do this by zooming very close to any letter 
@@ -260,14 +260,8 @@
 % variants you use (they are all there in the same place). 
 % ------------------------------------------------------------------
 \newcommand{\TITLE}{Software Processes for Dummies:}
-\newcommand{\FTITLE}{Ohjelmistoprosessit mänteille:}
-\newcommand{\STITLE}{Den stora stygga vargen:}
 \newcommand{\SUBTITLE}{Re-inventing the Wheel}
-\newcommand{\FSUBTITLE}{Uusi organisaatio, uudet pyörät}
-\newcommand{\SSUBTITLE}{Lilla Vargens universum}
 \newcommand{\DATE}{February 14, 2018}
-\newcommand{\FDATE}{14. helmikuuta 2018}
-\newcommand{\SDATE}{Den 18 februari 2018}
 
 % Supervisors and instructors
 % ------------------------------------------------------------------
@@ -282,26 +276,20 @@
 % Example of one supervisor:
 %\newcommand{\SUPERVISOR}{Professor Antti Ylä-Jääski}
 %\newcommand{\FSUPERVISOR}{Professori Antti Ylä-Jääski}
-%\newcommand{\SSUPERVISOR}{Professor Antti Ylä-Jääski}
-% Example of twosupervisors:
+% Example of two supervisors:
 \newcommand{\SUPERVISOR}{Professor Antti Ylä-Jääski\\
   Professor Petra Perustieteilijä}
 \newcommand{\FSUPERVISOR}{Professori Antti Ylä-Jääski\\
   Professori Petra Perustieteilijä}
-\newcommand{\SSUPERVISOR}{Professor Antti Ylä-Jääski\\
-  Professor Petra Perustieteilijä}
 
 % If you have only one instructor, just write one name here
 \newcommand{\INSTRUCTOR}{Oili Ohjaaja M.Sc. (Tech.)}
 \newcommand{\FINSTRUCTOR}{Diplomi-insinööri Oili Ohjaaja}
-\newcommand{\SINSTRUCTOR}{Diplomingenjör Oili Ohjaaja}
 % If you have two instructors, separate them with \\ to create linefeeds
 % \newcommand{\INSTRUCTOR}{Oili Ohjaaja M.Sc. (Tech.)\\
 %  Elli Opas M.Sc. (Tech)}
 %\newcommand{\FINSTRUCTOR}{Diplomi-insinööri Oili Ohjaaja\\
 %  Diplomi-insinööri Elli Opas}
-%\newcommand{\SINSTRUCTOR}{Diplomingenjör Oili Ohjaaja\\
-%  Diplomingenjör Elli Opas}
 
 % If you have two supervisors, it is common to write the schools
 % of the supervisors in the cover page. If the following command is defined,
@@ -319,21 +307,17 @@
 % ------------------------------------------------------------------
 \newcommand{\PROFESSORSHIP}{Computer Science}
 \newcommand{\FPROFESSORSHIP}{Tietotekniikka}
-\newcommand{\SPROFESSORSHIP}{Datateknik}
 % Professorship code is the same in all languages
 \newcommand{\PROFCODE}{SCI3042}
 \newcommand{\KEYWORDS}{ocean, sea, marine, ocean mammal, marine
   mammal, whales, cetaceans, dolphins}
 \newcommand{\FKEYWORDS}{aineistot, aitta, akustiikka, Alankomaat,
 aluerakentaminen, aapinen, ankka, aasinsilta}
-\newcommand{\SKEYWORDS}{omsättning, kassaflöde, värdepappersmarknadslagen,
-yrkesutövare, intresseföretag, verifieringskedja}
 \newcommand{\LANGUAGE}{English}
 \newcommand{\FLANGUAGE}{Englanti}
-\newcommand{\SLANGUAGE}{Engelska}
 
 % Author is the same for all languages
-\newcommand{\AUTHOR}{Stella Student}
+\newcommand{\AUTHOR}{Markku Leppälä}
 
 
 % Currently the English versions are used for the PDF file metadata
@@ -355,12 +339,7 @@ yrkesutövare, intresseföretag, verifieringskedja}
 % space between paragraphs.
 % When writing in Finnish, we often use no indentation in the
 % beginning of the paragraph, and there is some space between the 
-% paragraphs. 
-
-% If you write your thesis Finnish, uncomment these lines; if 
-% you write in English, leave these lines commented! 
-% \setlength{\parindent}{0pt}
-% \setlength{\parskip}{1ex}
+% paragraphs.
 
 % Use this to control how much space there is between each line of text.
 % 1 is normal (no extra space), 1.3 is about one-half more space, and
@@ -398,7 +377,7 @@ yrkesutövare, intresseföretag, verifieringskedja}
 % it out if you don't like it...
 \pdfbookmark[0]{Cover page}{bookmark.0.cover}
 % This command is defined in aalto-thesis.sty. It controls the page 
-% numbering based on whether the doublenumbering option is specified
+% numbering based on whether the double-numbering option is specified
 \startcoverpage
 
 % Cover page
@@ -448,7 +427,7 @@ package \texttt{aalto-thesis}, near the top of the \texttt{thesis-example.tex}
 file.
 
 The instructions on how to compile LaTeX *.tex files to *.pdf files like this 
-are giving in the \texttt{thesis-example.tex} file as comments and also in this 
+are giving in the \texttt{thesis.tex} file as comments and also in this 
 pdf in a Section~\ref{section:compilation}.}
 
 % Abstract in Finnish
@@ -462,18 +441,13 @@ Tiivistelmässä on yleensä useampia kappaleita. Tiivistelmä kertoo työn
 tavoitteet, motivaation, taustan ja johtopäätökset.
 }
 
-% Abstract in Swedish
-% ------------------------------------------------------------------
-\thesisabstract{swedish}{
-Om ditt skolespråk är svenska, måste din diplomarbetet  ha en svenskspråkig sammanfattning. Sammanfattningen måste passa på en sida.}
-
 
 % Acknowledgements
 % ------------------------------------------------------------------
 % Select the language you use in your acknowledgements
 \selectlanguage{english}
 
-% Uncomment this line if you wish acknoledgements to appear in the 
+% Uncomment this line if you wish acknowledgements to appear in the 
 % table of contents
 %\addcontentsline{toc}{chapter}{Acknowledgements}
 
@@ -531,7 +505,7 @@ Thank you, and keep up the good work!
 %%%%%%%%%%%%%%%%% The main content starts here %%%%%%%%%%%%%%%%%%%%%
 % ------------------------------------------------------------------
 % This command is defined in aalto-thesis.sty. It controls the page 
-% numbering based on whether the doublenumbering option is specified
+% numbering based on whether the double-numbering option is specified
 \startfirstchapter
 
 % Add headings to pages (the chapter title is shown)
