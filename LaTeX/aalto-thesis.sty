@@ -126,7 +126,6 @@
 \newcommand{\ATDEGREEPROG}{}
 \newcommand{\ATTITLE}{}
 \newcommand{\ATTITLENAME}{}
-\newcommand{\ATSUBTITLE}{}
 \newcommand{\ATTHESIS}{}
 \newcommand{\ATSUPERVISORNAME}{}
 \newcommand{\ATINSTRUCTORNAME}{}
@@ -154,7 +153,6 @@
 \ifthen{\equal{#1}{english}}{
   \renewcommand{\ATTITLENAME}{Title}
   \renewcommand{\ATTITLE}{\TITLE}
-  \renewcommand{\ATSUBTITLE}{\SUBTITLE}
   \renewcommand{\ATTHESIS}{Master's Thesis}
   \ifthenelse{\NUMSUPERVISORS = 1}%
     {\renewcommand{\ATSUPERVISORNAME}{Supervisor}}%
@@ -188,7 +186,6 @@
 \ifthen{\equal{#1}{finnish}}{
   \renewcommand{\ATTITLENAME}{Työn nimi}
   \renewcommand{\ATTITLE}{\FTITLE}
-  \renewcommand{\ATSUBTITLE}{\FSUBTITLE}
   \ifthenelse{\NUMSUPERVISORS = 1}%
     {\renewcommand{\ATSUPERVISORNAME}{Valvoja}}%
     {\renewcommand{\ATSUPERVISORNAME}{Valvojat}}
@@ -222,7 +219,6 @@
 \ifthen{\equal{#1}{swedish}}{
   \renewcommand{\ATTITLENAME}{Arbetets namn}
   \renewcommand{\ATTITLE}{\STITLE}
-  \renewcommand{\ATSUBTITLE}{\SSUBTITLE}
   \ifthenelse{\NUMSUPERVISORS = 1}%
     {\renewcommand{\ATSUPERVISORNAME}{Övervakare}}%
     {\renewcommand{\ATSUPERVISORNAME}{Övervakare}}
@@ -273,9 +269,6 @@
 % The title is printed here. Change the formatting if you like! 
 \noindent{\LARGE\textbf{\ATTITLE}}
 \vskip 2ex
-
-% The subtitle is printed here. Change the formatting if you like! 
-\noindent{\Large\textbf{\ATSUBTITLE}}
 
 \vfill
 {\noindent
@@ -337,7 +330,7 @@
 \hline
 \textbf{\ATAUTHORNAME:} & \multicolumn{3}{l|}{\AUTHOR} \\
 \multicolumn{4}{|l|}{\allowlinebreaks{14.5cm}{\textbf{\ATTITLENAME:}\\
-\ATTITLE\ \ATSUBTITLE}}\\
+\ATTITLE}}\\
 \hline
 \textbf{\ATDATENAME:} & \ATDATE & \textbf{\ATPAGESNAME:} & \PAGES\\
 \hline
