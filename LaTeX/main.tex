@@ -1,133 +1,7 @@
-% Lines starting with a percent sign (%) are comments. LaTeX will 
-% not process those lines. Similarly, everything after a percent 
-% sign in a line is considered a comment. To produce a percent sign
-% in the output, write \% (backslash followed by the percent sign). 
-% ==================================================================
-% Usage instructions:
-% ------------------------------------------------------------------
-% The file is heavily commented so that you know what the various
-% commands do. Feel free to remove any comments you don't need from
-% your own copy. When redistributing the example thesis file, please
-% retain all the comments for the benefit of other thesis writers! 
-% ==================================================================
-% Compilation instructions: 
-% ------------------------------------------------------------------
-% Use pdflatex to compile! Input images are expected as PDF files.
-% Example compilation:
-% ------------------------------------------------------------------
-% > pdflatex thesis-example.tex
-% > bibtex thesis-example
-% > pdflatex thesis-example.tex
-% > pdflatex thesis-example.tex
-% ------------------------------------------------------------------
-% You need to run pdflatex multiple times so that all the cross-references
-% are fixed. pdflatex will tell you if you need to re-run it (a warning
-% will be issued)  
-% ------------------------------------------------------------------
-% Compilation has been tested to work in ukk.cs.hut.fi and kosh.hut.fi
-% - if you have problems of missing .sty -files, then the local LaTeX
-% environment does not have all the required packages installed.
-% For example, when compiling in vipunen.hut.fi, you get an error that
-% tikz.sty is missing - in this case you must either compile somewhere
-% else, or you cannot use TikZ graphics in your thesis and must therefore
-% remove or comment out the tikz package and all the tikz definitions. 
-% ------------------------------------------------------------------
-
-% General information
-% ==================================================================
-% Package documentation:
-% 
-% The comments often refer to package documentation. (Almost) all LaTeX
-% packages have documentation accompanying them, so you can read the
-% package documentation for further information. When a package 'xxx' is
-% installed to your local LaTeX environment (the document compiles
-% when you have \usepackage{xxx} and LaTeX does not complain), you can 
-% find the documentation somewhere in the local LaTeX texmf directory
-% hierarchy. In ukk.cs.hut.fi, this is /usr/texlive/2008/texmf-dist,
-% and the documentation for the titlesec package (for example) can be 
-% found at /usr/texlive/2008/texmf-dist/doc/latex/titlesec/titlesec.pdf.
-% Most often the documentation is located as a PDF file in 
-% /usr/texlive/2008/texmf-dist/doc/latex/xxx, where xxx is the package name; 
-% however, documentation for TikZ is in
-% /usr/texlive/2008/texmf-dist/doc/latex/generic/pgf/pgfmanual.pdf
-% (this is because TikZ is a front-end for PGF, which is meant to be a 
-% generic portable graphics format for LaTeX).
-% You can try to look for the package manual using the ``find'' shell
-% command in Linux machines; the find databases are up-to-date at least
-% in ukk.cs.hut.fi. Just type ``find xxx'', where xxx is the package
-% name, and you should find a documentation file.
-% Note that in some packages, the documentation is in the DVI file
-% format. In this case, you can copy the DVI file to your home directory,
-% and convert it to PDF with the dvipdfm command (or you can read the
-% DVI file directly with a DVI viewer).
-% 
-% If you can't find the documentation for a package, just try Googling
-% for ``latex packagename''; most often you can get a direct link to the
-% package manual in PDF format.
-% ------------------------------------------------------------------
-
-
-% Document class for the thesis is report
-% ------------------------------------------------------------------
-% You can change this but do so at your own risk - it may break other things.
-% Note that the option pdftext is used for pdflatex; there is no
-% pdflatex option. 
-% ------------------------------------------------------------------
 \documentclass[12pt,a4paper,oneside,pdftex]{report}
-
-% The input files (tex files) are encoded with the latin-1 encoding 
-% (ISO-8859-1 works). Change the latin1-option if you use UTF8 
-% (at some point LaTeX did not work with UTF8, but I'm not sure
-% what the current situation is) 
 \usepackage[utf8]{inputenc}
-% OT1 font encoding seems to work better than T1. Check the rendered
-% PDF file to see if the fonts are encoded properly as vectors (instead
-% of rendered bitmaps). You can do this by zooming very close to any letter 
-% - if the letter is shown pixelated, you should change this setting 
-% (try commenting out the entire line, for example).  
 \usepackage[OT1]{fontenc}
-% The babel package provides hyphenating instructions for LaTeX. Give
-% the languages you wish to use in your thesis as options to the babel
-% package (as shown below). You can remove any language you are not
-% going to use.
-% Examples of valid language codes: english (or USenglish), british, 
-% finnish, swedish; and so on.
-\usepackage[finnish,swedish,english]{babel}
-
-
-% Font selection
-% ------------------------------------------------------------------
-% The default LaTeX font is a very good font for rendering your 
-% thesis. It is a very professional font, which will always be 
-% accepted. 
-% If you, however, wish to spicen up your thesis, you can try out
-% these font variants by uncommenting one of the following lines
-% (or by finding another font package). The fonts shown here are 
-% all fonts that you could use in your thesis (not too silly). 
-% Changing the font causes the layouts to shift a bit; you many
-% need to manually adjust some layouts. Check the warning messages
-% LaTeX gives you.
-% ------------------------------------------------------------------
-% To find another font, check out the font catalogue from
-% http://www.tug.dk/FontCatalogue/mathfonts.html
-% This link points to the list of fonts that support maths, but
-% that's a fairly important point for master's theses.
-% ------------------------------------------------------------------
-% <rant>
-% Remember, there is no excuse to use Comic Sans, ever, in any
-% situation! (Well, maybe in speech bubbles in comics, but there 
-% are better options for those too)
-% </rant>
-
-% \usepackage{palatino}
-% \usepackage{tgpagella}
-
-
-
-% Optional packages
-% ------------------------------------------------------------------
-% Select those packages that you need for your thesis. You may delete
-% or comment the rest.
+\usepackage[finnish,english]{babel} % Try english if not working
 
 % Natbib allows you to select the format of the bibliography references.
 % The first example uses numbered citations: 
@@ -149,7 +23,7 @@
 % The eurosym package provides a euro symbol. Use with \euro{}
 \usepackage{eurosym} 
 
-% Verbatim provides a standard teletype environment that renderes
+% Verbatim provides a standard teletype environment that renders
 % the text exactly as written in the tex file. Useful for code
 % snippets (although you can also use the listings package to get
 % automatic code formatting). 
@@ -244,13 +118,6 @@
 
 % Thesis setup
 % ==================================================================
-% Change these to fit your own thesis.
-% \COMMAND always refers to the English version;
-% \FCOMMAND refers to the Finnish version; and
-% \SCOMMAND refers to the Swedish version.
-% You may comment/remove those language variants that you do not use
-% (but then you must not include the abstracts for that language)
-% ------------------------------------------------------------------
 % If you do not find the command for a text that is shown in the cover page or
 % in the abstract texts, check the aalto-thesis.sty file and locate the text
 % from there. 
@@ -259,9 +126,11 @@
 % You can just fix the texts there. Just remember to check all the language
 % variants you use (they are all there in the same place). 
 % ------------------------------------------------------------------
-\newcommand{\TITLE}{Software Processes for Dummies:}
-\newcommand{\SUBTITLE}{Re-inventing the Wheel}
+\newcommand{\TITLE}{Software Processes for Dummies}
 \newcommand{\DATE}{February 14, 2018}
+
+\newcommand{\FTITLE}{Software Processes for Dummies}
+\newcommand{\FDATE}{Helmikuu 14, 2018}
 
 % Supervisors and instructors
 % ------------------------------------------------------------------
@@ -319,10 +188,9 @@ aluerakentaminen, aapinen, ankka, aasinsilta}
 % Author is the same for all languages
 \newcommand{\AUTHOR}{Markku Leppälä}
 
-
 % Currently the English versions are used for the PDF file metadata
 % Set the PDF title
-\hypersetup{pdftitle={\TITLE\ \SUBTITLE}}
+\hypersetup{pdftitle={\TITLE}}
 % Set the PDF author
 \hypersetup{pdfauthor={\AUTHOR}}
 % Set the PDF keywords
@@ -381,8 +249,6 @@ aluerakentaminen, aapinen, ankka, aasinsilta}
 \startcoverpage
 
 % Cover page
-% ------------------------------------------------------------------
-% Options: finnish, english, and swedish
 % These control in which language the cover-page information is shown
 \coverpage{english}
 
@@ -455,10 +321,7 @@ tavoitteet, motivaation, taustan ja johtopäätökset.
 % show up in the TOC
 \chapter*{Acknowledgements}
 
-I wish to thank all students who use \LaTeX\ for formatting their theses,
-because theses formatted with \LaTeX\ are just so nice.
-
-Thank you, and keep up the good work!
+Thanks mom!
 \vskip 10mm
 
 \noindent Espoo, \DATE
