@@ -10,3 +10,4 @@ jobs:
         uses: dante-ev/latex-action@master
         with:
           root_file: 00main.tex
+          working_directory: LaTeX
