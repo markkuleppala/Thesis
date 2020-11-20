@@ -9,7 +9,7 @@ jobs:
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@master
         with:
-          root_file: main.tex
+          root_file: 00main.tex
           working_directory: LaTeX
       - name: Upload artifact
         uses: actions/upload-artifact@v2
