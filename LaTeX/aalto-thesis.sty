@@ -213,46 +213,11 @@
   \renewcommand{\ATPROFCODENAME}{Koodi}
   \renewcommand{\ATPROFSHIP}{\FPROFESSORSHIP}
 }
-% Terms in Swedish
-% ------------------------------------------------------------------
-% You may change these if you wish
-\ifthen{\equal{#1}{swedish}}{
-  \renewcommand{\ATTITLENAME}{Arbetets namn}
-  \renewcommand{\ATTITLE}{\STITLE}
-  \ifthenelse{\NUMSUPERVISORS = 1}%
-    {\renewcommand{\ATSUPERVISORNAME}{Övervakare}}%
-    {\renewcommand{\ATSUPERVISORNAME}{Övervakare}}
-  \ifthenelse{\NUMINSTRUCTORS = 1}%
-    {\renewcommand{\ATINSTRUCTORNAME}{Handledare}}%
-    {\renewcommand{\ATINSTRUCTORNAME}{Handledare}}
-  \renewcommand{\ATSUPERVISOR}{\SSUPERVISOR}
-  \renewcommand{\ATINSTRUCTOR}{\SINSTRUCTOR}
-  \renewcommand{\ATDATENAME}{Datum}
-  \renewcommand{\ATDATE}{\SDATE}
-  \renewcommand{\ATTHESIS}{Diplomarbete}
-  \renewcommand{\ATCITY}{Esbo}
-  \renewcommand{\ATUNIV}{Aalto-universitetet}
-  \renewcommand{\ATSCHOOL}{Högskolan för teknikvetenskaper}
-  \renewcommand{\ATDEGREEPROG}{Magisterprogrammet i data-,
-    kommunikations- och infor\-mations\-teknik} 
-  \renewcommand{\ATABSTRACTNAME}{SAMMANDRAG AV DIPLOMARBETET}
-  \renewcommand{\ATLOGO}{images/aalto-logo-se}
-  \renewcommand{\ATAUTHORNAME}{Utfört av}
-  \renewcommand{\ATKEYWORDSNAME}{Nyckelord}
-  \renewcommand{\ATKEYWORDS}{\SKEYWORDS}
-  \renewcommand{\ATPAGESNAME}{Sidantal}  
-  \renewcommand{\ATLANGUAGENAME}{Språk}
-  \renewcommand{\ATLANGUAGE}{\SLANGUAGE}
-  \renewcommand{\ATPROFSHIPNAME}{Huvudämne}
-  \renewcommand{\ATPROFCODENAME}{Kod}
-  \renewcommand{\ATPROFSHIP}{\SPROFESSORSHIP}
 }
-}
-
 
 % Command to render the cover page 
 % ------------------------------------------------------------------
-% Takes one parameter, options: finnish, swedish, and (default): english
+% Takes one parameter, options: finnish and (default): english
 % These control in which language the cover-page information is shown
 \newcommand{\coverpage}[1]{
 \thispagestyle{empty}
@@ -266,8 +231,9 @@
 \noindent{\small \AUTHOR}
 \vskip 10mm
 
-% The title is printed here. Change the formatting if you like! 
+% The title is printed here. Change the formatting if you like!
 \noindent{\LARGE\textbf{\ATTITLE}}
+\rule{0pt}{20pt}
 \vskip 2ex
 
 \vfill

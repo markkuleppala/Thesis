@@ -126,11 +126,11 @@
 % You can just fix the texts there. Just remember to check all the language
 % variants you use (they are all there in the same place). 
 % ------------------------------------------------------------------
-\newcommand{\TITLE}{Software Processes for Dummies}
-\newcommand{\DATE}{February 14, 2018}
+\newcommand{\TITLE}{Secure Container Runtimes for Radio Applications and Far Edge Cloud}
+\newcommand{\DATE}{November 20, 2020}
 
-\newcommand{\FTITLE}{Software Processes for Dummies}
-\newcommand{\FDATE}{Helmikuu 14, 2018}
+\newcommand{\FTITLE}{Tietoturvallinen ohjelmistokonttien ajo radiosovelluksissa and kaukaisessa reunapilvessä}
+\newcommand{\FDATE}{Marraskuu 20, 2020}
 
 % Supervisors and instructors
 % ------------------------------------------------------------------
@@ -174,14 +174,12 @@
 
 % Other stuff
 % ------------------------------------------------------------------
-\newcommand{\PROFESSORSHIP}{Computer Science}
-\newcommand{\FPROFESSORSHIP}{Tietotekniikka}
+\newcommand{\PROFESSORSHIP}{Security and Cloud Computing}
+\newcommand{\FPROFESSORSHIP}{Tietoturva ja pilvilaskenta}
 % Professorship code is the same in all languages
-\newcommand{\PROFCODE}{SCI3042}
-\newcommand{\KEYWORDS}{ocean, sea, marine, ocean mammal, marine
-  mammal, whales, cetaceans, dolphins}
-\newcommand{\FKEYWORDS}{aineistot, aitta, akustiikka, Alankomaat,
-aluerakentaminen, aapinen, ankka, aasinsilta}
+\newcommand{\PROFCODE}{SCI3084}
+\newcommand{\KEYWORDS}{Kata Containers, far edge cloud, mobile edge computing, container, security}
+\newcommand{\FKEYWORDS}{}
 \newcommand{\LANGUAGE}{English}
 \newcommand{\FLANGUAGE}{Englanti}
 
@@ -258,54 +256,7 @@ aluerakentaminen, aapinen, ankka, aasinsilta}
 % Include an abstract in the language that the thesis is written in,
 % and if your native language is Finnish or Swedish, one in that language.
 
-% Abstract in English
-% ------------------------------------------------------------------
-\thesisabstract{english}{
-The abstract provides goal, motivation, background, and conclusions of
-the work. It has to fit to one page together with the bibliographical
-information. 
-
-If the thesis is in English and the language of school
-education is Finnish or Swedish, the abstract is written in English
-and in Finnish or in Swedish. If the language of school education is
-other than Finnish or Swedish, the abstract is written in English only.
-
-The thesis example file (\texttt{thesis-example.tex}), all the chapter content
-files (\texttt{1introduction.tex} and so on), and the Aalto style file
-(\texttt{aalto-thesis.sty}) are commented with explanations on how the Aalto
-thesis works. The files also contain some examples on how to customize various
-details of the thesis layout, and of course the example text works as an
-example in itself. Please read the comments and the example text; that should
-get you well on your way!
-
-In the thesis template, you can find the text of the abstract in the
-abstract in the \texttt{thesis-example.tex}
-file, together with the bibliographical information of the abstract tables.
-\fixme{This is an example how to use fixme: add your abstract here.} 
-Fixme is a command that helps you identify parts of your thesis that still
-require some work. When compiled in the custom \texttt{mydraft} mode, text
-parts tagged with fixmes are shown in bold and with fixme tags around them. When
-compiled in normal mode, the fixme-tagged text is shown normally (without
-special formatting). The draft mode also causes the ``Draft'' text to appear on
-the front page, alongside with the document compilation date. The custom
-\texttt{mydraft} mode is selected by the \texttt{mydraft} option given for the
-package \texttt{aalto-thesis}, near the top of the \texttt{thesis-example.tex}
-file.
-
-The instructions on how to compile LaTeX *.tex files to *.pdf files like this 
-are giving in the \texttt{thesis.tex} file as comments and also in this pdf
-in a Section~\ref{section:compilation}.}
-
-% Abstract in Finnish
-% ------------------------------------------------------------------
-\thesisabstract{finnish}{
-Jos koulusivistyskielesi on suomi, diplomityössä pitää olla
-suomenkielinen tiivistelmä. Tiivistelmän pitää mahtua yhdelle
-sivulle.
-
-Tiivistelmässä on yleensä useampia kappaleita. Tiivistelmä kertoo työn
-tavoitteet, motivaation, taustan ja johtopäätökset.
-}
+\input{0abstract.tex}
 
 
 % Acknowledgements
@@ -324,7 +275,7 @@ tavoitteet, motivaation, taustan ja johtopäätökset.
 Thanks mom!
 \vskip 10mm
 
-\noindent Espoo, \DATE
+\noindent Helsinki, \DATE
 \vskip 5mm
 \noindent\AUTHOR
 
