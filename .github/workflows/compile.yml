@@ -12,6 +12,7 @@ jobs:
           root_file: 00main.tex
           working_directory: LaTeX
       - name: Upload artifact
+        if: success()
         uses: actions/upload-artifact@v2
         with:
           name: draft 
