@@ -14,21 +14,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          path: 00main.pdf
-  convert_via_pandoc:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - run: mkdir output
-      - uses: docker://pandoc/core:2.9
-        with:
-          args: >-
-            -s 00main.tex 
-            -f latex 
-            -t pdf 
-            -o output/draft.pdf 
-            --bibliography LaTeX/sources.bib
-      - uses: actions/upload-artifact@master
-        with:
-          name: draft_1
-          path: output
+          name: draft 
+          path: LaTeX/00main.pdf
+
