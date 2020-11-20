@@ -7,7 +7,7 @@ jobs:
       - name: Set up Git repository
         uses: actions/checkout@v1
       - name: Compile LaTeX document
-        uses: dante-ev/latex-action@master
+        uses: xu-cheng/latex-action@v2
         with:
           root_file: 00main.tex
           working_directory: LaTeX
