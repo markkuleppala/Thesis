@@ -18,9 +18,13 @@ jobs:
         with:
           name: draft 
           path: LaTeX/00main.pdf
+      - name: Delete latest release
+        uses: ame-yu/action-delete-latest-release@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          tag_name: "draft_0.1"
+          tag_name: "latest"
           artifacts: "draft.*"
           token: ${{ secrets.GITHUB_TOKEN }}
