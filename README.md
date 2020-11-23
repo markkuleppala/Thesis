@@ -1,3 +1,3 @@
 # Thesis
 
-Master's thesis LaTeX files and drafts
+Master's thesis files in the repository. Drafts can be found under releases.
