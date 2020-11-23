@@ -6,25 +6,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up Git repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@master
         with:
           root_file: 00main.tex
           working_directory: LaTeX
-      - name: Upload artifact
+      - name: Push to draft branch
         if: success()
-        uses: actions/upload-artifact@v2
-        with:
-          name: draft 
-          path: LaTeX/00main.pdf
-      - name: Delete latest release
-        uses: ame-yu/action-delete-latest-release@v2
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Create Release
-        uses: ncipollo/release-action@v1
-        with:
-          tag: "latest"
-          artifacts: "draft"
-          token: ${{ secrets.GITHUB_TOKEN }}
+        run: git checkout -b draft && git add LaTeX/00main.pdf && git commit -m "Add new draft" && git push origin draft
