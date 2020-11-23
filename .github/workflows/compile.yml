@@ -13,13 +13,15 @@ jobs:
           root_file: 00main.tex
           working_directory: LaTeX
       - name: Delete latest release
+        if: success()
         uses: ame-yu/action-delete-latest-release@v2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Rename pdf
+        run: mv LaTeX/00main.pdf LaTeX/Thesis_Leppala.pdf
       - name: Create release
-        if: success()
         uses: ncipollo/release-action@v1
         with:
           tag: "latest"
-          artifacts: "LaTeX/00main.pdf"
+          artifacts: "LaTeX/Thesis_Leppala.pdf"
           token: ${{ secrets.GITHUB_TOKEN }}
