@@ -12,6 +12,10 @@ jobs:
         with:
           root_file: 00main.tex
           working_directory: LaTeX
-      - name: Push to draft branch
+      - name: Create release
         if: success()
-        run: git checkout -b draft && git add LaTeX/00main.pdf && git commit -m "Add new draft" && git push origin draft
+        uses: ncipollo/release-action@v1
+        with:
+          tag: "latest"
+          artifacts: "LaTeX/00main.pdf"
+          token: ${{ secrets.GITHUB_TOKEN }}
