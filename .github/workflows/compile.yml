@@ -25,6 +25,6 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          tag_name: "latest"
+          tag: "latest"
           artifacts: "draft.*"
           token: ${{ secrets.GITHUB_TOKEN }}
