@@ -26,5 +26,5 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           tag: "latest"
-          artifacts: "draft.zip"
+          artifacts: "draft"
           token: ${{ secrets.GITHUB_TOKEN }}
