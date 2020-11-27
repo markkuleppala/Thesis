@@ -87,9 +87,7 @@
 %                     with roman numerals (i, ii, iii, ...); and start
 %                     arabic numbering (1, 2, 3, ...) only on the 
 %                     first page of the first chapter
-%   twoinstructors  - changes the title of instructors to plural form
-%   twosupervisors  - changes the title of supervisors to plural form
-\usepackage[mydraft,twosupervisors]{aalto-thesis}
+\usepackage[mydraft]{aalto-thesis}
 %\usepackage[mydraft,doublenumbering]{aalto-thesis}
 %\usepackage{aalto-thesis}
 
@@ -142,35 +140,14 @@
 % Also remember to add the package option ``twosupervisors'' or
 % ``twoinstructors'' to the aalto-thesis package (aalto-thesis.sty
 % file line 72), so that the titles are in plural.
+
 % Example of one supervisor:
-%\newcommand{\SUPERVISOR}{Professor Antti Ylä-Jääski}
-%\newcommand{\FSUPERVISOR}{Professori Antti Ylä-Jääski}
-% Example of two supervisors:
-\newcommand{\SUPERVISOR}{Professor Antti Ylä-Jääski\\
-  Professor Petra Perustieteilijä}
-\newcommand{\FSUPERVISOR}{Professori Antti Ylä-Jääski\\
-  Professori Petra Perustieteilijä}
+\newcommand{\SUPERVISOR}{Professor Jukka Manner}
+\newcommand{\FSUPERVISOR}{Professori Jukka Manner}
 
 % If you have only one instructor, just write one name here
-\newcommand{\INSTRUCTOR}{Oili Ohjaaja M.Sc. (Tech.)}
-\newcommand{\FINSTRUCTOR}{Diplomi-insinööri Oili Ohjaaja}
-% If you have two instructors, separate them with \\ to create linefeeds
-% \newcommand{\INSTRUCTOR}{Oili Ohjaaja M.Sc. (Tech.)\\
-%  Elli Opas M.Sc. (Tech)}
-%\newcommand{\FINSTRUCTOR}{Diplomi-insinööri Oili Ohjaaja\\
-%  Diplomi-insinööri Elli Opas}
-
-% If you have two supervisors, it is common to write the schools
-% of the supervisors in the cover page. If the following command is defined,
-% then the supervisor names shown here are printed in the cover page. Otherwise,
-% the supervisor names defined above are used.
-\newcommand{\COVERSUPERVISOR}{Professor Antti Ylä-Jääski, Aalto University\\
-  Professor Petra Perustieteilijä, University of Helsinki}
-
-% The same option is for the instructors, if you have multiple instructors.
-% \newcommand{\COVERINSTRUCTOR}{Oili Ohjaaja M.Sc. (Tech.), Aalto University\\
-%  Elli Opas M.Sc. (Tech), Aalto SCI}
-
+\newcommand{\INSTRUCTOR}{Jan Zizka M.Sc. (Tech.)}
+\newcommand{\FINSTRUCTOR}{Diplomi-insinööri Jan Zizka}
 
 % Other stuff
 % ------------------------------------------------------------------
@@ -178,7 +155,7 @@
 \newcommand{\FPROFESSORSHIP}{Tietoturva ja pilvilaskenta}
 % Professorship code is the same in all languages
 \newcommand{\PROFCODE}{SCI3084}
-\newcommand{\KEYWORDS}{Kata Containers, far edge cloud, mobile edge computing, container, security}
+\newcommand{\KEYWORDS}{Kata Containers, Far Edge Cloud, Mobile Edge Computing, Container, Security}
 \newcommand{\FKEYWORDS}{}
 \newcommand{\LANGUAGE}{English}
 \newcommand{\FLANGUAGE}{Englanti}
