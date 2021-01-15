@@ -1,13 +1,14 @@
 % Encoding: UTF-8
-@inproceedings{inproceedings,
-author = {Karthick, Gayathri and Mapp, Glenford and Kammüller, Florian and Aiash, Mahdi},
-year = {2017},
-month = {03},
-pages = {},
-title = {Exploring a Security Protocol for Secure Service Migration in Commercial Cloud Environments},
-doi = {10.1145/3018896.3056795}
+
+@InProceedings{Karthick2017,
+  author = {Karthick, Gayathri and Mapp, Glenford and Kammüller, Florian and Aiash, Mahdi},
+  title  = {Exploring a Security Protocol for Secure Service Migration in Commercial Cloud Environments},
+  year   = {2017},
+  month  = {03},
+  doi    = {10.1145/3018896.3056795},
 }
-@MastersThesis{,
+
+@MastersThesis{Toimela2017,
   author = {Samu Toimela},
   school = {Aalto University},
   title  = {Containerization of telco cloud applications},
@@ -15,47 +16,92 @@ doi = {10.1145/3018896.3056795}
   type   = {mathesis},
   url    = {https://aaltodoc.aalto.fi/handle/123456789/26710},
 }
-@INPROCEEDINGS{8939164,
 
-  author={A. {Randazzo} and I. {Tinnirello}},
+@InProceedings{Randazzo2019,
+  author    = {A. {Randazzo} and I. {Tinnirello}},
+  booktitle = {2019 Sixth International Conference on Internet of Things: Systems, Management and Security (IOTSMS)},
+  title     = {Kata Containers: An Emerging Architecture for Enabling MEC Services in Fast and Secure Way},
+  year      = {2019},
+  pages     = {209-214},
+  doi       = {10.1109/IOTSMS48152.2019.8939164},
+}
 
-  booktitle={2019 Sixth International Conference on Internet of Things: Systems, Management and Security (IOTSMS)}, 
+@InProceedings{Kumar2020,
+  author    = {R. {Kumar} and B. {Thangaraju}},
+  booktitle = {2020 IEEE International Conference on Electronics, Computing and Communication Technologies (CONECCT)},
+  title     = {Performance Analysis Between RunC and Kata Container Runtime},
+  year      = {2020},
+  pages     = {1-4},
+  doi       = {10.1109/CONECCT50063.2020.9198653},
+}
 
-  title={Kata Containers: An Emerging Architecture for Enabling MEC Services in Fast and Secure Way}, 
+@Conference{EverartsdeVelp2020,
+  author    = {G. {Everarts de Velp} and E. {Riviere} and R. {Sadre}},
+  booktitle = {6th Workshop on Container Technologies and Container Clouds},
+  title     = {Understanding the performance of container execution environments},
+  year      = {2020},
+  editor    = {Proceedings of the 6th Workshop on Container Technologies and Container Clouds},
+  doi       = {https://doi.org/10.1145/3429885.3429967},
+  url       = {http://hdl.handle.net/2078.1/236930},
+}
 
-  year={2019},
+@Article{Flauzac2020,
+  author   = {Olivier Flauzac and Fabien Mauhourat and Florent Nolot},
+  journal  = {Procedia Computer Science},
+  title    = {A review of native container security for running applications},
+  year     = {2020},
+  issn     = {1877-0509},
+  note     = {The 17th International Conference on Mobile Systems and Pervasive Computing (MobiSPC),The 15th International Conference on Future Networks and Communications (FNC),The 10th International Conference on Sustainable Energy Information Technology},
+  pages    = {157 - 164},
+  volume   = {175},
+  doi      = {https://doi.org/10.1016/j.procs.2020.07.025},
+  keywords = {Containers, LXC, LXD, Singularity, Docker, Kata-containers, gVisor},
+  url      = {http://www.sciencedirect.com/science/article/pii/S187705092031704X},
+}
 
-  volume={},
+@Article{Afrin2019,
+  author   = {Mahbuba Afrin and Jiong Jin and Ashfaqur Rahman and Yu-Chu Tian and Ambarish Kulkarni},
+  journal  = {Future Generation Computer Systems},
+  title    = {Multi-objective resource allocation for Edge Cloud based robotic workflow in smart factory},
+  year     = {2019},
+  issn     = {0167-739X},
+  pages    = {119 - 130},
+  volume   = {97},
+  doi      = {https://doi.org/10.1016/j.future.2019.02.062},
+  keywords = {Resource allocation, Multi-robot system, Edge cloud, Workflow management, Smart factory, Multi-objective evolutionary algorithm},
+  url      = {http://www.sciencedirect.com/science/article/pii/S0167739X18326785},
+}
 
-  number={},
-
-  pages={209-214},
-
-  doi={10.1109/IOTSMS48152.2019.8939164}}
-@INPROCEEDINGS{9198653,
-
-  author={R. {Kumar} and B. {Thangaraju}},
-
-  booktitle={2020 IEEE International Conference on Electronics, Computing and Communication Technologies (CONECCT)}, 
-
-  title={Performance Analysis Between RunC and Kata Container Runtime}, 
-
-  year={2020},
-
-  volume={},
-
-  number={},
-
-  pages={1-4},
-
-  doi={10.1109/CONECCT50063.2020.9198653}}
-  
 @Misc{KataContainers,
+  author       = {{Kata Containers}},
   howpublished = {\url{https://katacontainers.io}},
   note         = {Accessed: 21.12.2020},
-  author        = {{Kata Containers Community}},
-  title        = {{K}ata {C}ontainers},
+  title        = {{Kata Containers}},
   keywords     = {kata containers, open source},
+  organization = {Kata Containers},
+}
+
+@Misc{CVE-2019-5736,
+  author       = {{CVE Details}},
+  howpublished = {\url{https://www.cvedetails.com/cve/CVE-2019-5736/}},
+  month        = feb,
+  note         = {Accessed: 28.12.2020},
+  title        = {{CVE-2019-5736}},
+  year         = {2019},
+  keywords     = {docker, exploit, vulnerability},
+  organization = {CVE Details},
+}
+
+@InProceedings{Xing2012,
+  author    = {Xing, Yuping and Zhan, Yongzhao},
+  booktitle = {Future Wireless Networks and Information Systems},
+  title     = {Virtualization and Cloud Computing},
+  year      = {2012},
+  address   = {Berlin, Heidelberg},
+  editor    = {Zhang, Ying},
+  pages     = {305--312},
+  publisher = {Springer Berlin Heidelberg},
+  isbn      = {978-3-642-27323-0},
 }
 
 @Book{Velte2009,
@@ -66,41 +112,254 @@ doi = {10.1145/3018896.3056795}
   address   = {USA},
   edition   = {1},
   isbn      = {0071626948},
-  abstract  = {"The promise of cloud computing is here. These pages provide the 'eyes wide open' insights you need to transform your business." --Christopher Crowhurst, Vice President, Strategic Technology, Thomson Reuters A Down-to-Earth Guide to Cloud Computing Cloud Computing: A Practical Approach provides a comprehensive look at the emerging paradigm of Internet-based enterprise applications and services. This accessible book offers a broad introduction to cloud computing, reviews a wide variety of currently available solutions, and discusses the cost savings and organizational and operational benefits. You'll find details on essential topics, such as hardware, platforms, standards, migration, security, and storage. You'll also learn what other organizations are doing and where they're headed with cloud computing. If your company is considering the move from a traditional network infrastructure to a cutting-edge cloud solution, you need this strategic guide. Cloud Computing: A Practical Approach covers: Costs, benefits, security issues, regulatory concerns, and limitations Service providers, including Google, Microsoft, Amazon, Yahoo, IBM, EMC/VMware, Salesforce.com, and others Hardware, infrastructure, clients, platforms, applications, services, and storage Standards, including HTTP, HTML, DHTML, XMPP, SSL, and OpenID Web services, such as REST, SOAP, and JSON Platform as a Service (PaaS), Software as a Service (SaaS), and Software plus Services (S+S) Custom application development environments, frameworks, strategies, and solutions Local clouds, thin clients, and virtualization Migration, best practices, and emerging standards Table of contents Section One: Getting Started; Chapter 1. The History and Future of Cloud Computing; Chapter 2. Cloud Computing Basics; Chapter 3. Your Organization and Cloud Computing; Chapter 4. Cloud Computing with the Titans (Google, Microsoft, Amazon, Yahoo); Chapter 5. The Business Case for going Cloud (w/ case study); Section Two: Cloud Computing Technology; Chapter 6. Hardware and Infrastructure; Chapter 7. Accessing the Cloud (basics to APIs); Chapter 8. Cloud Storage; Chapter 9. Emerging Standards; Section Three: Cloud Computing at Work; Chapter 10. Software as a Service; Chapter 11. Software Plus Services; Chapter 12. Developing Applications; Chapter 13. Local Clouds and Thin Clients; Chapter 14. Migrating to the Cloud; Appendix A. Best Practices; Appendix B. List of Cloud Computing movers and shakers and Informational Resources},
 }
 
 @Misc{MicrosoftAzure,
   author       = {{Microsoft Azure}},
   howpublished = {\url{https://azure.microsoft.com/en-us/overview/what-is-a-private-cloud/}},
   note         = {Accessed: 28.12.2020},
-  organization = {Microsoft},
   title        = {{What is a private cloud?}},
-  keywords      = {azure, platform}
+  keywords     = {azure, private cloud, platform},
+  organization = {Microsoft},
 }
 
 @Misc{NetApp,
   author       = {NetApp},
   howpublished = {\url{https://www.netapp.com/hybrid-cloud/what-is-hybrid-cloud/}},
   note         = {Accessed: 28.12.2020},
-  organization = {NetApp},
   title        = {What is hybrid cloud?},
-  keywords      = {netapp, hybrid cloud}
+  keywords     = {netapp, hybrid cloud},
+  organization = {NetApp},
+}
+
+@InProceedings{Debab2021,
+  author    = {Debab, Ramzi and Hidouci, Walid Khaled},
+  booktitle = {Proceedings of the Future Technologies Conference (FTC) 2020, Volume 2},
+  title     = {Containers Runtimes War: A Comparative Study},
+  year      = {2021},
+  address   = {Cham},
+  editor    = {Arai, Kohei and Kapoor, Supriya and Bhatia, Rahul},
+  pages     = {135--161},
+  publisher = {Springer International Publishing},
+  isbn      = {978-3-030-63089-8},
+}
+
+@Article{Taleb2017,
+  author  = {T. {Taleb} and K. {Samdanis} and B. {Mada} and H. {Flinck} and S. {Dutta} and D. {Sabella}},
+  journal = {IEEE Communications Surveys Tutorials},
+  title   = {On Multi-Access Edge Computing: A Survey of the Emerging 5G Network Edge Cloud Architecture and Orchestration},
+  year    = {2017},
+  number  = {3},
+  pages   = {1657-1681},
+  volume  = {19},
+  doi     = {10.1109/COMST.2017.2705720},
+}
+
+@InProceedings{Cai2019,
+  author    = {Y. {Cai} and X. {Lu} and Y. {Luo} and K. {Wang} and D. {Chen} and K. {Yang}},
+  booktitle = {2019 15th International Wireless Communications Mobile Computing Conference (IWCMC)},
+  title     = {A Task Allocation Algorithm for Profit Maximization in NFC-RAN},
+  year      = {2019},
+  pages     = {203-207},
+  doi       = {10.1109/IWCMC.2019.8766709},
+}
+
+@Article{Atya2019,
+  author  = {A. O. F. {Atya} and Z. {Qian} and S. V. {Krishnamurthy} and T. {La Porta} and P. {McDaniel} and L. M. {Marvel}},
+  journal = {IEEE/ACM Transactions on Networking},
+  title   = {Catch Me if You Can: A Closer Look at Malicious Co-Residency on the Cloud},
+  year    = {2019},
+  number  = {2},
+  pages   = {560-576},
+  volume  = {27},
+  doi     = {10.1109/TNET.2019.2891528},
+}
+
+@Article{Abbas2018,
+  author  = {N. {Abbas} and Y. {Zhang} and A. {Taherkordi} and T. {Skeie}},
+  journal = {IEEE Internet of Things Journal},
+  title   = {Mobile Edge Computing: A Survey},
+  year    = {2018},
+  number  = {1},
+  pages   = {450-465},
+  volume  = {5},
+  doi     = {10.1109/JIOT.2017.2750180},
+}
+
+@InProceedings{Bazm2017,
+  author    = {M. {Bazm} and M. {Lacoste} and M. {Südholt} and J. {Menaud}},
+  booktitle = {2017 1st Cyber Security in Networking Conference (CSNet)},
+  title     = {Side-channels beyond the cloud edge: New isolation threats and solutions},
+  year      = {2017},
+  pages     = {1-8},
+  doi       = {10.1109/CSNET.2017.8241986},
+}
+
+@Article{Lingayat2018,
+  author  = {Lingayat, Ashish and Badre, Ranjana and Gupta, Anil},
+  journal = {TELKOMNIKA Indonesian Journal of Electrical Engineering},
+  title   = {Integration of Linux Containers in OpenStack: An Introspection},
+  year    = {2018},
+  month   = {12},
+  volume  = {12},
+  doi     = {10.11591/ijeecs.v12.i3.pp1094-1105},
+}
+
+@Article{Liu2020,
+  author  = {Liu, Zhen and Zhang, Jiawei and Li, Yanan and Ji, Yuefeng},
+  journal = {Sensors},
+  title   = {Hierarchical MEC Servers Deployment and User-MEC Server Association in C-RANs over WDM Ring Networks},
+  year    = {2020},
+  month   = {02},
+  pages   = {1282},
+  volume  = {20},
+  doi     = {10.3390/s20051282},
 }
 
 @Article{Lombardi2011,
-  author   = {Flavio Lombardi and Roberto {Di Pietro}},
-  journal  = {Journal of Network and Computer Applications},
-  title    = {Secure virtualization for cloud computing},
-  year     = {2011},
-  issn     = {1084-8045},
-  note     = {Advanced Topics in Cloud Computing},
-  number   = {4},
-  pages    = {1113 - 1122},
-  volume   = {34},
-  abstract = {Cloud computing adoption and diffusion are threatened by unresolved security issues that affect both the cloud provider and the cloud user. In this paper, we show how virtualization can increase the security of cloud computing, by protecting both the integrity of guest virtual machines and the cloud infrastructure components. In particular, we propose a novel architecture, Advanced Cloud Protection System (ACPS), aimed at guaranteeing increased security to cloud resources. ACPS can be deployed on several cloud solutions and can effectively monitor the integrity of guest and infrastructure components while remaining fully transparent to virtual machines and to cloud users. ACPS can locally react to security breaches as well as notify a further security management layer of such events. A prototype of our ACPS proposal is fully implemented on two current open source solutions: Eucalyptus and OpenECP. The prototype is tested against effectiveness and performance. In particular: (a) effectiveness is shown testing our prototype against attacks known in the literature; (b) performance evaluation of the ACPS prototype is carried out under different types of workload. Results show that our proposal is resilient against attacks and that the introduced overhead is small when compared to the provided features.},
-  doi      = {https://doi.org/10.1016/j.jnca.2010.06.008},
-  keywords = {Security, Cloud computing, Virtualization technologies},
-  url      = {http://www.sciencedirect.com/science/article/pii/S1084804510001062},
+  author  = {Lombardi, Flavio and Pietro, Roberto},
+  journal = {J. Network and Computer Applications},
+  title   = {Secure Virtualization for Cloud Computing},
+  year    = {2011},
+  month   = {07},
+  pages   = {1113-1122},
+  volume  = {34},
+  doi     = {10.1016/j.jnca.2010.06.008},
+}
+
+@InProceedings{Shringarputale2020,
+  author = {Shringarputale, Sushrut and McDaniel, Patrick and Butler, Kevin and Porta, Thomas},
+  title  = {Co-residency Attacks on Containers are Real},
+  year   = {2020},
+  month  = {11},
+  pages  = {53-66},
+  doi    = {10.1145/3411495.3421357},
+}
+
+@Article{Choy2014,
+  author  = {Choy, Sharon and Wong, Bernard and Simon, Gwendal and Rosenberg, Catherine},
+  journal = {Multimedia Systems},
+  title   = {A Hybrid Edge-Cloud Architecture for Reducing On-Demand Gaming Latency},
+  year    = {2014},
+  month   = {10},
+  pages   = {503-519},
+  volume  = {20},
+  doi     = {10.1007/s00530-014-0367-z},
+}
+
+@InProceedings{Brown2016,
+  author = {Brown, Gabriel},
+  title  = {Mobile Edge Computing Use Cases & Deployment Options},
+  year   = {2016},
+}
+
+@Article{Gao2017,
+  author  = {Xing Gao and Zhongshu Gu and M. Kayaalp and D. Pendarakis and H. Wang},
+  journal = {2017 47th Annual IEEE/IFIP International Conference on Dependable Systems and Networks (DSN)},
+  title   = {ContainerLeaks: Emerging Security Threats of Information Leakages in Container Clouds},
+  year    = {2017},
+  pages   = {237-248},
+}
+
+@Article{Ma2019,
+  author  = {L. Ma and S. Yi and Nancy J. Carter and Q. Li},
+  journal = {IEEE Transactions on Mobile Computing},
+  title   = {Efficient Live Migration of Edge Services Leveraging Container Layered Storage},
+  year    = {2019},
+  pages   = {2020-2033},
+  volume  = {18},
+}
+
+@Article{Maheshwari2018,
+  author  = {S. Maheshwari and D. Raychaudhuri and I. Seskar and Francesco Bronzino},
+  journal = {2018 IEEE/ACM Symposium on Edge Computing (SEC)},
+  title   = {Scalability and Performance Evaluation of Edge Cloud Systems for Latency Constrained Applications},
+  year    = {2018},
+  pages   = {286-299},
+}
+
+@InProceedings{Eder2016,
+  author = {M. Eder},
+  title  = {Hypervisor-vs . Container-based Virtualization},
+  year   = {2016},
+}
+
+@Article{Shahzadi2017,
+  author  = {Sonia Shahzadi and M. Iqbal and T. Dagiuklas and Zia Ul-Qayyum},
+  journal = {Journal of Cloud Computing},
+  title   = {Multi-access edge computing: open issues, challenges and future perspectives},
+  year    = {2017},
+  pages   = {1-13},
+  volume  = {6},
+}
+
+@Article{Ning2019,
+  author  = {Zhaolong Ning and Xiaojie Wang and J. Huang},
+  journal = {IEEE Vehicular Technology Magazine},
+  title   = {Mobile Edge Computing-Enabled 5G Vehicular Networks: Toward the Integration of Communication and Computing},
+  year    = {2019},
+  pages   = {54-61},
+  volume  = {14},
+}
+
+@InProceedings{Sprecher2020,
+  author = {N. Sprecher and Jane Shen and K. Yamamoto and Rong Huang},
+  title  = {ETSI White Paper: Harmonizing standards for edge computing-A synergized architecture leveraging ETSI ISG MEC and 3GPP specifications},
+  year   = {2020},
+}
+
+@InProceedings{Hu2015,
+  author = {Y. C. Hu and M. Patel and D. Sabella and N. Sprecher and V. Young},
+  title  = {ETSI White Paper: Mobile Edge Computing: A key technology towards 5G},
+  year   = {2015},
+}
+
+@Article{SlamnikKrijestorac2020,
+  author  = {Nina Slamnik-Krije{\vs}torac and E. D. B. E. Silva and Esteban Municio and H. C. C. D. Resende and S. A. Hadiwardoyo and Johann M. M{\'a}rquez-Barja},
+  journal = {Sensors (Basel, Switzerland)},
+  title   = {Network Service and Resource Orchestration: A Feature and Performance Analysis within the MEC-Enhanced Vehicular Network Context},
+  year    = {2020},
+  volume  = {20},
+}
+
+@InProceedings{Sabella2019,
+  author = {D. Sabella and V. Sukhomlinov and L. Trang and S. Kekki and P. Paglierani and R. Rossbach and X. Li and Y. Fang and D. Druta and F. Giust and L. Cominardi and W. Featherstone and B. Pike and S. Hadad},
+  title  = {ETSI White Paper: Developing Software for Multi-Access Edge Computing},
+  year   = {2019},
+}
+
+@InProceedings{Kekki2018,
+  author = {S. Kekki and W. Featherstone and Y. Fang and P. Kuure and A. Li and A. Ranjan},
+  title  = {ETSI White Paper: MEC in 5G networks},
+  year   = {2018},
+}
+
+@InProceedings{Fang2018,
+  author = {Y. Fang},
+  title  = {ETSI White Paper: MEC in an Enterprise Setting: A Solution Outline},
+  year   = {2018},
+}
+
+@InProceedings{Edwards2019,
+  author = {S. Edwards and D. Czarnote and R. Tonic and B. Perez},
+  title  = {Kubernetes: Security Whitepaper},
+  year   = {2019},
+}
+
+@Misc{RedHat,
+  author       = {{Red Hat}},
+  howpublished = {\url{https://www.redhat.com/en/topics/virtualization/what-is-virtualization}},
+  note         = {Accessed: 15.01.2021},
+  title        = {What is virtualization?},
+}
+
+@InProceedings{Bosch2011,
+  author    = {P. {Bosch} and A. {Duminuco} and F. {Pianese} and T. L. {Wood}},
+  booktitle = {12th IFIP/IEEE International Symposium on Integrated Network Management (IM 2011) and Workshops},
+  title     = {Telco clouds and Virtual Telco: Consolidation, convergence, and beyond},
+  year      = {2011},
+  pages     = {982-988},
+  doi       = {10.1109/INM.2011.5990511},
 }
 
 @Comment{jabref-meta: databaseType:bibtex;}
