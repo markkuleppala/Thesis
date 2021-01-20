@@ -11,7 +11,17 @@ Kata Containers \\
 \section{Architecture}
 
 \section{Networking}
-    
+
+\section{Related work}
+
+Kata Containers is not the sole option providing secure container runtime nor isolation in container kernel layer. Amazon Web Services are using their in-house built Firecracker runtime, which makes use of Kernel Virtual Machine (KVM) to launch workload in lightweight micro-virtual machines. Firecracker is deployed at least in AWS Lambda and Fargate. Firecracker currently supports Intel CPUs, with AMD and Arm support in developer preview. \cite{AWS}\cite{Debab2021}
+
+Microsoft offers container instance isolation option inside Azure with Hyper-V. The hardware isolation is based on VMs, likewise in KC and Firecracker, thus leveraging the additional kernel layer. \cite{Hyper-V}
+
+gVisor provides a second isolation method, differing from Kata Containers and Firecracker. gVisor intercepts application system calls and acts as the guest kernel, without the need for translation through virtualized hardware. The architecture can be though as a merged kernel and Virtual Machine Manager (VMM). gVisor includes OCI runtime runsc, which provides the isolation boundary between the application and host kernel. gVisor is developed by Google and it is harnessed in various Google's cloud products such as Kubernetes Engine \cite{GKE} and Cloud Run \cite{CloudRun}. \cite{gVisor}\cite{Debab2021}
+
+A third approach for the container isolation is IBM Nabla. Nabla containers use library OS, also known as unikernel, techniques to avoid system calls and thereby reduce the attack surface. Nabla is based on a custom VMM named Nabla Tender to manage lightweight VMs executing unikernels. Nabla containers only use 7 system calls; all others are blocked via a Linux seccomp policy . The Nabla Tender intercepts hypercalls, which are related to storage and network, from unikernel VMs and translates them into syscalls to the host. \cite{Debab2021}\cite{Nabla}
+
 
 % that it fits to the same space as the text (total width = \textwidth).
 % If you do need more space, you can either
