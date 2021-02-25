@@ -9,32 +9,6 @@ Kata Containers has originated from Intel's Clear Containers \cite{ClearContaine
 
 In this Thesis environment, Kata Containers is deployed within Kubernetes. Figure \ref{fig:KataContainersArchitecture} demonstrates the latest architecture defined version 2.0.0. The architecture is comprised of six elements: Kubernetes, CRI-O, Kata Shim V2, Hypervisor, Agent, and Virtual Machine.
 
-\subsection{Kubernetes}
-
-Kubernetes acts as an container-orchestration system for automating deployment, scaling, and management of containerized applications \cite{Kubernetes}. Kubernetes offers flexible configuration and it can installed inside a VM or on bare-metal. Like most distributed computing platforms, a Kubernetes cluster consists of at least one master node and multiple compute nodes. Each node runs a container runtime, such as Docker or Kata Containers, along with an agent that communicates with the master.
-
-Each container is launched as a pod. Pods are the atomic unit on the Kubernetes platform. A single node can include multiple pods inside it, and each pod is tied to the node it is created within. Runtime can be selected on a pod level, thus a single node can consists of workloads with various runtimes. This comes handy, whenever non-confidential, but highly performance centric application needs to be within more security oriented applications.
-
-\subsection{CRI-O}
-
-
-\subsection{Kata Shim V2}
-
-\subsection{Agent}
-
-Agent, also known as Kata-Agent, run inside the Kubernetes pod and
-
-\subsection{Hypervisor}
-
-Kata Containers currently supports two/three different hypervisors: KVM, QEMU, and Firecracker.
-
-
-
-
-  
-
-
-
 \begin{figure}[ht]
   \begin{center}
     \includegraphics[width=15cm]{LaTeX/images/KataContainersArchitecture.jpg}
@@ -43,6 +17,57 @@ Kata Containers currently supports two/three different hypervisors: KVM, QEMU, a
   \end{center}
 \end{figure}
 
+\subsection{Kubernetes}
+
+Kubernetes acts as an container-orchestration system for automating deployment, scaling, and management of containerized applications \cite{Kubernetes}. Kubernetes offers flexible configuration and it can installed inside a VM or on bare-metal. Like most distributed computing platforms, a Kubernetes cluster consists of at least one master node and multiple compute nodes. Each node runs a container runtime, such as Docker or containerd, along with an agent that communicates with the master.
+
+Each container is launched as a pod. Pods are the atomic unit on the Kubernetes platform. A single node can include multiple pods inside it, and each pod is tied to the node it is created within. A runtime can be selected on a pod level, thus a single node can consists of workloads with various runtimes. This comes handy, whenever non-confidential, but highly performance-centric applications needs to be deployed in a node within more security oriented applications.
+
+\subsection{Containerd}
+
+Containers inside Kubernetes are managed via a container runtime. Containerd is an implementation of the Kubernetes Container Runtime Interface (CRI) to enable using Open Container Initiative (OCI) compatible runtimes. It is an industry-standard container runtime with an emphasis on simplicity, robustness and portability. It is available as a daemon for Linux and Windows, which can manage the complete container lifecycle of its host system. The flexibility of containerd allows Kubernetes to register and use various OCI-compliant runtimes, such as Kata Containers, as container runtime for running pods. Containerd supports multiple means to download images including trust and image verification. Containerd also manages container process lifecycles, low-level storage, and resource isolation as required by the CRI. \cite{containerd} \cite{containerdGithub}
+
+\subsection{Kata Shim V2}
+
+The primary deliverable of the Kata Containers project is a CRI friendly shim. The shim launches container runtime, which launches the container itself. The shim enables for daemonless containers, thus allowing runtime to exit after the container has been launched, and then becomes the parent of the container. \cite{Crosby}
+
+Shim uses a ttRPC protocol to communicate with the agent. This protocol allows the runtime to send container management commands to the agent. The protocol is also used to carry the I/O streams such as stdout, stderr, and stdin, between the containers and manage the engine, which is containerd in this Thesis.
+
+\subsection{gRPC and ttRPC}
+
+
+
+
+\subsection{Hypervisor}
+
+Kata Containers currently supports three different hypervisors: Cloud Hypervisor, QEMU, and Firecracker.
+
+
+
+
+
+
+
+
+Each Kubernetes pod is wrapped inside its own lightweight VM, thus isolating workloads even from the same host or container maintainer.
+
+
+
+
+Kata Containers is OCI compliant runtime, thus it obeys OCI runtime specification and supports all the OCI runtime operations. As any OCI compliant runtime, the KC works seamlessly with the Kubernetes Container Runtime Interface (CRI) through the CRI-O and Containerd implementation. The isolation is achieved with QEMU \cite{QEMU} or Kernel-based Virtual Machine (KVM) \cite{KVM} for pod that \texttt{kubelet} in Kubernetes creates respectively.
+
+
+\subsection{Agent}
+
+Agent, also known as Kata-Agent, runs inside the Kubernetes pod in the computing node and its main task is to spawn the container process. The agent process runs as a daemon inside the virtual machine. This agent runs a ttRPC server in the guest using a VIRTIO serial or VSOCK interface which QEMU exposes as a socket file on the host. \cite{KataContainersArchitecture}
+
+
+\subsection{Container}
+
+
+
+
+\section{Isolation and resource allocation}
 
 \begin{figure}[ht]
   \begin{center}
@@ -51,13 +76,6 @@ Kata Containers currently supports two/three different hypervisors: KVM, QEMU, a
     \label{fig:KataContainersStack}
   \end{center}
 \end{figure} 
-
-Each Kubernetes pod is wrapped inside its own lightweight VM, thus isolating workloads even from the same host or container maintainer.
-
-
-
-
-Kata Containers is Open Container Initiative (OCI) compliant runtime, thus it obeys OCI runtime specification and supports all the OCI runtime operations. As any OCI compliant runtime, the KC works seamlessly with the Kubernetes Container Runtime Interface (CRI) through the CRI-O and Containerd implementation. The isolation is achieved with QEMU \cite{QEMU} or Kernel-based Virtual Machine (KVM) \cite{KVM} for pod that \texttt{kubelet} in Kubernetes creates respectively.
 
 \section{Networking}
 
