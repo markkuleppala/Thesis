@@ -7,7 +7,7 @@ Kata Containers has originated from Intel's Clear Containers \cite{ClearContaine
 
 \section{Architecture}
 
-In this Thesis environment, Kata Containers is deployed within Kubernetes. Figure \ref{fig:KataContainersArchitecture} demonstrates the latest architecture defined version 2.0.0. The architecture is comprised of six elements: Kubernetes, CRI-O, Kata Shim V2, Hypervisor, Agent, and Virtual Machine.
+In this Thesis environment, Kata Containers is deployed within Kubernetes. Figure \ref{fig:KataContainersArchitecture} demonstrates the latest architecture defined version 2.0.0. The architecture is comprised of six elements: Kubernetes, containerd, Kata Shim V2, Hypervisor, Agent, and Virtual Machine.
 
 \begin{figure}[ht]
   \begin{center}
@@ -81,7 +81,7 @@ Agent, also known as Kata-Agent, runs inside the Kubernetes pod in the computing
 
 \section{Related work}
 
-Kata Containers is not the sole option providing secure container runtime nor isolation in the container kernel layer. Amazon Web Services (AWS) uses their in-house built Firecracker runtime, which uses KVM to launch workload in lightweight micro-virtual machines. Of Amazon's cloud products, Firecracker is deployed at least in AWS Lambda and Fargate. Firecracker currently supports Intel CPUs, with AMD and Arm support in developer preview. Firecracker microVM's are also integrated with other runtimes such as containerd and Kata Containers. \cite{AWS}\cite{Debab2021}\cite{FirecrackerDesign}
+Kata Containers is not the sole option providing secure container runtime nor isolation in the container kernel layer. Amazon Web Services (AWS) uses their in-house built Firecracker runtime, which uses KVM to launch workload in lightweight micro-virtual machines. Of Amazon's cloud products, Firecracker is deployed at least in AWS Lambda and Fargate. Firecracker currently supports Intel CPUs, with AMD and Arm support in developer preview. Firecracker microVMs are also integrated with other runtimes such as containerd and Kata Containers. \cite{AWS}\cite{Debab2021}\cite{FirecrackerDesign}
 
 Microsoft offers a container instance isolation option inside Azure with Hyper-V. The hardware isolation is based on VMs, likewise in KC and Firecracker, thus leveraging the additional kernel layer. \cite{Hyper-V}
 
