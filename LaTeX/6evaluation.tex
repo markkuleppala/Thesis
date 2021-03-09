@@ -19,7 +19,7 @@ The extra layer of security provided by Kata Container's micro-VM comes with a p
 \section{Test architecture}
 \label{section:test_architecture}
 
-The test environment simulates multiple relations that are most common in a telco environment. The test environment cluster is described in Figure \ref{fig:TestArchitectureCluster} and Node 1 in more detail in Figure \ref{fig:TestArchitectureNode}. The cluster consists of two nodes, which both have two containers inside. The difference between nodes are pods, with Node 1 consisting of a single pod with two containers inside, and Node 2 consist of two pods with a single container deployed to each pod. The purpose of the heterogeneous environment is to evaluate performance of a single container or between two containers in various scenarios.
+The test environment simulates multiple relations that are most common in a telco environment. The test environment cluster is described in Figure \ref{fig:TestArchitectureCluster} and Node 1 in more detail in Figure \ref{fig:TestArchitectureNode}. The cluster consists of two nodes, which both have two containers inside. The difference between nodes are pods, with Node 1 consisting of a single pod with two containers inside, and Node 2 consist of two pods with a single container deployed to each pod. The purpose of the heterogeneous environment is to evaluate performance of a single container or between two containers in various scenarios. SR-IOV visualized in Figure \ref{fig:TestArchitectureNode} is described in detail in Section \ref{section:SR-IOV}.
 
 \begin{figure}[ht]
   \begin{center}
@@ -37,6 +37,8 @@ The test environment simulates multiple relations that are most common in a telc
   \end{center}
 \end{figure}
 
+\subsection{Containers}
+
 Container - container inside pod
 
 Container - container between pods
@@ -45,6 +47,7 @@ Container - container across nodes and a pods
 
 Container - storage
 
+\subsection{Storage}
 
 The cluster consists also two storage options, which are Persistent Volume (PV) and emptyDir. PV 
     - What is emptyDir?
@@ -52,9 +55,18 @@ The cluster consists also two storage options, which are Persistent Volume (PV) 
     - Volumes mounted.
     - Multi-tenancy? Write many?
 
+\subsection{Networking}
+
 Networking
     - Two networks. What is the difference?
     - Access to storage not via network, unless NFS(?).
+
+
+
+
+
+
+
 
 
 
