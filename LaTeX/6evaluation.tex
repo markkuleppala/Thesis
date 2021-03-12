@@ -49,9 +49,12 @@ Container - storage
 
 \subsection{Storage}
 
-The cluster consists also two storage options, which are Persistent Volume (PV) and emptyDir. PV 
+The Kubernetes cluster consists also two storage options, which are Persistent Volume (PV) and emptyDir. PV is a piece of storage in the cluster has been provisioned dynamically or by an administrator. PVs are volume plugins having a lifecycle independent of any individual Pod using the PV. Kubernetes supports multiple types of storage resources, such as Network Filesystem (NFS), SCSI over IP (iSCSI), local storage devices, or AWS Elastic Block Store \cite{AmazonEBS}. \cite{PV}
+
+PV volumes can be mounted as ReadWriteMany, thus supporting multiple nodes for simultaneous read-write -operations.
+
     - What is emptyDir?
-    - PV (block). Why block? Link to K8s docs.
+    - PV (block). Why block?.
     - Volumes mounted.
     - Multi-tenancy? Write many?
 

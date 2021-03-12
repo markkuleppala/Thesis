@@ -1,19 +1,29 @@
 \chapter{Kata Containers}
 \label{chapter:katacontainers}
 
-Securing container runtime is a crucial task in MEC in order to run multiple instances in the same edge securely. Container escapes are exposing other instances in the platform. Therefore, multiple solutions to provide stronger workload isolation using hardware virtualization technology as a second layer of defense have been developed. One of the most prominent approach includes wrapping the container inside a micro VM, which is a lightweight version of traditional VM with minimal overhead. The dedicated kernel of micro VM, provides isolation of network, I/O and memory and can utilize hardware-enforced isolation with virtualization extensions. In this Thesis, we will focus on Kata Containers as a secure container runtime. Kata Containers perform like containers, but provide the workload isolation and security advantages of VMs. It combines the benefits of containers and VMs. \cite{KataContainers}
+Securing container runtime is a crucial task in MEC in order to run multiple instances in the same edge securely. Container escapes\cite{CVE-2019-5736}\cite{CVE-2020-14386} are exposing other instances residing in the platform. Therefore, multiple solutions have been developed to provide stronger workload isolation using hardware virtualization technology as a second layer of defense. One of the most prominent approach includes wrapping the container inside a micro VM, which is a lightweight version of traditional VM with minimal overhead. The dedicated kernel of micro VM, provides isolation of network, I/O and memory and can utilize hardware-enforced isolation with virtualization extensions. In this Thesis, we will focus on Kata Containers as a secure container runtime. Kata Containers perform like containers, but provide the workload isolation and security advantages of VMs. It combines the benefits of containers and VMs. \cite{KataContainers}
 
 Kata Containers has originated from Intel's Clear Containers \cite{ClearContainers} and Hyper runV \cite{runV} in December 2017. KC is open source and licensed under the Apache 2.0 license. The development is driven by an Architecture Committee. This committees members are elected by contributors, oversees architectural decisions, including standardization, and resolves technical disagreements between project maintainers. Currently this committee is comprised of five members from Apple, Intel, Ant Financial, and Red Hat. \cite{KataContainersGovernance} \cite{KataContainers}
 
 \section{Architecture}
 
-In this Thesis environment, Kata Containers is deployed within Kubernetes. Figure \ref{fig:KataContainersArchitecture} demonstrates the latest architecture defined version 2.0.0. The architecture is comprised of six elements: Kubernetes, containerd, Kata Shim V2, Hypervisor, Agent, and Virtual Machine.
+In this Thesis environment, Kata Containers is deployed within Kubernetes. Figure \ref{fig:KataContainersArchitecture} demonstrates the latest architecture defined version 2.0. The architecture is comprised of six elements: Kubernetes, containerd, Kata Shim V2, Hypervisor, Agent, and Virtual Machine.
+
+Kata Containers is Open Container Initiative (OCI)\cite{OCI} compliant runtime, thus it obeys OCI runtime specification and supports all the OCI runtime operations. As any OCI compliant runtime, the KC works seamlessly with the Kubernetes Container Runtime Interface (CRI)\cite{CRI} through the CRI-O or containerd implementation.
 
 \begin{figure}[ht]
   \begin{center}
-    \includegraphics[width=15cm]{LaTeX/images/KataContainersArchitecture.jpg}
+    \includegraphics[width=13.5cm]{LaTeX/images/KataContainersArchitecture.jpg}
     \caption{Kata Containers 2.0 architecture \cite{KataContainers}}
     \label{fig:KataContainersArchitecture}
+  \end{center}
+\end{figure}
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=13.5cm]{LaTeX/images/KataContainersComponents.png}
+    \caption{Kata Containers 2.0 components \cite{KataContainersArchitecture}}
+    \label{fig:KataContainersComponents}
   \end{center}
 \end{figure}
 
@@ -25,53 +35,45 @@ Each container is launched as a pod. Pods are the atomic unit on the Kubernetes 
 
 \subsection{Containerd}
 
-Containers inside Kubernetes are managed via a container runtime. Containerd is an implementation of the Kubernetes Container Runtime Interface (CRI) to enable using Open Container Initiative (OCI) compatible runtimes. It is an industry-standard container runtime with an emphasis on simplicity, robustness and portability. It is available as a daemon for Linux and Windows, which can manage the complete container lifecycle of its host system. The flexibility of containerd allows Kubernetes to register and use various OCI-compliant runtimes, such as Kata Containers, as container runtime for running pods. Containerd supports multiple means to download images including trust and image verification. Containerd also manages container process lifecycles, low-level storage, and resource isolation as required by the CRI. \cite{containerd} \cite{containerdGithub}
+Containers inside Kubernetes are managed via a container runtime. Containerd is an implementation of the Kubernetes CRI to enable using OCI compatible runtimes. It is an industry-standard container runtime with an emphasis on simplicity, robustness and portability. It is available as a daemon for Linux and Windows, which can manage the complete container lifecycle of its host system. The flexibility of containerd allows Kubernetes to register and use various OCI-compliant runtimes, such as Kata Containers, as container runtime for running pods. Containerd supports multiple means to download images including trust and image verification. Containerd also manages container process lifecycles, low-level storage, and resource isolation as required by the CRI. \cite{containerdGithub}\cite{containerd}
 
 \subsection{Kata Shim V2}
 
-The primary deliverable of the Kata Containers project is a CRI friendly shim. The shim launches container runtime, which launches the container itself. The shim enables for daemonless containers, thus allowing runtime to exit after the container has been launched, and then becomes the parent of the container. \cite{Crosby}
-
-Shim uses a ttRPC protocol to communicate with the agent. This protocol allows the runtime to send container management commands to the agent. The protocol is also used to carry the I/O streams such as stdout, stderr, and stdin, between the containers and manage the engine, which is containerd in this Thesis.
+The primary deliverable of the Kata Containers project is a CRI-friendly shim. The shim launches container runtime, which launches the container itself. The shim enables for daemonless containers, thus allowing runtime to exit after the container has been launched, and then becomes the parent of the container. \cite{Crosby}
 
 \subsection{gRPC and ttRPC}
 
+gRPC is a high performance Remote Procedure Call framework that can run in any environment. It connects services in and across data centers with pluggable support for load balancing, tracing, health checking and authentication. This protocol allows the runtime to send container management commands to the agent. The protocol is also used to carry the I/O streams such as stdout, stderr, and stdin, between the containers and manage the engine, which is containerd in this Thesis. \cite{gRPC}\cite{KataContainersArchitecture}
 
-
+However, gRPC requires a lot of memory overhead for importing packages and at runtime. While this is great for many services with low density requirements, this can be a problem when running a large number of services on a single machine or on a machine with a small amount of memory. ttRPC also offers harnessed security by limiting attack surface and improved observability via metrics about the runtime itself, the VMM, as well as the guest kernel. Kata Shim V2 offers the support for ttRPC protocol to communicate with the agent. \cite{ttRPC}
 
 \subsection{Hypervisor}
 
-Kata Containers currently supports three different hypervisors: Cloud Hypervisor, QEMU, and Firecracker.
+The VM of Kata Containers instance is launched by Virtual Machine Monitor (VMM). VMM consists of Virtual Machine Manager and a hypervisor. Kata Containers currently supports four different VMMs: ACRN hypervisor, Cloud Hypervisor, QEMU, and Firecracker. All these VMMs are open source projects.
 
+ACRN is a reference hypervisor, which is built to meet the needs of embedded IoT development. It is developed with low overhead,fast boot-up, and configurations to support variety of devices and deployment scenarios. ACRN is a type 1 reference hypervisor stack that runs on bare-metal hardware, addressing the gap that currently exists between data center hypervisors, and hard partitioning hypervisors. \cite{ACRN}
 
+Cloud Hypervisor is a VMM that runs on top of Kernel-based Virtual Machine (KVM). The project focuses on exclusively running modern, cloud workloads, on top of a limited set of hardware architectures and platforms. Cloud workloads refers to those that are usually run by customers inside a cloud provider, and most I/O are handled by performant para-virtualized devices, such as Virtio. \cite{CloudHypervisor}
 
+QEMU is a generic machine, userspace emulator, and virtualizer. QEMU is capable of emulating a complete machine in software without any need for hardware virtualization support. It can also integrate with the Xen and KVM hypervisors to provide emulated hardware while allowing the hypervisor to manage the CPU. \cite{QEMUGithub}\cite{QEMU}
 
-
-
-
-
-Each Kubernetes pod is wrapped inside its own lightweight VM, thus isolating workloads even from the same host or container maintainer.
-
-
-
-
-Kata Containers is OCI compliant runtime, thus it obeys OCI runtime specification and supports all the OCI runtime operations. As any OCI compliant runtime, the KC works seamlessly with the Kubernetes Container Runtime Interface (CRI) through the CRI-O and Containerd implementation. The isolation is achieved with QEMU \cite{QEMU} or Kernel-based Virtual Machine (KVM) \cite{KVM} for pod that \texttt{kubelet} in Kubernetes creates respectively.
-
+Firecracker VMM is developed by Amazon Web Services (AWS). Firecracker uses KVM to launch workload in lightweight micro virtual machines. Of Amazon's cloud products, Firecracker is deployed at least in AWS Lambda and Fargate. Firecracker currently supports Intel CPUs, with AMD and Arm support in developer preview. \cite{AWS}\cite{FirecrackerDesign}\cite{Debab2021}
 
 \subsection{Agent}
 
-Agent, also known as Kata-Agent, runs inside the Kubernetes pod in the computing node and its main task is to spawn the container process. The agent process runs as a daemon inside the virtual machine. This agent runs a ttRPC server in the guest using a VIRTIO serial or VSOCK interface which QEMU exposes as a socket file on the host. \cite{KataContainersArchitecture}
+Agent, also known as Kata-Agent, resides inside the Kubernetes pod in the computing node and its main task is to spawn the container process. The agent process runs as a daemon inside the virtual machine. This agent runs a ttRPC or gRPC server in the guest using a Virtio serial or VSOCK interface which the VMM exposes as a socket file on the host. \cite{KataContainersArchitecture}
 
 
 \subsection{Container}
 
-
+- How container content is affected by Kata. Any requirements? Performance degradation?
 
 
 \section{Isolation and resource allocation}
 
 \begin{figure}[ht]
   \begin{center}
-    \includegraphics[width=14cm]{LaTeX/images/KataContainersStack.jpg}
+    \includegraphics[width=13.5cm]{LaTeX/images/KataContainersStack.jpg}
     \caption{Kata Containers stack vs traditional container stack\cite{KataContainers}}
     \label{fig:KataContainersStack}
   \end{center}
@@ -81,11 +83,9 @@ Agent, also known as Kata-Agent, runs inside the Kubernetes pod in the computing
 
 \section{Related work}
 
-Kata Containers is not the sole option providing secure container runtime nor isolation in the container kernel layer. Amazon Web Services (AWS) uses their in-house built Firecracker runtime, which uses KVM to launch workload in lightweight micro-virtual machines. Of Amazon's cloud products, Firecracker is deployed at least in AWS Lambda and Fargate. Firecracker currently supports Intel CPUs, with AMD and Arm support in developer preview. Firecracker microVMs are also integrated with other runtimes such as containerd and Kata Containers. \cite{AWS}\cite{Debab2021}\cite{FirecrackerDesign}
+Kata Containers is not the sole option providing secure container runtime nor isolation in the container kernel layer. Microsoft offers a container instance isolation option inside Azure with Hyper-V. The hardware isolation is based on VMs, likewise in KC and Firecracker, thus leveraging the additional kernel layer. \cite{Hyper-V}
 
-Microsoft offers a container instance isolation option inside Azure with Hyper-V. The hardware isolation is based on VMs, likewise in KC and Firecracker, thus leveraging the additional kernel layer. \cite{Hyper-V}
-
-gVisor provides a second isolation method, differing from Kata Containers and Firecracker. gVisor intercepts application system calls and acts as the guest kernel without translating through virtualized hardware. The architecture can be thought of as a merged kernel and Virtual Machine Manager (VMM). gVisor includes OCI runtime runsc, which provides the isolation boundary between the application and host kernel. Google develops gVisor, and it is harnessed in various Google's cloud products such as Kubernetes Engine \cite{GKE} and Cloud Run \cite{CloudRun}. \cite{Debab2021}\cite{gVisor}
+gVisor provides a second isolation method, differing from Kata Containers and Firecracker. gVisor intercepts application system calls and acts as the guest kernel without translating through virtualized hardware. The architecture can be thought of as a merged kernel and VMM. gVisor includes OCI runtime runsc, which provides the isolation boundary between the application and host kernel. Google develops gVisor, and it is harnessed in various Google's cloud products such as Kubernetes Engine \cite{GKE} and Cloud Run \cite{CloudRun}. \cite{Debab2021}\cite{gVisor}
 
 A third approach for container isolation is IBM Nabla\cite{Nabla}. Nabla containers use library OS, also known as unikernel, to avoid system calls and reduce the attack surface. Nabla is based on a custom VMM named Nabla Tender to manage lightweight VMs executing unikernels. Nabla containers only use seven system calls, blocking all others via a Linux \texttt{seccomp} policy. The Nabla Tender intercepts hypercalls related to storage and network from unikernel VMs and translates them into syscalls to the host. \cite{Debab2021}
 
