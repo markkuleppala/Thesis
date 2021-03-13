@@ -63,23 +63,44 @@ Firecracker VMM is developed by Amazon Web Services (AWS). Firecracker uses KVM 
 
 Agent, also known as Kata-Agent, resides inside the Kubernetes pod in the computing node and its main task is to spawn the container process. The agent process runs as a daemon inside the virtual machine. This agent runs a ttRPC or gRPC server in the guest using a Virtio serial or VSOCK interface which the VMM exposes as a socket file on the host. \cite{KataContainersArchitecture}
 
-
 \subsection{Container}
 
-- How container content is affected by Kata. Any requirements? Performance degradation?
+Container in Kata Containers architecture is isolated by wrapping it inside a dedicated kernel. This extra layer provides isolation of network. I/O and memory can utilize hardware-enforced isolation with virtualization VT extensions. Wrapping the container inside a micro VM adds a overhead to performance, which is discussed more in Chapter \ref{chapter:evaluation}. \cite{KataContainers}
 
+Kata Containers is OCI compliant, thus the same standard shared by Docker containers guarantees compatibility. For now, only Linux operating systems and container images are supported in host and guest.
 
 \section{Isolation and resource allocation}
+
+In Kubernetes environment applications are deployed inside a pod. Whenever a new pod is created, it requests resources, which most commonly are CPU, memory, and huge pages, defined in the manifest. The allocated resources are reserved for the application running. Traditionally the resources allocated are a slice from the resource as described in the Figure \ref{fig:KataContainersStack}. In Kata Containers environment the hardware is virtualized
+
 
 \begin{figure}[ht]
   \begin{center}
     \includegraphics[width=13.5cm]{LaTeX/images/KataContainersStack.jpg}
-    \caption{Kata Containers stack vs traditional container stack\cite{KataContainers}}
+    \caption{Kata Containers stack vs. traditional container stack \cite{KataContainers}}
     \label{fig:KataContainersStack}
   \end{center}
 \end{figure} 
 
 \section{Networking}
+
+Traditionally container engines, such as Docker, add add one end of a virtual ethernet pair into the container networking namespace. The other end of the pair is added to the host networking namespace. However, many VMMs cannot handle the virtual ethernet interfaces. Typically, TAP interfaces are created for VM connectivity. Kata runtime overcomes the incompatibility between typical container engines expectations and virtual machines by connecting virtual ethernet interfaces with TAP ones using Traffic Control. The network is described in Figure \ref{fig:KataContainersNetwork}. \cite{KataContainersArchitecture}
+
+Kata Containers runtime supports Container Network Interface (CNI) \cite{CNI} plugins, such as Calico, Weave, and SR-IOV. Both IPv4 and IPv6 networks are supported by the project.
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=13.5cm]{LaTeX/images/KataContainersNetwork.png}
+    \caption{Kata Containers network overview \cite{KataContainersArchitecture}}
+    \label{fig:KataContainersNetwork}
+  \end{center}
+\end{figure}
+
+\section{Storage}
+
+Container workloads are shared with the virtualized environment through virtio-fs. This shared file system that lets virtual machines access a directory tree on the host. In Kata Containers, virtio-fs can be used to share container volumes, secrets, config-maps, configuration files, and the container rootfs on the host with the guest. virtio-fs provides significant performance and POSIX compliance improvements compared to 9pfs. Virtio-fs was started at Red Hat and is being developed in the Linux, QEMU, FUSE, and Kata Containers open source communities. \cite{virtio-fs} \cite{virtio-fs-Kata}
+
+Kata Containers has an ability to hot-plug and remove block devices, which is a data storage device that supports reading and optionally writing data in fixed-size blocks, sectors, or clusters. This support for hot-plugging makes it possible to use block devices for containers started after the VM has been launched. The support for hot-plug and supported file systems  might vary depending on the VMM and hypervisor. \cite{KataContainersArchitecture} \cite{}
 
 \section{Related work}
 
@@ -87,7 +108,7 @@ Kata Containers is not the sole option providing secure container runtime nor is
 
 gVisor provides a second isolation method, differing from Kata Containers and Firecracker. gVisor intercepts application system calls and acts as the guest kernel without translating through virtualized hardware. The architecture can be thought of as a merged kernel and VMM. gVisor includes OCI runtime runsc, which provides the isolation boundary between the application and host kernel. Google develops gVisor, and it is harnessed in various Google's cloud products such as Kubernetes Engine \cite{GKE} and Cloud Run \cite{CloudRun}. \cite{Debab2021}\cite{gVisor}
 
-A third approach for container isolation is IBM Nabla\cite{Nabla}. Nabla containers use library OS, also known as unikernel, to avoid system calls and reduce the attack surface. Nabla is based on a custom VMM named Nabla Tender to manage lightweight VMs executing unikernels. Nabla containers only use seven system calls, blocking all others via a Linux \texttt{seccomp} policy. The Nabla Tender intercepts hypercalls related to storage and network from unikernel VMs and translates them into syscalls to the host. \cite{Debab2021}
+A second approach for container isolation is IBM Nabla \cite{Nabla}. Nabla containers use library OS, also known as unikernel, to avoid system calls and reduce the attack surface. Nabla is based on a custom VMM named Nabla Tender to manage lightweight VMs executing unikernels. Nabla containers only use seven system calls, blocking all others via a Linux seccomp policy. The Nabla Tender intercepts hypercalls related to storage and network from unikernel VMs and translates them into syscalls to the host. \cite{Debab2021}
 
 All the before-mentioned projects are open source and actively maintained. However, Nabla seems to be slightly less active in comparison to the other projects. Commercial and enterprise cloud platforms, such as AWS, uses Firecracker, and GKE uses gVisor. However, it is unknown for security reasons which approaches are used in the other platforms to isolate containers.
 
