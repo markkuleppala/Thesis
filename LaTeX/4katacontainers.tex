@@ -71,8 +71,11 @@ Kata Containers is OCI compliant, thus the same standard shared by Docker contai
 
 \section{Isolation and resource allocation}
 
-In Kubernetes environment applications are deployed inside a pod. Whenever a new pod is created, it requests resources, which most commonly are CPU, memory, and huge pages, defined in the manifest. The allocated resources are reserved for the application running. Traditionally the resources allocated are a slice from the resource as described in the Figure \ref{fig:KataContainersStack}. In Kata Containers environment the hardware is virtualized
+In Kubernetes environment applications are deployed inside a pod. Whenever a new pod is created, it requests resources, which most commonly are CPU, memory, and huge pages, defined in the manifest. The allocated resources are reserved for the application running. Traditionally the resources allocated are a slice from the resource as described in the Figure \ref{fig:KataContainersStack}. In Kata Containers environment the hardware is virtualized for the guest kernel.
 
+Kata Containers, a second layer of isolation is created on top of those provided by traditional namespace-containers. The hardware virtualization interface is the basis of this additional layer. Kata Containers launches a lightweight virtual machine, and uses the guest's Linux kernel to create a container workload. In Kubernetes and in the Kata implementation, the sandbox is carried out at the pod level. This sandbox is created using a virtual machine such as KVM. \cite{KataContainersVirtualization}
+
+The additional layer of isolation allows untrusted workloads to be run in the same system without compromising other containers security. Container escapes \cite{CVE-2020-14386}\cite{CVE-2019-5736} have been a serious threat to system using traditional isolation mechanisms such as namespaces, cgroups, and seccomp.
 
 \begin{figure}[ht]
   \begin{center}
@@ -98,9 +101,9 @@ Kata Containers runtime supports Container Network Interface (CNI) \cite{CNI} pl
 
 \section{Storage}
 
-Container workloads are shared with the virtualized environment through virtio-fs. This shared file system that lets virtual machines access a directory tree on the host. In Kata Containers, virtio-fs can be used to share container volumes, secrets, config-maps, configuration files, and the container rootfs on the host with the guest. virtio-fs provides significant performance and POSIX compliance improvements compared to 9pfs. Virtio-fs was started at Red Hat and is being developed in the Linux, QEMU, FUSE, and Kata Containers open source communities. \cite{virtio-fs} \cite{virtio-fs-Kata}
+Container workloads are shared with the virtualized environment through virtio-fs. This shared file system that lets virtual machines access a directory tree on the host. In Kata Containers, virtio-fs can be used to share container volumes, secrets, config-maps, configuration files, and the container rootfs on the host with the guest. virtio-fs provides significant performance and POSIX compliance improvements compared to 9pfs. Virtio-fs was started at Red Hat and is being developed in the Linux, QEMU, FUSE, and Kata Containers open source communities. \cite{virtio-fs-Kata}\cite{virtio-fs}
 
-Kata Containers has an ability to hot-plug and remove block devices, which is a data storage device that supports reading and optionally writing data in fixed-size blocks, sectors, or clusters. This support for hot-plugging makes it possible to use block devices for containers started after the VM has been launched. The support for hot-plug and supported file systems  might vary depending on the VMM and hypervisor. \cite{KataContainersArchitecture} \cite{}
+Kata Containers has an ability to hot-plug and remove block devices, which is a data storage device that supports reading and optionally writing data in fixed-size blocks, sectors, or clusters. This support for hot-plugging makes it possible to use block devices for containers started after the VM has been launched. The support for hot-plug and file systems might vary depending on the VMM and hypervisor. \cite{KataContainersArchitecture}\cite{KataContainersVirtualization}
 
 \section{Related work}
 

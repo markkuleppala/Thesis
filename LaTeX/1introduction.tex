@@ -10,11 +10,9 @@
 
 Virtualization technologies such as Docker has been widely adopted during the past years. The virtualization brings a wide range of improvements to running the application on bare metal. For example, containers which are the wrapped Docker applications, are highly mobile standalone applications, which can be deployed on any environment supporting containers with minimal overhead. Also, the virtualized application support orchestration features such as replication and automatic deployment.
 
-
 Multi-access edge computing (MEC) is greatly benefiting from the adaption of virtualization technologies. MEC is a paramount technology enabler for 5G technologies to enable users with low-latency and high-throughput technologies. This shift enables Mobile Network Operators (MNOs) to host various applications in physical proximity to the end-users. Far Edge Clouds (FECs) takes the edge computing further, with closing the physical distance between to be at maximum 5km. The benefits to MNOs include additional revenues and offers higher Quality-of-Experience meanwhile end-users enjoy low-latency, on-premise data computing and additional location services. However, recently it has been discovered, that flaws in container architecture has lead to malicious applications escaping the container. As the kernel is shared with all containers, these malicious applications are capable of compromising the other containers running on the same system. This compromise might lead to a breach of information from otherwise secure application and exposing third-part applications to each other via lateral movement.
 
 To secure the MEC platforms, Kata Containers (KC) \cite{KataContainers} has been introduced as a promising solution to add an extra layer of isolation to the applications. The extra layer is achieved by running all containers in a lightweight virtual machine (VM). This VM adds only a little of overhead to the application as tested in Section X, but creates application specific kernel/hypervisor minimizing the attack surface between applications.
-
 
 \section{Problem statement}
 \label{section:intro_problemstatement}
