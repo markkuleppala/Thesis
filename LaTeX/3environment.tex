@@ -30,17 +30,18 @@ Far edge cloud units are highly localized. A network might consist of hundreds o
 
 \subsection{Applications}
 
-MEC supports 5G networks 
+MEC architecture unlocks potential of new applications, and thus is a new revenue stream for mobile network operators. Some recognized applications harnessing the use of MEC include augmented reality (AR), video analytics, and connected vehicles.
 
-- MEC applications
-- Public safety
-- Autonomous vehicles
+AR enables real environment user experience by combining real and virtual objects existing simultaneously. Recent AR applications have become adaptive in sound and visual components, such as news, TV programs, sports, object recognition, and games. AR applications often demand high computational resources, low latency for reasonable quality-of-experience, and high bandwidth. MEC can empower AR applications by maximizing throughput by offering computational resources nearby the end-user withing low-latency and high throughput channel instead of relying on the core-network. \cite{Abbas2018}
 
+Surveillance cameras traditionally have been streaming data back to the server, which decides how to perform data analysis. Due to the growing number of these cameras, it adds an enormous stress to the network with the constant data streams. In this example, MEC will be beneficial by implementing intelligence to the device by transmitting data only when motion is detected. Also, it can help public safety with detection of traffic jams, accidents or forest fires.
 
-\subsection{SR-IOV}
+Connected vehicles are facilitated with cellular connection allowing them to communicate with other users on the road. MEC based road communication system could allow two-way communication between vehicles via road side units. For example, one vehicle could warn another vehicles about upcoming road jam or approaching pedestrians. The road side unit could also warn passing cars about dangerous conditions based on the sensors equipped in it. \cite{Abbas2018}
+
+\section{SR-IOV}
 \label{section:SR-IOV}
 
-I/O performance is critical to high performance telco systems. I/O intensive servers may waste CPU cycles, waiting for I/O data or spinning on idle cycles, which reduces system performance and increases latency. Single Root I/O Virtualization (SR-IOV) standard allows an I/O device, such as network interface controller (NIC), to be shared by multiple VMs. The SR-IOV technology is a hardware based virtualization solution that improves both performance and scalability. \cite{Dong2012}
+I/O throughput is critical to high performance telco systems. I/O intensive servers may waste CPU cycles, waiting for I/O data or spinning on idle cycles, which reduces system performance and increases latency. Single Root I/O Virtualization (SR-IOV) standard allows an I/O device, such as network interface controller (NIC), to be shared by multiple VMs. The SR-IOV technology is a hardware based virtualization solution that improves both performance and scalability. \cite{Dong2012}
 
 Traditionally, when a guest accesses the I/O device, VMM needs to intervene in the data processing to share the physical device. The VMM intervention leads to additional I/O overhead for a guest OS. SR-IOV provides hardware enhancements for the Peripheral Component Interconnect Express (PCIe) device, which aims to remove major VMM intervention for performance data movement, such as the packet classification and address translation. An SR-IOV-capable device is able to create multiple light-weight instances of PCI function entities, known as Virtual Functions (VF). Each VF can be assigned to a VM for direct access, but still shares major device resources, achieving both resource sharing and high performance. \cite{Dong2012}
 
