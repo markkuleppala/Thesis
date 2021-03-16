@@ -31,16 +31,7 @@ First of the virtualization technologies, hypervisor-based virtualization adds a
 
 \subsection{Security concerns}
 
-In order to mitigate costs from the application, it is resource-efficient to run multiple instances or different applications in a single server. This applies to companies who own dedicated servers or cloud computing providers with various data center options. These multi-tenant environments may host applications also from untrusted parties. Regardless of the isolation offered by Docker with cgroups and namespaces, the kernel is still shared between the containers. This architectural decision might lead to exposing applications, as it was noticed in 2019 \cite{CVE-2019-5736} \cite{CVE-2020-14386} when attackers could elevate their access to host root. The escaping of container and horizontal traversal via shared kernel creates a security thread of application data integrity.
-
-
-
-Background of virtualization needs \\
-MECs / Far Edge Clouds \\
-    - What is it? Why it is important? How it is achieved? Where? \\
-Containers \\
-Security concerns of containers \\
-Why VMs? \\
+In order to mitigate costs from the application, it is resource-efficient to run multiple instances or different applications in a single server. This applies to companies who own dedicated servers or cloud computing providers with various data center options. These multi-tenant environments may host applications also from untrusted parties. Regardless of the isolation offered by Docker with cgroups and namespaces, the kernel is still shared between the containers. This architectural decision might lead to exposing applications, as it was noticed in 2019 \cite{CVE-2020-14386}\cite{CVE-2019-5736} when attackers could elevate their access to host root. The escaping of container and horizontal traversal via shared kernel creates a security thread of application data integrity.
 
 %You can translate your latex file to rtf with the \texttt{latex2rtf} command in the
 %kosh.aalto.fi shell server. Then, the line breaks
