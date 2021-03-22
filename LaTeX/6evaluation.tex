@@ -1,20 +1,17 @@
 \chapter{Evaluation}
 \label{chapter:evaluation}
 
+The extra layer of security provided by Kata Container's micro-VM comes with a price of degraded performance and computational overhead. Previous work, such as \cite{Kumar2020} and \cite{EverartsdeVelp2020} have examined the performance, when compared Kata Containers against native runtime runC, the most common OCI-compliant runtime. In these two papers, Kata Containers architecture design results in performance decrease in IO throughput, and in memory and CPU utilization. However, the results in these papers are highly dependant on the specific test environment and do not take in account the latest development of Kata Containers performance provided by the runtime version 2.0 released in December 2020. In this paper, the system performance evaluated in an environment simulating a telco architecture.
+
+
 Performance evaluation \\
 - Methodology \\
 - How/what is tested \\
     - Hypervisors
 - Results \\
 - Evaluation \\
-- Comparison to other providers (AWS, GCP...) \\
-
-
-
-
-
-
-The extra layer of security provided by Kata Container's micro-VM comes with a price of degraded performance and computational overhead. Previous work, such as \cite{Kumar2020} and \cite{EverartsdeVelp2020} have examined the performance, when compared Kata Containers against native runtime runC, the most common OCI-compliant runtime. In these two papers, Kata Containers architecture design results in performance decrease in IO throughput, and in memory and CPU utilization. However, the results in these papers are highly dependant on the specific test environment and do not take in account the latest development of Kata Containers performance provided by the runtime version 2.0 released in December 2020. In this paper, the system performance evaluated in environment simulating a telco architecture, which is discussed in Section \ref{section:test_architecture}.
+What expectations there are? \\
+Research questions?
 
 \section{Test architecture}
 \label{section:test_architecture}
@@ -39,6 +36,8 @@ The test environment simulates multiple relations that are most common in a telc
 
 \subsection{Containers}
 
+The test architecture consists of various relations between containers and storage in a single cluster Kubernetes environment.
+
 Container - container inside pod
 
 Container - container between pods
@@ -49,14 +48,7 @@ Container - storage
 
 \subsection{Storage}
 
-The Kubernetes cluster consists also two storage options, which are Persistent Volume (PV) and emptyDir. PV is a piece of storage in the cluster has been provisioned dynamically or by an administrator. PVs are volume plugins having a lifecycle independent of any individual Pod using the PV. Kubernetes supports multiple types of storage resources, such as Network Filesystem (NFS), SCSI over IP (iSCSI), local storage devices, or AWS Elastic Block Store \cite{AmazonEBS}. \cite{PV}
 
-PV volumes can be mounted as ReadWriteMany, thus supporting multiple nodes for simultaneous read-write -operations.
-
-    - What is emptyDir?
-    - PV (block). Why block?.
-    - Volumes mounted.
-    - Multi-tenancy? Write many?
 
 \subsection{Networking}
 
@@ -78,11 +70,30 @@ Networking
 
 \section{Methodology}
 
-The test environment is hosted by a dedicated server which is built and tailored to support edge and far-edge cloud deployments.
-
+The test environment is hosted by a dedicated server which is built and tailored to support edge and far-edge cloud deployments. The server includes CPU/RAM/Network, which is shared to the cluster. Each test is repeated 10 times, and the results are averaged. The environment is booted between each test to reset the possible hanging processes. The system performance is logged with Prometheus/Grafana. The focus in these tests is to measure the possible performance overhead resulting from the Kata Containers and added layer of security.
 
 \section{Results}
+
+\subsection{CPU performance}
+
+The architectural design of Kata Containers adds extra components to the system. Each of these components add overhead to the CPU performance via background processes. In the CPU performance tests, the main question was to measure the overhead and the need for extra cores in comparison to runC. The measurement of CPU performance was implemented by creating workloads and recording the performance with Prometheus. 
+
+- CPU overhead of Kata
+	- How many cores are needed when Kata is used?
+	- From host perspective?
+	- Measure
+		- Create and delete workloads and record the CPU performance
+			- Starting micro-VM might affect the CPU performance
+			- Monitor with Prometheus
+
+\subsection{I/O performance}
+
+\subsection{Memory performance}
+
+\subsection{Storage performance}
 
 \section{Evaluation}
 
 \section{Benchmark from other platforms}
+
+\textcolor{red}{Should this be here or on the next chapter?}

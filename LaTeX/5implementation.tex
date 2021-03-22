@@ -1,10 +1,122 @@
-\chapter{Implementation}
+\chapter{Kata Containers in telco environment}
 \label{chapter:implementation}
 
-Is this chapter needed?
+\textcolor{red}{Come up with better chapter name}
 
-How KC was implemented in the MEC/NESC \\
+Telco systems are a complex environment with multiple requirements for connectivity and performance. This chapter discusses the requirements of telco systems, implementation and possible limitations of Kata Containers in this environment. The performance and tests are described in Chapter \ref{chapter:evaluation}. The features discussed in this chapter are related to Kubernetes configurations.
+
+\section{CPU}
+
+Telecommunication applications are computing heavy, which require efficient usage of the resources. One of the requirements telco applications have for infrastructure is the support for core isolation. This feature allows to dedicate a single core to a process in order to minimize interruptions for the process. (Core isolation involves removes all user-space threads, unbound kernel threads, and blocks interruptions from the system \cite{CPUisolation}).
+
+One option to dedicate a core for a process is defining a pod with a Quality of Service (QoS) class of Guaranteed and one CPU as resource \cite{QOSKubernetes}. This option allows the whole core to be dedicated for the container process. However, with Kata Containers the architecture includes a Kata-agent and a guest kernel for each pod as described in Figure \ref{fig:KataContainersComponents}. These resources need to be assigned to a second core, which can be a shared resource between other pods. The shared resources can also host general cluster components such as monitoring and DNS.
+
+
+
+- Is core isolation possible?
+	- Dedicated core to container
+		- Improves the performance
+	- Does agent or other process interrupt the core VM exits (or some other instruction)
+	- Measuring
+		- Implement busylooping app noticing time of execution
+		- DPDK test apps
+
+At what point the resources are allocated?
+
+
+
+\section{I/O}
+
+- Performance of root filesystem
+	- Access fs of container
+	- Overlay2 fs
+
+- Access to mounted volumes in K8s
+	- Create persistent volume
+	- Attach
+	- IO
+
+Storage driver
+
+\section{Memory}
+
+Telco systems rely on high-throughput and low-latency data sharing between containers and pods. Writing and reading a shared block of memory between containers offers the fastest way for shared information. In Kubernetes, containers can share IPC namespaces with the help of pod security policies \cite{PodSecurityPolicyKubernetes}. Configuration of these policies enable usage of HostIPC, which controls whether the pod containers can share host IPC namespace.
+
+\textcolor{red}{How happened with Kata Containers?} \\
+\textcolor{red}{Is it possible to share memory between pods inside a node? If not, is there a workaround} \\
+
+Memory is managed in blocks known as pages. In most systems, the default page size is 4 kilobytes, thus 1 megabyte of memory equals to 256 pages. CPUs have built-in memory management unit managing a list of these pages in hardware. The management unit, Translation Lookaside Buffer (TLB), has a fixed number of pages it can store. Once the number of pages exceed the number of defined in TLB, the systems fails back to a slower, software-based address translation. This transition results in degraded performance. Since the number of pages stored in the TLB is fixed, the only way to increase a chance of TLB miss is to increase the page size with huge pages. \cite{HugePagesOpenShift}
+
+\subsection{Huge pages}
+
+Huge pages is a memory page with size larger than 4 kilobytes. In x86\_64 architectures the two common sizes are 2MB and 1GB. In order to use huge pages, the application must be developed to use the larger page sizes. The high performance telco applications also use huge pages, thus the support is crucial to maintain the performance.
+
+Kubernetes supports the allocation and consumption of pre-allocated huge pages by applications in a pod \cite{HugePagesKubernetes}. Kata Containers also support using huge pages, however it needs to be specifically configured in a custom Kata Containers kernel. As Kata Containers architecture consumes more memory than a native design with runC, it is crucial that the pod is allocated enough resources to support huge pages.
+
+\section{Storage}
+
+High performance Kubernetes storage options are usually limited to storages which locate in nearby the computing unit. Thus, network storages or block storages hosted on commercial cloud, which rely on data transmission via network are not sufficient enough regarding performance. In telco systems, three types of storages are used for high-performance applications: emptyDir, hostPath, and local. EmptyDir is non-persistent volume, meaning it does not retain data stored if the attached pod is removed from a node. In contrast, hostPath and local storages are Persistent Volumes (PV), a Storage Class defined in Kubernetes. These storages are individual of restructing of the cluster architecture and thus are applicable for storing user related data or logs, whereas emptyDir is mainly used for session specific data or offloading memory temporarily.
+
+\subsection{emptyDir}
+
+An emptyDir volume is first created when a pod is assigned to a node, and exists as long as that Pod is running on that node. emptyDir volume is initially empty. All containers in the pod emptyDir is attached to can read and write the same files in the volume. Some use cases for emptyDir are scratch space during disk-based merge sort, checkpointing during a long computation in case of crashes, and holding files that a content-manager container fetches while a web server container serves the data. \cite{VolumesKubernetes}
+
+EmptyDir volumes are stored on various medium that backs the such as disk or SSD. However, it supports also RAM-backed filesystem tmpfs, which offers very fast alternative to disk based volumes. However, tmpfs is cleared on node reboot and any data written on it counts against container's memory limit. \cite{VolumesKubernetes}
+
+\subsection{Persistent Volume}
+
+Persistent Volume is a piece of storage in the cluster has been provisioned dynamically or by an administrator. PVs are volume plugins having a lifecycle independent of any individual Pod using the PV. Kubernetes supports multiple types of persistent storage resources, such as Network Filesystem (NFS), SCSI over IP (iSCSI), local storage devices, or AWS Elastic Block Store \cite{AmazonEBS}. \cite{PV}
+
+PV volumes can be mounted to nodes in Kubernetes with three different access modes: ReadWriteOnce, ReadOnlyMany, and ReadWriteMany. ReadWriteOnce allows only one node for read and write operations. ReadOnlyMany is read-only mode allowing multiple nodes for simultaneous access. In contrast, ReadWriteMany allow multiple nodes for simultaneous read and write operations. PVs have different support for read and write options. In this Thesis, we will focus on two PV options, which are hostPath and local. \cite{PV} 
+
+\subsubsection{HostPath}
+
+A hostPath volume mounts a file or directory from the host node's filesystem into the pod. Some use cases for hostPath include running a container that needs access to Docker internals or running cAdvisor in a container which requires an access to system directory. HostPath is only applicable inside a single node, however multiple pods can write simultaneously into the same file or directory.
+
+\subsubsection{Local volume}
+
+Local volume represents a mounted local storage device such as a disk, partition or directory \cite{VolumesKubernetes}. Local volumes can only be created statically, and dynamic provisioning is not supported. Compared to hostPath volumes, local volumes are used in a durable and portable manner without manually scheduling pods to nodes. Local volumes are subject to the availability of the underlying node. Downtime of the node including storage disables all access to the storage reducing availability, as possibly causing potential data loss.
+
+Local volume can be mounted to the node as a filesystem or raw block device. These raw block volumes are mounted into a pod without any filesystems on it. The filesystem layer introduces unneeded overhead, thus some specialized applications require direct access to a block device to maximize performance. A common case is databases, which prefer to organize their data directly on the underlying storage. Raw block devices are also commonly used by software which itself implements its storage service. \cite{RawBlockKubernetes}
+
+%local with multiple access?
+%Limitations? \\
+
+\section{Network}
+
+- Is it possible to share network namespaces between containers in a pod?
+	- Works in runC
+
+\subsection{Multus}
+
+- Multiple interfaces / Multus \\
+
+\subsection{SR-IOV}
+\label{section:SR-IOV}
+
+- SR-IOV \\
+	- Host system NIC capability \\
+	- K8s plugin for SR-IOV \\
+	- Multus needs to be accessible from Kata guest hosts \\
+	
+- If SR-IOV is accessible, the network performance remains the same
+	- If not and using virtio, and hypervisor between nw performance might degrade
+		- Measure throughput and latency between pods with iPerf (client - server)
+	
+I/O throughput is critical to high performance telco systems. I/O intensive servers may waste CPU cycles, waiting for I/O data or spinning on idle cycles, which reduces system performance and increases latency. Single Root I/O Virtualization (SR-IOV) standard allows an I/O device, such as network interface controller (NIC), to be shared by multiple VMs. The SR-IOV technology is a hardware based virtualization solution that improves both performance and scalability. \cite{Dong2012}
+
+Traditionally, when a guest accesses the I/O device, VMM needs to intervene in the data processing to share the physical device. The VMM intervention leads to additional I/O overhead for a guest OS. SR-IOV provides hardware enhancements for the Peripheral Component Interconnect Express (PCIe) device, which aims to remove major VMM intervention for performance data movement, such as the packet classification and address translation. An SR-IOV-capable device is able to create multiple light-weight instances of PCI function entities, known as Virtual Functions (VF). Each VF can be assigned to a VM for direct access, but still shares major device resources, achieving both resource sharing and high performance. \cite{Dong2012}
+
+
+
+
+
+
+How KC was implemented in the MEC/AirFrame OE \\
 How it filled the requirements? \\
 - NIC, hardware acceleration, Multus? \\
+- Sharing FS between containers in same pod
+- Sharing memory between two pods
+- Core isolation
 
-Take parts from chapter 6.
+\section{Limitations}

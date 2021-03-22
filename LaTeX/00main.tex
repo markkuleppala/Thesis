@@ -225,7 +225,9 @@
 
 % Cover page
 % These control in which language the cover-page information is shown
+\pagenumbering{roman}
 \coverpage{english}
+
 
 
 % Abstracts
@@ -298,9 +300,11 @@ Thanks mom!
 % This command is defined in aalto-thesis.sty. It controls the page 
 % numbering based on whether the double-numbering option is specified
 \startfirstchapter
+\pagenumbering{arabic}
 
 % Add headings to pages (the chapter title is shown)
 \pagestyle{headings}
+
 
 % The contents of the thesis are separated to their own files.
 % Edit the content in these files, rename them as necessary.
@@ -309,7 +313,7 @@ Thanks mom!
 
 \input{2cloudcomputing.tex}
 
-\input{3environment.tex}
+\input{3edge.tex}
 
 \input{4katacontainers.tex}
  
