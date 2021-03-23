@@ -89,25 +89,28 @@ Local volume can be mounted to the node as a filesystem or raw block device. The
 
 \subsection{Multus}
 
-- Multiple interfaces / Multus \\
+Telco networking requires connecting to multiple network simultaneously. By default, Kubernetes supports only a single network, apart from loopback, to be attached to a pod. In order extend the network interface, Multus CNI has been adopted to the cluster stack.
+
+Multus CNI \cite{Multus} is a container network interface plugin for Kubernetes that enables attaching multiple network interfaces to pods. By default, in Kubernetes each pod has one network interface. With the help of Multus, pods can be multi-homed and attached with multiple interfaces. Figure \ref{fig:Multus} demonstrates a Multus enabled pod setup with two networks in Kubernetes. The pod includes three interfaces: net0, net1, and eth0. Network attachments net0 and net1 connect to outbound services by using CNI plugins such as vlan, vxlan, or ptp. eth0 interface connects to Kubernetes cluster network to connect with the server or services such as kubernetes-api-server or kubelet. Enabling Multus for Kata Containers environment is supported and requires no extra configuration apart from the Kubernetes configuration. In some environments Persistent Volume is required to enable Multus CNI \cite{MultusUbuntu}.
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=13.5cm]{images/Multus.png}
+    \caption{Multus enabled pod with two networks}
+    \label{fig:Multus}
+  \end{center}
+\end{figure}
 
 \subsection{SR-IOV}
 \label{section:SR-IOV}
 
-- SR-IOV \\
-	- Host system NIC capability \\
-	- K8s plugin for SR-IOV \\
-	- Multus needs to be accessible from Kata guest hosts \\
-	
-- If SR-IOV is accessible, the network performance remains the same
-	- If not and using virtio, and hypervisor between nw performance might degrade
-		- Measure throughput and latency between pods with iPerf (client - server)
-	
 I/O throughput is critical to high performance telco systems. I/O intensive servers may waste CPU cycles, waiting for I/O data or spinning on idle cycles, which reduces system performance and increases latency. Single Root I/O Virtualization (SR-IOV) standard allows an I/O device, such as network interface controller (NIC), to be shared by multiple VMs. The SR-IOV technology is a hardware based virtualization solution that improves both performance and scalability. \cite{Dong2012}
 
 Traditionally, when a guest accesses the I/O device, VMM needs to intervene in the data processing to share the physical device. The VMM intervention leads to additional I/O overhead for a guest OS. SR-IOV provides hardware enhancements for the Peripheral Component Interconnect Express (PCIe) device, which aims to remove major VMM intervention for performance data movement, such as the packet classification and address translation. An SR-IOV-capable device is able to create multiple light-weight instances of PCI function entities, known as Virtual Functions (VF). Each VF can be assigned to a VM for direct access, but still shares major device resources, achieving both resource sharing and high performance. \cite{Dong2012}
 
+In Kubernetes, Kata Containers supports SR-IOV with a CNI plugin \cite{SR-IOVOpenShift}. Additionally, the Kata runtime detects virtual functions in container's network namespace to use SR-IOV for network based devices. In order to enable SR-IOV with Kata, a specific Docker plugin needs to be installed. The created network is based on a physical function device. \cite{SR-IOVKataContainers}
 
+In order to setup host for SR-IOV, the system needs to support Intel Virtualization Technology for Directed I/O (VT-d) and the NIC device needs to support SR-IOV. Also, the host kernel must have Input-Output Memory Management Unit (IOMMU) and Virtual Function I/O (VFIO) support.
 
 
 
@@ -116,7 +119,13 @@ How KC was implemented in the MEC/AirFrame OE \\
 How it filled the requirements? \\
 - NIC, hardware acceleration, Multus? \\
 - Sharing FS between containers in same pod
-- Sharing memory between two pods
 - Core isolation
+
+- SR-IOV \\
+	- Multus needs to be accessible from Kata guest hosts \\
+	
+- If SR-IOV is accessible, the network performance remains the same
+	- If not and using virtio, and hypervisor between nw performance might degrade
+		- Measure throughput and latency between pods with iPerf (client - server)
 
 \section{Limitations}

@@ -50,7 +50,7 @@
 % A plain label may not work if last pages contain floats that are placed 
 % after text.
 \newcommand{\PAGES}{\pageref{LastPage}}
-
+\newcommand{\PREPAGES}{\pageref{pages-prelude}}
 
 % From Samwise, edited by JLarja. Fixme can be used to wrote something that should be fixed later. 
 % It is better than just writing something to comments, since it is shown in the output file. If 
@@ -85,7 +85,7 @@
 % Pages-prelude is placed manually, and the lastpage package calculates
 % the position of the LastPage label. A plain label may not work if last
 % pages contain floats that are placed after text.
-\renewcommand{\PAGES}{\pageref{pages-prelude}~$+$~\pageref{LastPage}}
+%\renewcommand{\PAGES}{\pageref{pages-prelude}~$+$~\pageref{LastPage}}
 }
 \ProcessOptions
 
@@ -298,7 +298,7 @@
 \multicolumn{4}{|l|}{\allowlinebreaks{14.5cm}{\textbf{\ATTITLENAME:}\\
 \ATTITLE}}\\
 \hline
-\textbf{\ATDATENAME:} & \ATDATE & \textbf{\ATPAGESNAME:} & \PAGES\\
+\textbf{\ATDATENAME:} & \ATDATE & \textbf{\ATPAGESNAME:} & \PREPAGES+\PAGES\\
 \hline
 \textbf{\ATPROFSHIPNAME:} & \ATPROFSHIP & 
 \textbf{\ATPROFCODENAME:} & \PROFCODE\\
