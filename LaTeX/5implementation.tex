@@ -23,21 +23,6 @@ One option to dedicate a core for a process is defining a pod with a Quality of 
 
 At what point the resources are allocated?
 
-
-
-\section{I/O}
-
-- Performance of root filesystem
-	- Access fs of container
-	- Overlay2 fs
-
-- Access to mounted volumes in K8s
-	- Create persistent volume
-	- Attach
-	- IO
-
-Storage driver
-
 \section{Memory}
 
 Telco systems rely on high-throughput and low-latency data sharing between containers and pods. Writing and reading a shared block of memory between containers offers the fastest way for shared information. In Kubernetes, containers can share IPC namespaces with the help of pod security policies \cite{PodSecurityPolicyKubernetes}. Configuration of these policies enable usage of HostIPC, which controls whether the pod containers can share host IPC namespace.
@@ -84,8 +69,9 @@ Local volume can be mounted to the node as a filesystem or raw block device. The
 
 \section{Network}
 
-- Is it possible to share network namespaces between containers in a pod?
-	- Works in runC
+Kubernetes networking supports a feature for sharing process namespaces between containers in a pod. When process namespace sharing is enabled, processes in a container are visible to other containers in that pod. This feature is highly useful to configure cooperating containers, such as log handler sidecar container, or to troubleshoot container images that do not include debugging utilities like a shell. Process Namespace Sharing is enabled in the pod configuration in Kubernetes. This feature also enables to signal processes in other containers. For example, SIGHUP can be sent to nginx to restart the worker process. SYS\_PTRACE capability is required to enable signalling feature. \cite{ShareProcessNamespaceKubernetes}
+
+In telco systems, shared network namespaces are used for interprocess communication through shared memory and unix sockets. This communication is vital for multiprocess applications, where each process handles a specific part of the business logic and need to communicate with each other. In telco environment, low-latency needs to be guaranteed, therefore the latency requirement is not satisfied using network based communication such as through IP. Kata Container supports process namespace sharing in the latest versions.
 
 \subsection{Multus}
 
@@ -112,20 +98,22 @@ In Kubernetes, Kata Containers supports SR-IOV with a CNI plugin \cite{SR-IOVOpe
 
 In order to setup host for SR-IOV, the system needs to support Intel Virtualization Technology for Directed I/O (VT-d) and the NIC device needs to support SR-IOV. Also, the host kernel must have Input-Output Memory Management Unit (IOMMU) and Virtual Function I/O (VFIO) support.
 
-
-
-
-How KC was implemented in the MEC/AirFrame OE \\
-How it filled the requirements? \\
-- NIC, hardware acceleration, Multus? \\
-- Sharing FS between containers in same pod
-- Core isolation
-
 - SR-IOV \\
 	- Multus needs to be accessible from Kata guest hosts \\
 	
 - If SR-IOV is accessible, the network performance remains the same
 	- If not and using virtio, and hypervisor between nw performance might degrade
 		- Measure throughput and latency between pods with iPerf (client - server)
+
+\subsection{Hardware acceleration}
+
+Hardware acceleration is the use of hardware specifically crafted to perform some functions more efficiently than software running on general-purpose CPUs. Hardware accelerated process can highly enhance the performance of cloud workloads by increasing throughput and decreasing latency and energy consumption. Hardware acceleration can be usage of GPUs for computing, SmartNIC \cite{SmartNICIntel}, or purpose built application-specific integrated circuit (ASIC) such as System on a Chip (SoC).
+
+The main use of hardware acceleration for edge cloud environment is GPUs. Kata Containers supports passing certain GPUs from to host into the container using GPU passthrough as well as GPU mediated passthrough. GPU passthrough, such as Intel GVT-d, allows direct assignment of an entire GPU to a single user, passing the native driver capabilities through the hypervisor without any limitations. Mediated GPU passthrough, such as Intel GVT-g with multiple VMs to one physical GPU, is a full GPU virtualization solution with mediated pass-through.
+A virtual GPU instance is maintained for each VM, with part of performance critical resources, directly assigned. The ability to run a native graphics driver inside a VM without hypervisor intervention in performance critical paths, achieves a good balance among performance, feature, and sharing capability. \cite{GPUKataContainers}
+		
+\section{Logging}
+
+Kata Containers provides the workload with guest kernel, meanwhile the host uses dedicated kernel, which are not connected. One benefit of the architectural change in comparison to standard container workloads is the availability in case of kernel crashes. This availability is highly beneficial for logging purposes, as the crash of worker container does not wipe all logs at the same time.
 
 \section{Limitations}
