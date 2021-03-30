@@ -1,4 +1,4 @@
-\chapter{Kata Containers in telco environment}
+\chapter{Kata Containers in edge cloud environment}
 \label{chapter:implementation}
 
 \textcolor{red}{Come up with better chapter name}
@@ -65,7 +65,6 @@ Local volume represents a mounted local storage device such as a disk, partition
 Local volume can be mounted to the node as a filesystem or raw block device. These raw block volumes are mounted into a pod without any filesystems on it. The filesystem layer introduces unneeded overhead, thus some specialized applications require direct access to a block device to maximize performance. A common case is databases, which prefer to organize their data directly on the underlying storage. Raw block devices are also commonly used by software which itself implements its storage service. \cite{RawBlockKubernetes}
 
 %local with multiple access?
-%Limitations? \\
 
 \section{Network}
 
@@ -102,15 +101,16 @@ In order to setup host for SR-IOV, the system needs to support Intel Virtualizat
 	- Multus needs to be accessible from Kata guest hosts \\
 	
 - If SR-IOV is accessible, the network performance remains the same
-	- If not and using virtio, and hypervisor between nw performance might degrade
+	- If not and using virtio, and hypervisor between NW performance might degrade
 		- Measure throughput and latency between pods with iPerf (client - server)
 
 \subsection{Hardware acceleration}
 
 Hardware acceleration is the use of hardware specifically crafted to perform some functions more efficiently than software running on general-purpose CPUs. Hardware accelerated process can highly enhance the performance of cloud workloads by increasing throughput and decreasing latency and energy consumption. Hardware acceleration can be usage of GPUs for computing, SmartNIC \cite{SmartNICIntel}, or purpose built application-specific integrated circuit (ASIC) such as System on a Chip (SoC).
 
-The main use of hardware acceleration for edge cloud environment is GPUs. Kata Containers supports passing certain GPUs from to host into the container using GPU passthrough as well as GPU mediated passthrough. GPU passthrough, such as Intel GVT-d, allows direct assignment of an entire GPU to a single user, passing the native driver capabilities through the hypervisor without any limitations. Mediated GPU passthrough, such as Intel GVT-g with multiple VMs to one physical GPU, is a full GPU virtualization solution with mediated pass-through.
-A virtual GPU instance is maintained for each VM, with part of performance critical resources, directly assigned. The ability to run a native graphics driver inside a VM without hypervisor intervention in performance critical paths, achieves a good balance among performance, feature, and sharing capability. \cite{GPUKataContainers}
+The main use of hardware acceleration for edge cloud environment is computing offloading to GPUs, which frees CPU cycles for other tasks thus improving throughput. Kata Containers supports passing certain GPUs from to host into the container using GPU passthrough as well as GPU mediated passthrough. GPU passthrough, such as Intel GVT-d, allows direct assignment of an entire GPU to a single user, passing the native driver capabilities through the hypervisor without any limitations. Mediated GPU passthrough, such as Intel GVT-g with multiple VMs to one physical GPU, is a full GPU virtualization solution with mediated pass-through. A virtual GPU instance is maintained for each VM, with part of performance critical resources, directly assigned. The ability to run a native graphics driver inside a VM without hypervisor intervention in performance critical paths, achieves a good balance among performance, feature, and sharing capability. \cite{GPUKataContainers}
+
+Plugins such as vAccel \cite{vAccel} offer QEMU and Firecracker VMM support for hardware acceleration for serverless computing. The focus of vAccel is to provide true device sharing in shared cloud and edge infrastructure with portability and modular design.
 		
 \section{Logging}
 

@@ -1,7 +1,7 @@
 \chapter{Evaluation}
 \label{chapter:evaluation}
 
-The extra layer of security provided by Kata Container's micro-VM comes with a price of degraded performance and computational overhead. Previous work, such as \cite{Kumar2020} and \cite{EverartsdeVelp2020} have examined the performance, when compared Kata Containers against native runtime runC, the most common OCI-compliant runtime. In these two papers, Kata Containers architecture design results in performance decrease in IO throughput, and in memory and CPU utilization. However, the results in these papers are highly dependant on the specific test environment and do not take in account the latest development of Kata Containers performance provided by the runtime version 2.0 released in December 2020. In this paper, the system performance evaluated in an environment simulating a telco architecture.
+The extra layer of security provided by Kata Container's micro-VM comes with a price of degraded performance and computational overhead. Previous work, such as \cite{Kumar2020} and \cite{EverartsdeVelp2020} have examined the performance, when compared Kata Containers against native runtime runC, the most common OCI-compliant runtime. In these two papers, Kata Containers architecture design results in performance decrease in IO throughput, and in memory and CPU utilization. However, the results in these papers are highly dependant on the specific test environment and do not take in account the latest development of Kata Containers performance provided by the runtime version 2.0 released in December 2020. In this paper, the system performance evaluated in an environment simulating a telco architecture and workload.
 
 
 Performance evaluation \\
@@ -46,34 +46,11 @@ Container - container across nodes and a pods
 
 Container - storage
 
-\subsection{Storage}
-
-- Access to mounted volumes in K8s
-	- Create persistent volume
-	- Attach
-	- IO
-
-\subsection{Networking}
-
-Networking
-    - Two networks. What is the difference?
-    - Access to storage not via network, unless NFS(?).
-
-
-
-
-
-
-
-
-
-
-
-
-
 \section{Methodology}
 
-The test environment is hosted by a dedicated server which is built and tailored to support edge and far-edge cloud deployments. The server includes CPU/RAM/Network, which is shared to the cluster. Each test is repeated 10 times, and the results are averaged. The environment is booted between each test to reset the possible hanging processes. The system performance is logged with Prometheus/Grafana. The focus in these tests is to measure the possible performance overhead resulting from the Kata Containers and added layer of security.
+The test environment is hosted by a dedicated server which is built and tailored to support edge and far-edge cloud deployments. The server includes X CPU/RAM/Network, which is shared to the cluster. Each test is repeated 10 times, and the results are averaged. The environment is booted between each test to reset the state and possible hanging processes. The system performance is logged with Prometheus/Grafana. The focus in these tests is to measure the possible performance overhead resulting from the Kata Containers and added layer of security.
+
+Mention about using various VMMs (CLH, FC, QEMU compared against runC).
 
 \section{Results}
 
@@ -91,12 +68,40 @@ The architectural design of Kata Containers adds extra components to the system.
 
 \subsection{I/O performance}
 
+- Performance of root filesystem
+	- Access fs of container
+	- Overlay2 fs
+
+- Access to mounted volumes in K8s
+	- Create persistent volume
+	- Attach
+	- IO
+
+- Attach empty dir to a container
+	- Share fs between to containers in a same pod
+	- RAM or disk
+	- How this is possible?
+
 \subsection{Memory performance}
+
+- Measuring performance of memory not important
+
+- Memory overhead
+	- How much the Kata adds to memory used?
 
 \subsection{Storage performance}
 
+- Access to mounted volumes in K8s \\
+    - hostPath, emptyDir, local PV \\
+	- Create persistent volume \\
+	- Attach \\
+	- IO \\
+
+\subsection{Network performance}
+
+Networking
+    - Evaluate performance \\
+    - Two networks. What is the difference?
+    - Access to storage not via network, unless NFS(?).
+
 \section{Evaluation}
-
-\section{Benchmark from other platforms}
-
-\textcolor{red}{Should this be here or on the next chapter?}
