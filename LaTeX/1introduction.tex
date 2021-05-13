@@ -31,7 +31,7 @@ FECs support end-user devices with applications, some of which require sophistic
 \section{Scope and Methodology}
 \label{section:intro_scopemethodology}
 
-This thesis focuses on telco applications and the needs these applications have. Currently, these applications are developed as a container, thus it is important to focus on the compatibility and possible gaps. The majority of the applications are based on Linux operating systems, thus affecting the performance evaluation perspective and tests. Kata Containers is considered the potential solution for the runtime, as it is currently savoring the broadest adoption and range of features. Kubernetes is chosen as the container orchestrator for the same reason.
+This thesis focuses on telco applications and the needs these applications have. It is essential to focus on the performance, compatibility, and possible gaps Kata Containers might add. The majority of the applications are based on Linux operating systems, limiting the performance evaluation scope to Linux operating systems. Kata Containers is considered the potential solution for the runtime, as it is currently savoring the broadest adoption and range of features. Kubernetes is chosen as the container orchestrator for the same reason.
 
 Kata Containers is evaluated concerning the FEC environment via literature review in the first part. In the second part, the performance is evaluated in a more practical manner with performance tests. The tests are run in an environment that is close to the specifications of the FEC environment.
 
@@ -41,7 +41,7 @@ Kata Containers is evaluated concerning the FEC environment via literature revie
 \section{Structure of the Thesis}
 \label{section:intro_structure}
 
-Chapter \ref{chapter:cloudcomputing} describes virtualization, cloud computing and FEC environment. This chapter also discusses the requirements of Edge Cloud and security concerns of Cloud Computing. Chapter \ref{chapter:katacontainers} focuses on the secure runtimes and Kata Containers architecture. The environment and KC are combined in more practical chapter \ref{chapter:implementation} which implements the runtime in FEC setting and discusses the requirements to the environment and applications. The performance is evaluated thoroughly in chapter \ref{chapter:evaluation} and the performance is analyzed based on the acquired results. The last chapter \ref{chapter:discussion} focuses on the gaps in provided features, discusses of the possible improvement factors, and concludes the thesis.
+Chapter \ref{chapter:cloudcomputing} describes virtualization, cloud computing and FEC environment. This chapter also discusses the requirements of Edge Cloud and the security concerns of Cloud Computing. Chapter \ref{chapter:katacontainers} focuses on the secure runtimes and Kata Containers architecture. The environment and KC are combined in a more practical chapter \ref{chapter:implementation} which implements the runtime in the FEC context and discusses the requirements to the environment and applications. The performance is evaluated thoroughly in chapter \ref{chapter:evaluation} and the performance is analyzed based on the acquired results. The last chapter \ref{chapter:discussion} focuses on the gaps in provided features, discusses the possible improvement factors, and concludes the thesis.
 
 %MEC applications requiring low latency \\
 %Security issues of containers \\
