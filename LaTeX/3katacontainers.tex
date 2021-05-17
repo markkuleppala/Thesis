@@ -1,7 +1,7 @@
 \chapter{Kata Containers}
 \label{chapter:katacontainers}
 
-Securing container runtime is a crucial task in MEC in order to run multiple instances in the same edge securely. Container escapes \cite{CVE-2020-14386}\cite{CVE-2019-5736} are exposing other instances residing in the platform. Therefore, multiple solutions have been developed to provide stronger workload isolation using hardware virtualization technology as a second layer of defense. One of the most prominent approach includes wrapping the container inside a micro VM, which is a lightweight version of traditional VM with minimal overhead. The dedicated kernel of micro VM, provides isolation of network, I/O and memory and can utilize hardware-enforced isolation with virtualization extensions. In this Thesis, we will focus on Kata Containers as a secure container runtime. Kata Containers perform like containers, but provide the workload isolation and security advantages of VMs. It combines the benefits of containers and VMs. \cite{KataContainers}
+Securing container runtime is a crucial task in MEC in order to run multiple instances in the same edge securely. Therefore, multiple solutions have been developed to provide stronger workload isolation using hardware virtualization technology as a second layer of defense. One of the most prominent approach includes wrapping the container inside a micro VM, which is a lightweight version of traditional VM with minimal overhead. The dedicated kernel of micro VM, provides isolation of network, I/O and memory and can utilize hardware-enforced isolation with virtualization extensions. In this Thesis, we will focus on Kata Containers as a secure container runtime. Kata Containers perform like containers, but provide the workload isolation and security advantages of VMs. It combines the benefits of containers and VMs. \cite{KataContainers}
 
 \textcolor{red}{Performance overhead - evidence to it}
 
@@ -107,16 +107,6 @@ Kata Containers runtime supports Container Network Interface (CNI) \cite{CNI} pl
 Container workloads are shared with the virtualized environment through virtio-fs. This shared file system that lets virtual machines access a directory tree on the host. In Kata Containers, virtio-fs can be used to share container volumes, secrets, config-maps, configuration files, and the container rootfs on the host with the guest. virtio-fs provides significant performance and POSIX compliance improvements compared to 9pfs. Virtio-fs was started at Red Hat and is being developed in the Linux, QEMU, FUSE, and Kata Containers open source communities. \cite{virtio-fs-Kata}\cite{virtio-fs}
 
 Kata Containers has an ability to hot-plug and remove block devices, which is a data storage device that supports reading and optionally writing data in fixed-size blocks, sectors, or clusters. This support for hot-plugging makes it possible to use block devices for containers started after the VM has been launched. The support for hot-plug and file systems might vary depending on the VMM and hypervisor. \cite{KataContainersArchitecture}\cite{KataContainersVirtualization}
-
-\section{Related work}
-
-Kata Containers is not the sole option providing secure container runtime nor isolation in the container kernel layer. Microsoft offers a container instance isolation option inside Azure with Hyper-V. The hardware isolation is based on VMs, likewise in KC and Firecracker, thus leveraging the additional kernel layer. \cite{Hyper-V}
-
-gVisor provides a second isolation method, differing from Kata Containers and Firecracker. gVisor intercepts application system calls and acts as the guest kernel without translating through virtualized hardware. The architecture can be thought of as a merged kernel and VMM. gVisor includes OCI runtime runsc, which provides the isolation boundary between the application and host kernel. Google develops gVisor, and it is harnessed in various Google's cloud products such as Kubernetes Engine \cite{GKE} and Cloud Run \cite{CloudRun}. \cite{Debab2021}\cite{gVisor}
-
-A second approach for container isolation is IBM Nabla \cite{Nabla}. Nabla containers use library OS, also known as unikernel, to avoid system calls and reduce the attack surface. Nabla is based on a custom VMM named Nabla Tender to manage lightweight VMs executing unikernels. Nabla containers only use seven system calls, blocking all others via a Linux seccomp policy. The Nabla Tender intercepts hypercalls related to storage and network from unikernel VMs and translates them into syscalls to the host. \cite{Debab2021}
-
-All the before-mentioned projects are open source and actively maintained. However, Nabla seems to be slightly less active in comparison to the other projects. Commercial and enterprise cloud platforms, such as AWS, uses Firecracker, and GKE uses gVisor. However, it is unknown for security reasons which approaches are used in the other platforms to isolate containers.
 
 
 % that it fits to the same space as the text (total width = \textwidth).
