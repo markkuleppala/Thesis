@@ -54,11 +54,7 @@ Persistent Volume is a piece of storage in the cluster has been provisioned dyna
 
 PV volumes can be mounted to nodes in Kubernetes with three different access modes: ReadWriteOnce, ReadOnlyMany, and ReadWriteMany. ReadWriteOnce allows only one node for read and write operations. ReadOnlyMany is read-only mode allowing multiple nodes for simultaneous access. In contrast, ReadWriteMany allow multiple nodes for simultaneous read and write operations. PVs have different support for read and write options. In this Thesis, we will focus on two PV options, which are hostPath and local. \cite{PV} 
 
-\subsubsection{HostPath}
-
 A hostPath volume mounts a file or directory from the host node's filesystem into the pod. Some use cases for hostPath include running a container that needs access to Docker internals or running cAdvisor in a container which requires an access to system directory. HostPath is only applicable inside a single node, however multiple pods can write simultaneously into the same file or directory.
-
-\subsubsection{Local volume}
 
 Local volume represents a mounted local storage device such as a disk, partition or directory \cite{VolumesKubernetes}. Local volumes can only be created statically, and dynamic provisioning is not supported. Compared to hostPath volumes, local volumes are used in a durable and portable manner without manually scheduling pods to nodes. Local volumes are subject to the availability of the underlying node. Downtime of the node including storage disables all access to the storage reducing availability, as possibly causing potential data loss.
 
