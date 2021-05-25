@@ -1,7 +1,7 @@
 \chapter{Evaluation}
 \label{chapter:evaluation}
 
-The extra layer of security provided by Kata Container's micro-VM comes with a price of degraded performance and computational overhead. Previous work, such as \cite{Kumar2020} and \cite{EverartsdeVelp2020} have examined the performance, when compared Kata Containers against native runtime runC, the most common OCI-compliant runtime. In these two papers, Kata Containers architecture design results in performance decrease in IO throughput, and in memory and CPU utilization. However, the results in these papers are highly dependant on the specific test environment and do not take in account the latest development of Kata Containers performance provided by the runtime version 2.0 released in December 2020. In this paper, the system performance evaluated in an environment simulating a telco architecture and workload.
+The extra layer of security provided by Kata Container's micro-VM comes with a price of degraded performance and computational overhead. Previous work, such as \cite{Kumar2020} and \cite{EverartsdeVelp2020} have examined the performance when compared Kata Containers against native runtime runC, the most common OCI-compliant runtime. In these two papers, Kata Containers architecture design results in a performance decrease in IO throughput and memory and CPU utilization. However, the results in these papers are highly dependant on the specific test environment. They do not consider the latest development of Kata Containers performance provided by the runtime version 2.0 released in December 2020. In this paper, the system performance is evaluated in an environment simulating a telco architecture and workload.
 
 
 Performance evaluation \\
@@ -73,13 +73,13 @@ The architectural design of Kata Containers adds extra components to the system.
 	- Overlay2 fs
 
 - Access to mounted volumes in K8s
-	- Create persistent volume
+	- Create hostPath persistent volume
 	- Attach
 	- IO
 
 - Attach empty dir to a container
 	- Share fs between to containers in a same pod
-	- RAM or disk
+	- RAM and disk
 	- How this is possible?
 
 \subsection{Memory performance}

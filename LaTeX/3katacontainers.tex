@@ -32,14 +32,14 @@ Kata Containers, which the OpenStack Foundation stewards, supports industry stan
 \subsection{Kubernetes}
 \textcolor{red}{Revisit this chapter}
 
-Kubernetes acts as a container-orchestration system for automating deployment, scaling, and management of containerized applications \cite{Kubernetes}. Kubernetes offers flexible configuration, and it can be installed inside a VM or on bare-metal. Like most distributed computing platforms, a Kubernetes cluster consists of at least one master node and multiple compute nodes. Each node runs a container runtime, such as Docker or containerd, along with an agent that communicates with the master.
+Kubernetes acts as a container-orchestration system for automating deployment, scaling, and management of containerized applications \cite{Kubernetes}. Kubernetes offers flexible configuration, and it can be installed inside a VM or on bare-metal. Like most distributed computing platforms, a Kubernetes cluster consists of at least one master node and multiple compute nodes. Each compute node runs a container runtime engine, such as Docker or containerd, along with an agent that communicates with the master node.
 
 Each container is launched as a pod. Pods are the atomic unit on the Kubernetes platform. A single node can include multiple pods inside it, and each pod is tied to the node it is created within. The runtime can be selected on a pod level; thus, a single node can consist of workloads with various runtimes. This comes in handy whenever non-confidential, but highly performance-centric applications need to be deployed in a node within more security-oriented applications.
 
 \subsection{Containerd}
 \textcolor{red}{Revisit this chapter}
 
-Container runtime manages containers inside Kubernetes. Containerd is an implementation of the Kubernetes CRI to enable using OCI compatible runtimes. It is an industry-standard container runtime with an emphasis on simplicity, robustness, and portability. It is available as a daemon for Linux and Windows, which can manage the complete container lifecycle of its host system. The flexibility of containerd allows Kubernetes to register and use various OCI-compliant runtimes, such as Kata Containers, as container runtime for running pods. Containerd supports multiple means to download images, including trust and image verification. Containerd also manages container process lifecycles, low-level storage, and resource isolation as required by the CRI. \cite{containerdGithub}\cite{containerd}
+Container runtime manages containers inside Kubernetes. Containerd is an implementation of the Kubernetes CRI to enable using OCI compatible runtimes. It is an industry-standard container runtime with an emphasis on simplicity, portability, and robustness. It is available as a daemon for Linux and Windows, which can manage the complete container lifecycle of its host system. The flexibility of containerd allows Kubernetes to register and use various OCI-compliant runtimes, such as Kata Containers, as container runtime for running pods. Containerd supports multiple means to download images, including trust and image verification. Containerd also manages container process lifecycles, low-level storage, and resource isolation as required by the CRI. \cite{containerdGithub}\cite{containerd}
 
 \subsection{Kata Shim V2}
 
