@@ -6,6 +6,7 @@ Kata Containers add the extra layer of security with the micro VM and requires a
 \textcolor{red}{What tested?}
 \textcolor{red}{Why tested?}
 \textcolor{red}{How tested?}
+\textcolor{red}{Are there any expectations?}
 \textcolor{red}{Results?}
 \textcolor{red}{What the results mean?}
 
@@ -19,7 +20,7 @@ The test environment simulates multiple relations that are most common in a telc
 
 \begin{figure}[ht]
   \begin{center}
-    \includegraphics[width=13.5cm]{images/TestArchitectureCluster.png}
+    \includegraphics[width=13.5cm]{images/TestArchitectureCluster.pdf}
     \caption{Kubernetes test cluster overview}
     \label{fig:TestArchitectureCluster}
   \end{center}
@@ -31,15 +32,7 @@ The test environment simulates multiple relations that are most common in a telc
 
 The tests of this thesis aim to measure the possible performance degradation of I/O operations and additional CPU and memory resource consumption due to the Kata Containers architecture. The test environment is hosted by a dedicated server which is built and tailored to support edge and far-edge cloud deployments. The server includes Intel Xeon 6212U CPU with 24 cores and 48 threads with x86 architecture at 2.40 GHz clock-speed and 192GB of DDR4 memory at 2933 MHz clock-speed, which is shared to the cluster.
 
-The performance tests run with Fio \cite{FIO}, an I/O performance tester with aim to simulate a variety of I/O workloads without resorting to writing a tailored test cases repeatedly. Fio supports a wide variety of test configurations such as multiple threads, block sizes, I/O sizes, and I/O patterns. In these thesis, the tests are time-based, where each tests runs for 30 seconds. The file size of each writable file is 2 GB. Each test is repeated three times, and the results are averaged. Table \ref{table:TestMatrix} describes the test combination matrix. In the tests each combination is sampled, resulting in 1920 different test scenarios. The Fio jobfile is described in Appendix \ref{appendix:fio_jobfile}.
-
-Fio test suite is wrapped inside a Docker image with a Linux OS Alpine\cite{Alpine}, which aims to deliver general purpose Linux with security, simplicity, and resource efficiency. The tests are deployed with Helm\cite{Helm}, a package manager for Kubernetes. The Kubernetes Pods are deployed as Guaranteed Quality-of-Service with two CPUs and 18GB of memory to support the tests. However, each Kata Containers VM gets assigned with only 1 VM. This restriction allows comparison of tests to bare metal tests, which are run on an isolated single CPU environment with the help of taskset\cite{taskset} function.
-
-
-
-The system performance is logged with Prometheus/Grafana. The focus in these tests is to measure the possible performance overhead resulting from the Kata Containers and added layer of security.
-
-Mention about using various VMMs (CLH, FC, QEMU compared against runC).
+The performance tests run with Fio \cite{FIO}, an I/O performance tester with aim to simulate a variety of I/O workloads without resorting to writing a tailored test cases repeatedly. Fio supports a wide variety of test configurations such as multiple threads, block sizes, I/O sizes, and I/O patterns. In these thesis, the tests are time-based, where each tests runs for 30 seconds. The file size of each writable file is 2 GB. The Fio jobfile is described in Appendix \ref{appendix:fio_jobfile}. Each test is repeated three times, and the results are averaged. Table \ref{table:TestMatrix} describes the test combination matrix. In the tests each combination is sampled, resulting in 1920 different test scenarios.
 
 \begin{table}[ht]
 \centering
@@ -69,10 +62,19 @@ QEMU VirtioFS & & 8192 & & \\
 \label{table:TestMatrix}
 \end{table}
 
+\textcolor{red}{Mention about k3s and containerd}
+
+\textcolor{red}{Go through each column}
+Runtime of the tests refers to the container runtime and VMM. 
+
+
+Fio test suite is wrapped inside a Docker image with a Linux OS Alpine\cite{Alpine}, which aims to deliver general purpose Linux with security, simplicity, and resource efficiency. The tests are deployed with Helm\cite{Helm}, a package manager for Kubernetes. The Kubernetes Pods are deployed as Guaranteed Quality-of-Service with two CPUs and 18GB of memory to support the tests. However, each Kata Containers VM gets assigned with only 1 VM. This restriction allows comparison of tests to bare metal tests, which are run on an isolated single CPU environment with the help of taskset\cite{taskset} function.
+
+
+
+The system performance is logged with Prometheus and Grafana. The focus in these tests is to measure the possible performance overhead resulting from the Kata Containers and added layer of security during the runtime of I/O tests.
 
 \section{Results}
-
-\textcolor{red}{Expectations?}
 
 \subsection{I/O performance}
 
