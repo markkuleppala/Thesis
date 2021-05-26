@@ -1,15 +1,14 @@
 \chapter{Evaluation}
 \label{chapter:evaluation}
 
-The extra layer of security provided by Kata Container's micro-VM comes with a price of degraded performance and computational overhead. Previous work, such as \cite{Kumar2020} and \cite{EverartsdeVelp2020} have examined the performance when compared Kata Containers against native runtime runC, the most common OCI-compliant runtime. In these two papers, Kata Containers architecture design results in a performance decrease in IO throughput and memory and CPU utilization. However, the results in these papers are highly dependant on the specific test environment. They do not consider the latest development of Kata Containers performance provided by the runtime version 2.0 released in December 2020. In this paper, the system performance is evaluated in an environment simulating a telco architecture and workload.
+Kata Containers add the extra layer of security with the micro VM and requires additional components to handle the container orchestration. These additions come with a price of degraded performance and computational overhead. Previous work, such as \cite{Kumar2020} and \cite{EverartsdeVelp2020} have examined the performance when compared Kata Containers against the native runtime runC, the most common OCI-compliant runtime. In these two papers, Kata Containers architecture design results in a performance decrease in IO throughput and overhead in memory and CPU utilization. However, the results in these papers are highly dependant on the underlying test environment. These tests do not consider the latest development and performance optimization of Kata Containers performance. In this paper, the system performance is evaluated in an environment simulating a telco edge cloud architecture and regular workload.
 
+\textcolor{red}{What tested?}
+\textcolor{red}{Why tested?}
+\textcolor{red}{How tested?}
+\textcolor{red}{Results?}
+\textcolor{red}{What the results mean?}
 
-Performance evaluation \\
-- Methodology \\
-- How/what is tested \\
-    - Hypervisors
-- Results \\
-- Evaluation \\
 What expectations there are? \\
 Research questions?
 
@@ -26,45 +25,54 @@ The test environment simulates multiple relations that are most common in a telc
   \end{center}
 \end{figure}
 
-\begin{figure}[ht]
-  \begin{center}
-    \includegraphics[width=13.5cm]{images/TestArchitectureNode.png}
-    \caption{Node test cluster with two containers in a single pod}
-    \label{fig:TestArchitectureNode}
-  \end{center}
-\end{figure}
-
-\subsection{Containers}
-
-The test architecture consists of various relations between containers and storage in a single cluster Kubernetes environment.
-
-Container - container inside pod
-
-Container - container between pods
-
-Container - container across nodes and a pods
-
-Container - storage
+\textcolor{red}{What connections are tested?}
 
 \section{Methodology}
 
-The test environment is hosted by a dedicated server which is built and tailored to support edge and far-edge cloud deployments. The server includes X CPU/RAM/Network, which is shared to the cluster. Each test is repeated 10 times, and the results are averaged. The environment is booted between each test to reset the state and possible hanging processes. The system performance is logged with Prometheus/Grafana. The focus in these tests is to measure the possible performance overhead resulting from the Kata Containers and added layer of security.
+The tests of this thesis aim to measure the possible performance degradation of I/O operations and additional CPU and memory resource consumption due to the Kata Containers architecture. The test environment is hosted by a dedicated server which is built and tailored to support edge and far-edge cloud deployments. The server includes Intel Xeon 6212U CPU with 24 cores and 48 threads with x86 architecture at 2.40 GHz clock-speed and 192GB of DDR4 memory at 2933 MHz clock-speed, which is shared to the cluster.
+
+The performance tests run with Fio \cite{FIO}, an I/O performance tester with aim to simulate a variety of I/O workloads without resorting to writing a tailored test cases repeatedly. Fio supports a wide variety of test configurations such as multiple threads, block sizes, I/O sizes, and I/O patterns. In these thesis, the tests are time-based, where each tests runs for 30 seconds. The file size of each writable file is 2 GB. Each test is repeated three times, and the results are averaged. Table \ref{table:TestMatrix} describes the test combination matrix. In the tests each combination is sampled, resulting in 1920 different test scenarios. The Fio jobfile is described in Appendix \ref{appendix:fio_jobfile}.
+
+Fio test suite is wrapped inside a Docker image with a Linux OS Alpine\cite{Alpine}, which aims to deliver general purpose Linux with security, simplicity, and resource efficiency. The tests are deployed with Helm\cite{Helm}, a package manager for Kubernetes. The Kubernetes Pods are deployed as Guaranteed Quality-of-Service with two CPUs and 18GB of memory to support the tests. However, each Kata Containers VM gets assigned with only 1 VM. This restriction allows comparison of tests to bare metal tests, which are run on an isolated single CPU environment with the help of taskset\cite{taskset} function.
+
+
+
+The system performance is logged with Prometheus/Grafana. The focus in these tests is to measure the possible performance overhead resulting from the Kata Containers and added layer of security.
 
 Mention about using various VMMs (CLH, FC, QEMU compared against runC).
 
+\begin{table}[ht]
+\centering
+\caption{Test combinations matrix}
+\vspace{\baselineskip}
+\begin{tabular}{| c | c | c | c | c |}
+\hline
+\textbf{Runtime} & \textbf{Clients} & \textbf{Block size} & \textbf{I/O pattern} & \textbf{I/O device} \\ 
+\hline
+Bare metal & 1 & 512 & read & emptyDir (memory) \\
+\hline
+runC & 2 & 1024 & write & emptyDir (disk) \\ 
+\hline
+CLH & 3 & 2048 & randread & local (PV) \\
+\hline
+QEMU & & 4096 & randwrite & hostPath \\
+\hline
+QEMU VirtioFS & & 8192 & & \\
+\hline
+& & 16384 & & \\
+\hline
+& & 32768 & & \\
+\hline
+& & 65536 & & \\
+\hline
+\end{tabular}
+\label{table:TestMatrix}
+\end{table}
+
+
 \section{Results}
 
-\subsection{CPU performance}
-
-The architectural design of Kata Containers adds extra components to the system. Each of these components add overhead to the CPU performance via background processes. In the CPU performance tests, the main question was to measure the overhead and the need for extra cores in comparison to runC. The measurement of CPU performance was implemented by creating workloads and recording the performance with Prometheus. 
-
-- CPU overhead of Kata
-	- How many cores are needed when Kata is used?
-	- From host perspective?
-	- Measure
-		- Create and delete workloads and record the CPU performance
-			- Starting micro-VM might affect the CPU performance
-			- Monitor with Prometheus
+\textcolor{red}{Expectations?}
 
 \subsection{I/O performance}
 
@@ -82,20 +90,32 @@ The architectural design of Kata Containers adds extra components to the system.
 	- RAM and disk
 	- How this is possible?
 
-\subsection{Memory performance}
-
-- Measuring performance of memory not important
-
-- Memory overhead
-	- How much the Kata adds to memory used?
-
 \subsection{Storage performance}
 
 - Access to mounted volumes in K8s \\
     - hostPath, emptyDir, local PV \\
 	- Create persistent volume \\
 	- Attach \\
-	- IO \\
+	- IO
+
+\subsection{CPU performance}
+
+The architectural design of Kata Containers adds extra components to the system. Each of these components add overhead to the CPU performance via background processes. In the CPU performance tests, the main question was to measure the overhead and the need for extra cores in comparison to runC. The measurement of CPU performance was implemented by creating workloads and recording the performance with Prometheus. 
+
+- CPU overhead of Kata
+	- How many cores are needed when Kata is used?
+	- From host perspective?
+	- Measure
+		- Create and delete workloads and record the CPU performance
+			- Starting micro-VM might affect the CPU performance
+			- Monitor with Prometheus
+
+\subsection{Memory performance}
+
+- Measuring performance of memory not important
+
+- Memory overhead
+	- How much the Kata adds to memory used?
 
 \subsection{Network performance}
 

@@ -74,7 +74,15 @@ I/O throughput is critical to high-performance telco systems. I/O intensive serv
 
 Traditionally, when a guest accesses the I/O device, VMM needs to intervene in the data processing to share the physical device. The VMM intervention leads to additional I/O overhead for a guest OS. SR-IOV provides hardware enhancements for the Peripheral Component Interconnect Express (PCIe) device, which aims to remove major VMM intervention for performance data movements, such as the packet classification and address translation. An SR-IOV-capable device can create multiple lightweight PCI function entities, known as Virtual Functions (VF). Each VF can be assigned to a VM for direct access but still shares major device resources, achieving both resource sharing and high performance. \cite{Dong2012}
 
-In Kubernetes, Kata Containers supports SR-IOV with a CNI plugin \cite{SR-IOVOpenShift}. Additionally, the Kata runtime detects virtual functions in the container's network namespace to use SR-IOV for network-based devices. In order to enable SR-IOV with Kata, the user needs to install a specific Docker plugin. The created network is based on a physical function device. \cite{SR-IOVKataContainers}
+In Kubernetes, Kata Containers supports SR-IOV with a CNI plugin \cite{SR-IOVOpenShift} as visualized in Figure \ref{fig:SR-IOVNode}. Additionally, the Kata runtime detects virtual functions in the container's network namespace to use SR-IOV for network-based devices. In order to enable SR-IOV with Kata, the user needs to install a specific Docker plugin. The created network is based on a physical function device. \cite{SR-IOVKataContainers}
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=13.5cm]{images/SR-IOVNode.png}
+    \caption{SR-IOV enabled node with two containers in a single pod}
+    \label{fig:SR-IOVNode}
+  \end{center}
+\end{figure}
 
 In order to set up a host for SR-IOV, the system needs to support Intel Virtualization Technology for Directed I/O (VT-d), and the NIC device needs to support SR-IOV. Also, the host kernel must have Input-Output Memory Management Unit (IOMMU) and Virtual Function I/O (VFIO) support.
 

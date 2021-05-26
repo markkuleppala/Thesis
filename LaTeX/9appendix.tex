@@ -1,0 +1,32 @@
+\chapter{Fio jobfile}
+\label{appendix:fio_jobfile}
+
+\begin{lstlisting}
+[global]
+fallocate=none
+; Limit runtime
+runtime=30
+; Jobs run for a specified time limit, not I/O quantity
+time_based=1
+ioengine=libaio
+; Number of I/O units to keep in flight against the file
+iodepth=1
+direct=0
+buffered=1
+invalidate=1
+ramp_time=0
+; Set a number of workers on this client
+thread=0
+; NUM_JOBS options 1, 2, and 3
+numjobs=${NUM_JOBS}
+group_reporting=1
+; Each file for each job thread is this size
+filesize=2G
+size=2G
+filename_format=$jobnum.dat
+
+[fio-job]
+; FIO_RW options read, write, randread, and randwrite
+rw=${FIO_RW}
+\end{lstlisting}
+
