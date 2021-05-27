@@ -10,13 +10,10 @@ Kata Containers add the extra layer of security with the micro VM and requires a
 \textcolor{red}{Results?}
 \textcolor{red}{What the results mean?}
 
-What expectations there are? \\
-Research questions?
-
 \section{Test architecture}
 \label{section:test_architecture}
 
-The test environment simulates multiple relations that are most common in a telco environment. The test environment cluster is described in Figure \ref{fig:TestArchitectureCluster} and Node 1 in more detail in Figure \ref{fig:TestArchitectureNode}. The cluster consists of two nodes, which both have two containers inside. The difference between nodes are pods, with Node 1 consisting of a single pod with two containers inside, and Node 2 consist of two pods with a single container deployed to each pod. The purpose of the heterogeneous environment is to evaluate performance of a single container or between two containers in various scenarios. SR-IOV visualized in Figure \ref{fig:TestArchitectureNode} is described in detail in Section \ref{section:SR-IOV}.
+The test environment simulates multiple relations that are most common in a telco environment. The test environment cluster is described in Figure \ref{fig:TestArchitectureCluster} and Node 1 in more detail in Figure \ref{fig:SR-IOVNode}. The cluster consists of two nodes, which both have two containers inside. The difference between nodes are pods, with Node 1 consisting of a single pod with two containers inside, and Node 2 consist of two pods with a single container deployed to each pod. The purpose of the heterogeneous environment is to evaluate performance of a single container or between two containers in various scenarios.
 
 \begin{figure}[ht]
   \begin{center}
@@ -26,13 +23,16 @@ The test environment simulates multiple relations that are most common in a telc
   \end{center}
 \end{figure}
 
+The test cluster is hosted on K3s\cite{K3s} version 1.17.3, which is a lightweight version of Kubernetes supporting the identical API. K3s is Kubernetes distribution built for IoT and edge computing with lower footprint on memory and disk usage. K3s uses containerd as native container runtime engine. Due to compatibility issues, Kata Containers uses version XXX
+
 \textcolor{red}{What connections are tested?}
+
 
 \section{Methodology}
 
 The tests of this thesis aim to measure the possible performance degradation of I/O operations and additional CPU and memory resource consumption due to the Kata Containers architecture. The test environment is hosted by a dedicated server which is built and tailored to support edge and far-edge cloud deployments. The server includes Intel Xeon 6212U CPU with 24 cores and 48 threads with x86 architecture at 2.40 GHz clock-speed and 192GB of DDR4 memory at 2933 MHz clock-speed, which is shared to the cluster.
 
-The performance tests run with Fio \cite{FIO}, an I/O performance tester with aim to simulate a variety of I/O workloads without resorting to writing a tailored test cases repeatedly. Fio supports a wide variety of test configurations such as multiple threads, block sizes, I/O sizes, and I/O patterns. In these thesis, the tests are time-based, where each tests runs for 30 seconds. The file size of each writable file is 2 GB. The Fio jobfile is described in Appendix \ref{appendix:fio_jobfile}. Each test is repeated three times, and the results are averaged. Table \ref{table:TestMatrix} describes the test combination matrix. In the tests each combination is sampled, resulting in 1920 different test scenarios.
+The performance tests run with Fio \cite{FIO}, an I/O performance tester with aim to simulate a variety of I/O workloads without resorting to writing a tailored test cases repeatedly. Fio supports a wide variety of test configurations such as multiple threads, block sizes, I/O sizes, and I/O patterns. In these thesis, the tests are time-based, where each tests runs for 30 seconds. The file size of each writable file is 2 GB. The Fio jobfile is described in Appendix \ref{appendix:fio_jobfile}. Each test is repeated three times, and the results are averaged. Table \ref{table:TestMatrix} describes the test combination matrix. In the tests each combination is sampled, resulting in 1200 different test scenarios. 
 
 \begin{table}[ht]
 \centering
@@ -40,43 +40,34 @@ The performance tests run with Fio \cite{FIO}, an I/O performance tester with ai
 \vspace{\baselineskip}
 \begin{tabular}{| c | c | c | c | c |}
 \hline
-\textbf{Runtime} & \textbf{Clients} & \textbf{Block size} & \textbf{I/O pattern} & \textbf{I/O device} \\ 
+\textbf{Runtime} & \textbf{Jobs} & \textbf{Block size} & \textbf{I/O pattern} & \textbf{I/O device} \\ 
 \hline
 Bare metal & 1 & 512 & read & emptyDir (memory) \\
 \hline
-runC & 2 & 1024 & write & emptyDir (disk) \\ 
+runC & 2 & 2048 & write & emptyDir (disk) \\ 
 \hline
-CLH & 3 & 2048 & randread & local (PV) \\
+CLH & 3 & 8192 & randread & local (PV) \\
 \hline
-QEMU & & 4096 & randwrite & hostPath \\
+QEMU & & 16384 & randwrite & hostPath \\
 \hline
-QEMU VirtioFS & & 8192 & & \\
-\hline
-& & 16384 & & \\
-\hline
-& & 32768 & & \\
-\hline
-& & 65536 & & \\
+QEMU VirtioFS & & 65536 & & \\
 \hline
 \end{tabular}
 \label{table:TestMatrix}
 \end{table}
 
-\textcolor{red}{Mention about k3s and containerd}
+The test matrix consists of five columns: runtime, jobs, block size, I/O pattern, and I/O device, Runtime of the tests refers to the container runtime or hypervisor. In the case of bare metal, the test is run on host without containerization. In bare metal test runs, the performance test is launched with CPU affinity to an isolated CPU with taskset\cite{taskset} command. Jobs refer to the number of concurrent clones. Each clone of job is spawned as an independent thread or process. Block size is the size in bytes for I/O units applying for reads and writes. I/O pattern has sequential and random pattern reads and writes. The I/O type is buffered. I/O device refers to the storage media used for test destination. EmptyDir is created on the container, whereas local Persistent Volume and hostPath are maintained by the host.
 
-\textcolor{red}{Go through each column}
-Runtime of the tests refers to the container runtime and VMM. 
-
-
-Fio test suite is wrapped inside a Docker image with a Linux OS Alpine\cite{Alpine}, which aims to deliver general purpose Linux with security, simplicity, and resource efficiency. The tests are deployed with Helm\cite{Helm}, a package manager for Kubernetes. The Kubernetes Pods are deployed as Guaranteed Quality-of-Service with two CPUs and 18GB of memory to support the tests. However, each Kata Containers VM gets assigned with only 1 VM. This restriction allows comparison of tests to bare metal tests, which are run on an isolated single CPU environment with the help of taskset\cite{taskset} function.
-
-
-
-The system performance is logged with Prometheus and Grafana. The focus in these tests is to measure the possible performance overhead resulting from the Kata Containers and added layer of security during the runtime of I/O tests.
+Fio test suite is wrapped inside a Docker image with a Linux OS Alpine\cite{Alpine}, which aims to deliver general purpose Linux with security, simplicity, and resource efficiency. The tests are deployed with Helm\cite{Helm}, a package manager for Kubernetes. The Kubernetes Pods are deployed as Guaranteed Quality-of-Service with two CPUs and 18GB of memory to support the tests. However, each Kata Containers VM and runC container gets assigned with only 1 CPU. This restriction allows comparison of tests to bare metal tests, which are run on an isolated single CPU environment. The system performance, to measure CPU and memory overhead, is logged with Prometheus and Grafana.
 
 \section{Results}
 
 \subsection{I/O performance}
+
+
+
+
+
 
 - Performance of root filesystem
 	- Access fs of container
