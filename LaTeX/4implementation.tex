@@ -1,7 +1,5 @@
-\chapter{Kata Containers in edge cloud environment}
+\chapter{Kata Containers in Far Edge Cloud}
 \label{chapter:implementation}
-
-\textcolor{red}{Come up with better chapter name}
 
 Telco systems are a complex environment with multiple requirements for connectivity and performance. This chapter discusses the requirements of telco systems, implementation, and possible limitations of Kata Containers in this environment. The performance and tests are described in Chapter \ref{chapter:evaluation}. The features discussed in this chapter are related to Kubernetes, the container orchestrator, configurations.
 
@@ -31,7 +29,7 @@ High-performance Kubernetes storage options are usually limited to storage locat
 
 Kubernetes creates emptyDir volume during pod assignment to a node and lives as long as the pod runs on that node. emptyDir volume is initially empty. All containers in the pod of the emptyDir can read and write the files in the volume. Some use cases for emptyDir are scratch space during disk-based merge sort, checkpointing during a long computation in case of crashes, and holding files that a content-manager container fetches while a webserver container serves the data. \cite{VolumesKubernetes}
 
-Various storage mediums such as disk or SSD can back emptyDir volumes. However, emptyDir also supports RAM-backed filesystem tmpfs, which offers a high-speed alternative to harddrive-based volumes. The system clears tmpfs filesystem on node reboot, and any data written on it counts against the container's memory limit. \cite{VolumesKubernetes}
+Various storage mediums such as disk or SSD can back emptyDir volumes. However, emptyDir also supports RAM-backed filesystem tmpfs, which offers a high-speed alternative to harddrive-based volumes. The system clears the tmpfs filesystem on node reboot, and any data written on it counts against the container's memory limit. \cite{VolumesKubernetes}
 
 \subsection{Persistent Volume}
 
@@ -94,9 +92,9 @@ Plugins such as vAccel \cite{vAccel} offer QEMU and Firecracker VMM support for 
 		
 \section{Logging}
 
-\textcolor{red}{Revisit this chapter}
+In a containerized environment, containers should not store any persistent data. Therefore, logs should not be stored inside the container. Otherwise, a failure in the container would also destroy the logs \cite{Toimela2017}. However, logging to a location on the host via a persistent volume or hostPath is a viable option to store the logs in a safe and accessible way. 
 
-Kata Containers provides the workload with the guest kernel. Meanwhile, the host uses a dedicated kernel, which are not connected. One benefit of the architectural change compared to standard container workloads is the availability in case of kernel crashes. This availability is highly beneficial for logging purposes, as the crash of the worker container does not wipe all logs at the same time.
+However, if the kernel is shared between the pods, it adds an extra point of failure for the environment. A kernel panic or dump might render the whole environment useless until a reset. Kata Containers provides the workload with the guest kernel. Therefore, the host uses a dedicated kernel that enhances robustness and allows easier debugging in the cluster.
 
 \section{Summary}
 
