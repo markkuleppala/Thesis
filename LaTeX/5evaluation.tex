@@ -3,10 +3,6 @@
 
 Kata Containers hardens the security of containerized environment by adding the extra layer of security with the micro VM. The added security features are enabled by the architectural change and new components of the environment. These components, such as the micro VM and hypervisor come with a price of degraded performance and computational overhead. Previous work, such as \cite{EverartsdeVelp2020} and \cite{Kumar2020} have examined the performance when compared Kata Containers against the native runtime runC, the most common OCI-compliant runtime. In these two papers, Kata Containers architecture design results in a performance decrease in IO throughput and overhead in memory and CPU utilization. However, the results in these papers are highly dependant on the underlying test environment. These tests do not consider the latest development and performance optimization of Kata Containers performance. In this paper, the system performance is evaluated in an environment simulating a telco edge cloud architecture and regular workload.
 
-\textcolor{red}{Are there any expectations?}
-\textcolor{red}{Results?}
-\textcolor{red}{What the results mean?}
-
 \section{Test architecture}
 \label{section:test_architecture}
 
@@ -50,67 +46,35 @@ QEMU VirtioFS & & 65536 & & \\
 \label{table:TestMatrix}
 \end{table}
 
-The test matrix consists of five columns: runtime, jobs, block size, I/O pattern, and I/O device, Runtime of the tests refers to the container runtime or hypervisor. In the case of bare metal, the test is run on host without containerization. In bare metal test runs, the performance test is launched with CPU affinity to an isolated CPU with taskset\cite{taskset} command. Jobs refer to the number of concurrent clones. Each clone of job is spawned as an independent thread or process. Block size is the size in bytes for I/O units applying for reads and writes. I/O pattern has sequential and random pattern reads and writes. The I/O type is buffered. I/O device refers to the storage media used for test destination. EmptyDir is created on the container, whereas local Persistent Volume and hostPath are maintained by the host.
+The test matrix consists of five columns: runtime, jobs, block size, I/O pattern, and I/O device, Runtime of the tests refers to the container runtime or hypervisor. In the case of bare metal, the test is run on host without containerization. In bare metal test runs, the performance test is launched with CPU affinity to an isolated CPU with taskset \cite{taskset} command. Jobs refer to the number of concurrent clones. Each clone of job is spawned as an independent thread or process. Block size is the size in bytes for I/O units applying for reads and writes. I/O pattern has sequential and random pattern reads and writes. The I/O type is buffered. I/O device refers to the storage media used for test destination. EmptyDir is created on the container, whereas local Persistent Volume and hostPath are maintained by the host.
 
-Fio test suite is wrapped inside a Docker image with a Linux OS Alpine\cite{Alpine}, which aims to deliver general purpose Linux with security, simplicity, and resource efficiency. The tests are deployed with Helm\cite{Helm}, a package manager for Kubernetes helping with deployment of applications. The Kubernetes Pods are deployed as Guaranteed Quality-of-Service with two CPUs and 18GB of memory to support the tests. However, each Kata Containers VM and runC container gets assigned with only 1 CPU. This restriction allows comparison of tests to bare metal tests, which are run on an isolated single CPU environment. The system performance, to measure CPU and memory overhead, is logged with Prometheus and Grafana.
+Fio test suite is wrapped inside a Docker image with a Linux OS Alpine \cite{Alpine}, which aims to deliver general purpose Linux with security, simplicity, and resource efficiency. The tests are deployed with Helm\cite{Helm}, a package manager for Kubernetes helping with deployment of applications. The Kubernetes Pods are deployed as Guaranteed Quality-of-Service with two CPUs and 18GB of memory to support the tests. However, each Kata Containers VM and runC container gets assigned with only 1 CPU. This restriction allows comparison of tests to bare metal tests, which are run on an isolated single CPU environment. The system performance, to measure CPU and memory overhead, is logged with Prometheus and Grafana.
 
 \section{Results}
 
 The tests are run one test at the time, and final results are averaged out of three tests. Fio provides a comprehensive catalog of parameters as test results, of which the most import ones are completion latency, I/OPS, and IO throughput. Completion latency describes the completion time in milliseconds for key percentile such as 50\% and 99.99\%. IOPS is the number of I/O operations per second. IO throughput or bandwidth in megabytes per second, is sum of block size multiplied with IOPS.
 
+Previous work \cite{EverartsdeVelp2020}\cite{Kumar2020}\cite{StackHPCKata}\cite{Randazzo2019} on measuring Kata Container's performance resulted in highly unified performance between bare-metal and runC. In read and write tests, runC slightly outperformed the tested Kata Containers setups with faster throughput and lower resource usage. However, the results of these papers varied due to the diversity in underlying infrastructure and difference in test frameworks. None of these researches tested the whole spectrum of hypervisors and various storage options offered in Kubernetes environment.
+
 \subsection{I/O performance}
 
-
-
-
-
-
-- Performance of root filesystem
-	- Access fs of container
-	- Overlay2 fs
-
-- Access to mounted volumes in K8s
-	- Create hostPath persistent volume
-	- Attach
-	- IO
-
-- Attach empty dir to a container
-	- Share fs between to containers in a same pod
-	- RAM and disk
-	- How this is possible?
+- Hypervisors against each other
 
 \subsection{Storage performance}
 
-- Access to mounted volumes in K8s \\
-    - hostPath, emptyDir, local PV \\
-	- Create persistent volume \\
-	- Attach \\
-	- IO
+- Best performing on various block sizes and storage options
 
 \subsection{CPU performance}
 
 The architectural design of Kata Containers adds extra components to the system. Each of these components add overhead to the CPU performance via background processes. In the CPU performance tests, the main question was to measure the overhead and the need for extra cores in comparison to runC. The measurement of CPU performance was implemented by creating workloads and recording the performance with Prometheus. 
 
-- CPU overhead of Kata
-	- How many cores are needed when Kata is used?
-	- From host perspective?
-	- Measure
-		- Create and delete workloads and record the CPU performance
-			- Starting micro-VM might affect the CPU performance
-			- Monitor with Prometheus
+2 cores allocated (1 for workload, 1 for general)
 
 \subsection{Memory performance}
 
-- Measuring performance of memory not important
-
-- Memory overhead
-	- How much the Kata adds to memory used?
-
-\subsection{Network performance}
-
-Networking
-    - Evaluate performance \\
-    - Two networks. What is the difference?
-    - Access to storage not via network, unless NFS(?).
+Memory overhead
 
 \section{Evaluation}
+
+\textcolor{red}{Results?}
+\textcolor{red}{What the results mean?}
