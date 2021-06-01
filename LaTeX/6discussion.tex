@@ -7,8 +7,8 @@ Any gaps in the features or new features for telco environment? \\
 
 \section{Future work}
 
-CPU isolation
-Test I/O performance between pods
+This thesis conducted tests on a single node cluster. In future work, it would be interesting to research the performance more extensively on a multi-node cluster and examine the I/O performance properties of data transfer between containers located in different pods. The container orchestrator in this thesis is K3s, a lightweight version of Kubernetes. However, the majority of production environments are running on the Kubernetes. The future work could use Kubernetes as a container orchestrator to align with the default deployment of cloud computing.
 
+Due to incompatibility issues, the Firecracker runtime and CPU isolation plugin were dropped from the scope. Firecracker is promising container runtime backed by an active community. The evaluation of FC's performance against other runtimes introduced in this thesis would be highly beneficial when selecting the best performing runtime. CPU isolation dedicates a core for workload, eliminating the undesired interruptions to test processes from the system. Enabling this feature would increase the credibility of the test results with the guarantee of non-interrupted test runs.
 
 \section{Conclusion}

@@ -1,13 +1,6 @@
 \chapter{Introduction}
 \label{chapter:intro}
 
-%- Tell more about the Far Edge Clouds \\
-%- How the applications are run in the cloud \\
-%-- Containers in the same environment not from the same origin \\
-%- What features are important? \\
-%-- Performance, multus, acceleration, root privileges \\
-
-
 During the past years, technology companies have widely adopted virtualization technologies such as Docker. The virtualization brings a wide range of improvements to running the application on bare metal. For example, wrapped Docker container applications are highly mobile standalone applications easily deployed on any environment supporting containers with minimal overhead. Also, the virtualized application supports orchestration features such as replication and automatic deployment.
 
 Multi-access edge computing (MEC) greatly benefits from the adaption of virtualization technologies. MEC is a crucial technology enabler for 5G technologies to serve users with low-latency and high-throughput mobile network connections. This shift enables Mobile Network Operators (MNOs) to host various applications in physical proximity to the end-users. Far Edge Cloud (FEC) takes edge computing further by closing the physical distance between to be at a maximum of 5 kilometers. The benefits to MNOs include additional revenues and higher Quality-of-experience; meanwhile, end-users enjoy low-latency, on-premise data computing, and additional location services. However, recently, it has been discovered that container architecture flaws have led to malicious applications escaping the container. As all containers share the host kernel, these malicious applications can compromise the other containers running on the same system. This compromise might lead to a breach of information from the otherwise secure applications and exposes third-part applications to each other via lateral vectors.
@@ -20,13 +13,6 @@ Kata Containers (KC) \cite{KataContainers} has been introduced as a promising so
 The main research question of this thesis is to evaluate the performance of the architecture using Kata Containers as a secure runtime in a Kubernetes orchestrated environment. The performance of Kata Containers is compared against bare metal and the current default of Kubernetes, Docker runtime. This thesis investigates the performance impact of an additional isolation layer to applications with KC as runtime of Far Edge Cloud setting.
 
 FECs support end-user devices with applications, some of which require sophisticated features such as accelerators, direct access to network interface controllers (NICs), and support for multiple parallel network interfaces. The second research question is to map out the possible gaps with the supported features of KC in the FEC setting and propose solutions to overcome the possible deficiency.
-
-%The main research question as: Comparison of Kata Containers to runC in Kubernetes orchestrated environment. What is the performance impact of additional isolation layer to applications with Kata Containers as a runtime in Far Edge Cloud setting?
-
-%The second research question: Are there any gaps with the supported features such as accelerators and Multus?
-
-%One option provides for example Kata Containers which provide runtime utilizing lightweight virtual machine run on top of hypervisor. Challenge for Radio applications is that they have specific requirements on the container runtime features to allow for example use of accelerators, direct access to NICs, support for multiple interfaces (Multus), support for DPDK and ODP based data plane acceleration which require huge pages, support for dedicated and share CPU resources.
-
 
 \section{Scope and Methodology}
 \label{section:intro_scopemethodology}
@@ -42,11 +28,3 @@ The first part evaluates Kata Containers concerning the FEC environment via lite
 \label{section:intro_structure}
 
 Chapter \ref{chapter:cloudcomputing} describes virtualization, cloud computing and FEC environment. This chapter also discusses the requirements of Edge Cloud and the security concerns of Cloud Computing. Chapter \ref{chapter:katacontainers} focuses on the secure runtimes and Kata Containers architecture. The environment and KC are combined in a more practical chapter \ref{chapter:implementation} which implements the runtime in the FEC context and discusses the requirements to the environment and applications. The performance is evaluated thoroughly in chapter \ref{chapter:evaluation} and the performance is analyzed based on the acquired results. The last chapter \ref{chapter:discussion} focuses on the gaps in provided features, discusses the possible improvement factors, and concludes the thesis.
-
-%MEC applications requiring low latency \\
-%Security issues of containers \\
-%Slowness/lack of orchestration in VMs \\
-%Live migration \\
-%KC as a solution \\
-
-%Side channel leaks \\
