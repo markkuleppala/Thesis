@@ -33,7 +33,7 @@ Various storage mediums such as disk or SSD can back emptyDir volumes. However, 
 
 \subsection{Persistent Volume}
 
-Persistent Volume (PV) is a storage piece in the cluster, providing storage having a lifecycle independent of any individual pod using the PV. It is provisioned dynamically or by an administrator. Kubernetes supports filesystem and block-based persistent storage resources, such as Network Filesystem (NFS), SCSI over IP (iSCSI), local storage devices, or AWS Elastic Block Store \cite{AmazonEBS}.\cite{PV}
+PV is a storage piece in the cluster, providing storage having a lifecycle independent of any individual pod using the PV. It is provisioned dynamically or by an administrator. Kubernetes supports filesystem and block-based persistent storage resources, such as Network Filesystem (NFS), SCSI over IP (iSCSI), local storage devices, or AWS Elastic Block Store \cite{AmazonEBS}.\cite{PV}
 
 PVs can be mounted to nodes in Kubernetes with three different access modes: ReadWriteOnce, ReadOnlyMany, and ReadWriteMany. ReadWriteOnce allows only one node for read and write operations. ReadOnlyMany is a read-only mode allowing multiple nodes for simultaneous access. In contrast, ReadWriteMany allows multiple nodes for simultaneous read and write operations. Based on the type of PV, the support for access modes varies. In this Thesis, we will focus on two high-performing PV options, which are hostPath and local. \cite{PV} 
 

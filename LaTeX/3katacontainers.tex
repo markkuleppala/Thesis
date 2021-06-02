@@ -7,7 +7,7 @@ The emergence of container technology provides a lightweight operating-system-le
 
 Service latency is often the most important criteria for selecting a container execution environment. Slow response times can impair the usability of an edge computing infrastructure. Higher service latencies also result in higher average resource utilization and, therefore, in lower achievable throughput \cite{EverartsdeVelp2020}. Meanwhile, securing container runtime is a crucial task in MEC to run multiple instances in the same edge securely. Therefore, multiple solutions have been developed to provide more robust workload isolation using hardware virtualization technology as a second layer of defense. One of the most prominent approaches includes wrapping the container inside a micro VM during run time. Micro VM is a lightweight version of traditional VM with reduced overhead stemming from OS, libraries, dedicated resources, and applications in full VM \cite{Flauzac2020}. Micro VM includes a separate mini kernel to create an isolated environment for the container \cite{Kumar2020}. This dedicated kernel of micro VM provides isolation of network, I/O, and memory and can utilize hardware-enforced isolation with virtualization extensions. In this Thesis, we will focus on Kata Containers as a secure container runtime. Kata Containers perform like containers but provide the workload isolation and security advantages of VMs. Thus, combining the benefits of containers and VMs. \cite{KataContainers}
 
-KC is open source and licensed under the Apache 2.0 license. An Architecture Committee drives the development. Contributors elect the committee's members, who oversee architectural decisions, such as standardization, and resolve technical disagreements between project maintainers. Currently, five members from Apple, Intel, Ant Financial, and Red Hat comprise the committee. \cite{KataContainers}\cite{KataContainersGovernance}
+Kata Containers is open source and licensed under the Apache 2.0 license. An Architecture Committee drives the development. Contributors elect the committee's members, who oversee architectural decisions, such as standardization, and resolve technical disagreements between project maintainers. Currently, five members from Apple, Intel, Ant Financial, and Red Hat comprise the committee. \cite{KataContainers}\cite{KataContainersGovernance}
 
 \section{Architecture}
 
@@ -15,7 +15,7 @@ Kata Containers originates from Intel's Clear Containers \cite{ClearContainers} 
 
 Kubernetes is the container orchestrator and resource manager for automating deployment. Runtime and shim integrate to container manager such as containerd. The runtime uses a hypervisor to provide isolation by creating a lightweight VM for each container and then running containerd inside the VM. The Kata container project has introduced a daemon that runs inside the kata-agent virtual machine for managing the containers. This agent uses libcontainer to manage the lifecycle of a container. Kata uses a highly optimized guest kernel to boot the virtual machine, which offers minimal memory usage and fast boot time. This guest kernel provides a better isolated environment for containers than the traditional security mechanisms of process isolation in containers. \cite{Kumar2020}
 
-Kata Containers, which the OpenStack Foundation stewards, supports industry standards and has been designed along with the OCI specifications, thus it supports all the OCI runtime operations \cite{Kumar2020}. As any OCI compliant runtime, the KC works seamlessly with the Kubernetes Container Runtime Interface (CRI)\cite{CRI}, as well as legacy virtualization technologies, through the container manager such as containerd or CRI-O implementation \cite{Randazzo2019}.
+Kata Containers, which the OpenStack Foundation stewards, supports industry standards and has been designed along with the OCI specifications, thus it supports all the OCI runtime operations \cite{Kumar2020}. As any OCI compliant runtime, the Kata Containers works seamlessly with the Kubernetes Container Runtime Interface (CRI)\cite{CRI}, as well as legacy virtualization technologies, through the container manager such as containerd or CRI-O implementation \cite{Randazzo2019}.
 
 \begin{figure}[ht]
   \begin{center}
@@ -58,7 +58,7 @@ However, gRPC requires a lot of memory overhead for importing packages and at ru
 
 \subsection{Hypervisor}
 
-VM of Kata Containers instance is launched by Virtual Machine Monitor (VMM). VMM consists of Virtual Machine Manager and a hypervisor. Kata Containers currently supports four different VMMs: ACRN hypervisor, Cloud Hypervisor, QEMU, and Firecracker. All these VMMs are open-source projects.
+VM of Kata Containers instance is launched by VMM, which consists of Virtual Machine Manager and a hypervisor. Kata Containers currently supports four different VMMs: ACRN hypervisor, Cloud Hypervisor, QEMU, and Firecracker. All these VMMs are open-source projects.
 
 ACRN, a reference hypervisor, is built to meet the needs of embedded IoT development. It is developed with low overhead, fast boot-up, and configurations to support various devices and deployment scenarios. ACRN is a type 1 reference hypervisor stack that runs on bare-metal hardware, addressing the gap between data center hypervisors and hard partitioning hypervisors. \cite{ACRN}
 
@@ -68,7 +68,7 @@ QEMU is a generic machine, userspace emulator, and virtualizer. QEMU is capable 
 
 Machine accelerators are architecture-specific for improving performance. One of these enables direct access storage, allowing sharing the host rootfs in read-only mode to a persistent memory device to the VMs. Kernel same-page merging is a KVM feature that allows sharing identical memory pages amongst different VMs. This sharing deduplicates memory to maximize container density on a host. Hot-plug devices allow VMs to start with minimum resources for faster boot time and a tiny memory footprint. The hypervisor allocates the VM more resources as soon as requested by hot-plugging devices on the fly. Fast Template is a pool of pre-configured lightweight VMs ready to deploy quickly. \cite{Randazzo2019}
 
-Amazon Web Services (AWS) develops Firecracker VMM. Firecracker uses KVM to launch workload in lightweight micro virtual machines. Of Amazon's cloud products, Firecracker is deployed at least in AWS Lambda and Fargate. Firecracker currently supports Intel CPUs, with AMD and Arm support in developer preview. \cite{AWS}\cite{FirecrackerDesign}\cite{Debab2021}
+Firecracker is community driven VMM, backed and originally developed by AWS. Firecracker uses KVM to launch workload in lightweight micro virtual machines. Of Amazon's cloud products, Firecracker is deployed at least in AWS Lambda and Fargate. Firecracker currently supports Intel CPUs, with AMD and Arm support in developer preview. \cite{AWS}\cite{FirecrackerDesign}\cite{Debab2021}
 
 \subsection{Agent}
 
