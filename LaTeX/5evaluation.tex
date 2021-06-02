@@ -23,7 +23,7 @@ The test environment, visualized in Figure \ref{fig:TestArchitectureCluster}, is
 The tests of this thesis aim to measure the possible performance degradation of I/O operations and additional CPU and memory resource consumption due to the Kata Containers architecture. A dedicated server
 hosts the test environment, and it is built and tailored to support edge and far edge cloud deployments. The server includes an Intel Xeon 6212U CPU with 24 cores and 48 threads with x86 architecture at 2.40 GHz clock-speed and 192GB of DDR4 memory at 2933 MHz clock speed, which is shared to the cluster.
 
-The performance tests run with Fio \cite{FIO}, an I/O performance tester intending to simulate a variety of I/O workloads without resorting to writing tailored test cases repeatedly. Fio supports various test configurations such as multiple threads, block sizes, I/O sizes, and I/O patterns. In this thesis, the tests are time-based, where each test runs for 30 seconds. The file size of each writable file is 2 GB. The Fio job file is described in Appendix \ref{appendix:fio_jobfile}. Each test is repeated three times, and averaging the results. Table \ref{table:TestMatrix} describes the test combination matrix. In the tests, each combination is sampled, resulting in 1200 different test scenarios. 
+The performance tests run with Fio \cite{FIO}, an I/O performance tester intending to simulate a variety of I/O workloads without resorting to writing tailored test cases repeatedly. Fio supports various test configurations such as multiple threads, block sizes, I/O sizes, and I/O patterns. In this thesis, the tests are time-based, where each test runs for 30 seconds. The file size of each writable file is 2 GB. The Fio job file is described in Appendix \ref{appendix:fio_jobfile}. Each test is repeated three times, and averaging the results. Table \ref{table:TestMatrix} describes the test combination matrix. In the tests, each possible combination is sampled, resulting in 1632 different test scenarios. 
 
 \begin{table}[ht]
 \centering
@@ -35,13 +35,19 @@ The performance tests run with Fio \cite{FIO}, an I/O performance tester intendi
 \hline
 Bare metal & 1 & 512 & read & emptyDir (memory) \\
 \hline
-runC & 2 & 2048 & write & emptyDir (disk) \\ 
+runC & 2 & 1024 & write & emptyDir (disk) \\ 
 \hline
-CLH & 3 & 8192 & randread & local (PV) \\
+CLH & 3 & 2048 & randread & local (PV) \\
 \hline
-QEMU & & 16384 & randwrite & hostPath \\
+QEMU & & 4096 & randwrite & hostPath \\
 \hline
-QEMU VirtioFS & & 65536 & & \\
+QEMU VirtioFS & & 8192 & & \\
+\hline
+& & 16384 & & \\
+\hline
+& & 32768 & & \\
+\hline
+& & 65536 & & \\
 \hline
 \end{tabular}
 \label{table:TestMatrix}
@@ -55,16 +61,15 @@ Fio test suite is wrapped inside a Docker image with a Linux OS Alpine \cite{Alp
 
 Each test is run on isolated resources, and final results are averaged out of three tests. Fio provides a comprehensive catalog of parameters as test results, of which the most important ones are completion latency, IOPS, and IO throughput. Completion latency describes the completion time in milliseconds for key percentiles such as 50\% and 99.99\%. IOPS is the number of I/O operations per second. IO throughput or bandwidth in megabytes per second is the sum of block size multiplied by IOPS. Bare-metal test results work as a benchmark of the best-case scenario.
 
-Previous work \cite{EverartsdeVelp2020}\cite{Kumar2020}\cite{StackHPCKata}\cite{Randazzo2019} on measuring Kata Container's performance resulted in highly unified performance between bare-metal and runC. In read and write tests, runC slightly outperformed the tested Kata Containers setups with faster throughput and lower resource usage. However, the results of these papers varied due to the diversity in underlying infrastructure and the difference in test frameworks. None of these researches tested the whole spectrum of hypervisors and various storage options offered in the Kubernetes environment.
+Previous work \cite{EverartsdeVelp2020}\cite{Kumar2020}\cite{StackHPCKata}\cite{Randazzo2019} on measuring Kata Containers' performance resulted in highly unified performance between bare-metal and runC. In read and write tests, runC slightly outperformed the tested Kata Containers setups with faster throughput and lower resource usage. However, the results of these papers varied due to the diversity in underlying infrastructure and the difference in test frameworks. None of these researches tested the whole spectrum of hypervisors and various storage options offered in the Kubernetes environment.
 
 \subsection{I/O performance}
 
-The hypervisor of Kata Containers adds its overhead to the performance. The main focus of I/O tests is to evaluate the performance of Kata Containers with various hypervisors against the runC runtime and determine the inherent performance metrics of each hypervisor. As described in Table \ref{table:TestMatrix}, the test includes three different hypervisors: CLH, QEMU, and QEMU with virtio-fs.
+The hypervisor of Kata Containers adds its overhead to the performance. The main focus of I/O tests is to evaluate the performance of Kata Containers with various hypervisors against the runC runtime and determine the inherent performance metrics of each hypervisor. As described in Table \ref{table:TestMatrix}, the test includes three different Kata Containers hypervisors: CLH, QEMU, and QEMU with virtio-fs.
 
 \subsection{Storage performance}
 
 Kubernetes offers multiple storage options for various deployments, and each of these options offers slightly different performance and features. The tests include four storage options suitable for the telco environment: disk and memory-based emptyDir, hostPath as Persistent Volume, and hostPath. The main focus is to evaluate these storage methods concerning block sizes between 512 bytes and 64 KBs and concurrent jobs from one to three. It is essential to make the distinction of evaluating the best option for non-persistent and persistent volumes.
-
 
 \subsection{CPU performance}
 
