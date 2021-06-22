@@ -25,7 +25,7 @@ hosts the test environment, and it is built and tailored to support edge and far
 
 The host runs CentOS 8 and uses Linux kernel version 4.18.0-240.22.1, which affects mostly bare-metal and runC environments. In Kata Containers, CLH and QEMU with VirtioFS use version 5.6.0, where as QEMU uses slightly older version of 5.4.60. The difference in kernel versions might affect the performance results due to optimization in resource usage and I/O operations. The server uses Intel's SSD \cite{IntelSSD} as a persistent storage. The theoretical maximum bandwidth for sequential read operations is up to 560 MB/s and 510 MB/s for write operations.
 
-The performance tests run with Fio \cite{FIO}, an I/O performance tester intending to simulate a variety of I/O workloads without resorting to writing tailored test cases repeatedly. Fio supports various test configurations such as multiple threads, block sizes, I/O sizes, and I/O patterns. In this thesis, the tests are time-based, where each test runs for 30 seconds. The file size of each writable file is 2 GB. The Fio job file is described in Appendix \ref{appendix:fio_jobfile}. Each test is repeated three times, and averaging the results. Table \ref{table:TestMatrix} describes the test combination matrix. In the tests, each possible combination is sampled, resulting in 1632 different test scenarios. 
+The performance tests run with Fio \cite{FIO}, an I/O performance tester intending to simulate a variety of I/O workloads without resorting to writing tailored test cases repeatedly. Fio supports various test configurations such as multiple threads, block sizes, I/O sizes, and I/O patterns. In this thesis, the tests are time-based, where each test runs for 30 seconds. The file size of each writable file is 2 GB. The Fio job file is described in Appendix \ref{appendix:fio_jobfile}. Each test is repeated three times, and averaging the results. Table \ref{table:TestMatrix} describes the test combination matrix. In the tests, each possible combination is sampled, resulting in 1428 different test scenarios. As a minor note, bare-metal allows only tests with one storage volume, which can be compared towards a Persistent Volume using whole system's storage capacity.
 
 \begin{table}[ht]
 \centering
@@ -45,8 +45,6 @@ QEMU & & 4096 & randwrite & hostPath \\
 \hline
 QEMU VirtioFS & & 8192 & & \\
 \hline
-& & 16384 & & \\
-\hline
 & & 32768 & & \\
 \hline
 & & 65536 & & \\
@@ -61,17 +59,76 @@ Fio test suite is wrapped inside a Docker image with a Linux OS Alpine \cite{Alp
 
 \section{Results}
 
-Each test is run on isolated resources, and final results are averaged out of three tests. Fio provides a comprehensive catalog of parameters as test results, of which the most important ones are completion latency, IOPS, and IO throughput. Completion latency describes the completion time in milliseconds for key percentiles such as 50\% and 99.99\%. IOPS is the number of I/O operations per second. IO throughput or bandwidth in megabytes per second is the sum of block size multiplied by IOPS. Bare-metal test results work as a benchmark of the best-case scenario.
-
 Previous work \cite{EverartsdeVelp2020}\cite{Kumar2020}\cite{StackHPCKata}\cite{Randazzo2019} on measuring Kata Containers' performance resulted in highly unified performance between bare-metal and runC. In read and write tests, runC slightly outperformed the tested Kata Containers setups with faster throughput and lower resource usage. However, the results of these papers varied due to the diversity in underlying infrastructure and the difference in test frameworks. None of these researches tested the whole spectrum of hypervisors and various storage options offered in the Kubernetes environment.
 
-\subsection{I/O performance}
+The hypervisor of Kata Containers adds its resource and latency overhead to the performance. The focal point of I/O tests is to evaluate the performance of Kata Containers with various hypervisors against the runC runtime and determine the inherent performance metrics of each hypervisor, but also to evaluate to storage volume performance. As described in Table \ref{table:TestMatrix}, the test includes three different Kata Containers hypervisors: CLH, QEMU, and QEMU with VirtioFS. Secure container runtimes leveraging micro VM include hypervisor to the stack. This hypervisor includes its own cache highly increasing the performance in comparison to bare-metal and runC. This feature restricts the possible comparison of bare-metal's and runC's performance evaluation to secure runtimes.
 
-The hypervisor of Kata Containers adds its overhead to the performance. The main focus of I/O tests is to evaluate the performance of Kata Containers with various hypervisors against the runC runtime and determine the inherent performance metrics of each hypervisor. As described in Table \ref{table:TestMatrix}, the test includes three different Kata Containers hypervisors: CLH, QEMU, and QEMU with virtio-fs.
+Kubernetes offers multiple storage options for various deployments, and each of these options offers slightly different performance and features. The tests include four storage options suitable for the telco environment: disk and memory-based emptyDir, hostPath as Persistent Volume, and hostPath. The second key point of the tests is to evaluate these storage methods concerning block sizes between 512 bytes and 64 KBs and concurrent jobs from one to three. It is essential to make the distinction of evaluating the best option for non-persistent and persistent volumes.
 
-\subsection{Storage performance}
+Tests are run individually to minimize interference, and the final results are averaged out of three test runs. Fio provides a comprehensive catalog of parameters as test results. These test results are divided into two categories, which are bandwidth and completion latency. Bandwidth, or IO throughput in megabytes per second, is the sum of block size multiplied by I/O operations per second. Bare-metal test results work as a benchmark of the best-case scenario where applicable. Completion latency describes the completion time in milliseconds for key percentiles such as 50\% and 99\%. 
 
-Kubernetes offers multiple storage options for various deployments, and each of these options offers slightly different performance and features. The tests include four storage options suitable for the telco environment: disk and memory-based emptyDir, hostPath as Persistent Volume, and hostPath. The main focus is to evaluate these storage methods concerning block sizes between 512 bytes and 64 KBs and concurrent jobs from one to three. It is essential to make the distinction of evaluating the best option for non-persistent and persistent volumes.
+\subsection{Bandwidth}
+
+Figure \ref{fig:ResultsVolumeByRTC4096-1} visualizes the effect of runtime class for read or write bandwidth for the four storage volumes. Bare-metal is not comparable with memory-based emptyDir, due to significantly different performance features, and thus it is not plotted for emptyDir on memory. Memory-based emptyDir achieves the highest bandwidth as it reaches over 2 GB/s with sequential read and over 1.9 GB/s with sequential write for all runtimes. The performance slightly degrades for random pattern read and write operations, but achieves over 1.5 GB/s performance for all runtimes. Hypervisor-based runtimes seem to perform highly alike, with only minor differences between them. Based on the acquired test results in Figure \ref{fig:ResultsPVByBS-1}, CLH outperforms QEMU-based runtime classes in tests with smaller block sizes, 512 to 8192. The trends flips for tests with block sizes 32768 and 65536. Due to the caching, bare-metal and runC are not comparable against Kata Container runtimes.
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=12cm]{results/subplot_bw_by_volume_with_bare(4096,1).pdf}
+    \caption{Comparison of volume performance by runtime classes for 4096 bytes block size and one job}
+    \label{fig:ResultsVolumeByRTC4096-1}
+  \end{center}
+\end{figure}
+
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=12cm]{results/subplot_bw_by_bs_with_bare(pv,1).pdf}
+    \caption{Bandwidth comparison for Persistent Volume by block sizes for all runtime classes with one job}
+    \label{fig:ResultsPVByBS-1}
+  \end{center}
+\end{figure}
+ 
+
+%%%
+
+Random pattern read and write operations degrade the performance for all runtimes. However, due to the performance of ED mem is degraded only by 250 to 500 MB/s, or XX\% on average. 
+
+Due to the caching property of VMs, the read and randread are significantly better performing in comparison to bare-metal and runC. The numbers flip for read and randread operations to non-hypervisor runtimes' advantage, which shares the more realistic view of the performance features.
+
+Memory-based volume outperforms SSD-based storages for two reasons. The bandwidth is higher latency 
+Memory-based emptyDir volume is at most 50\% of the memory assigned to the VM \cite{VolumesKubernetes}. In these tests, the VMs are assigned with 16 GB of memory, thus the memory-based emptyDir allows at most 8 GB volume. This is slightly smaller in relation to disk-based storage mediums ED disk and PV, which are assigned with 10 GB volume. The smaller size of faster seek of the whole span of storage volume for read operations, especially the random read.
+
+
+
+
+Figures \ref{fig:ResultsEDMEMClatByRTC4096-2} and \ref{fig:ResultsHPClatByRTC4096-2} visualize the performance for completion latency for emptyDir on memory and hostPath volumes by all runtime classes with 4096 byte block sizes and two concurrent jobs. The plots include latencies for 50th and 99th percentile completion of the tasks. RunC narrowly outperforms VM-based runtime classes in memory-based emptyDir by 3 to 10 ms margin. This difference indicates the overhead from the micro VM to memory-based operations. The tail for memory-based volume operations is relatively small when compared to disk-based emptyDir. Figure \ref{fig:ResultsHPClatByRTC4096-2} includes also bare-metal for comparison in hostPath volume. In overaall, bare-metal and runC performs the best with the lowest latencies. Read operations are skewed in favor of micro VMs due to the caching. Surprisingly, the tail for bare-metal and runC grows long with the last 5 percentiles.
+
+Write operations are less affected with the caching and can be more reliably compared. Bare-metal and runC perform with highly similar results. The first task is completed with 17-19 ms overhead and 50th percentile stands at 18-24 ms. RunC adds only 2 ms, or 7-8.5\% increment to the bare-metal benchmark for 99th percentile. Respectively, micro VM runtimes completes first task at around 200 ms. 50th and 99th percentile is completed at 218-231 ms and 258-272 ms, which is more than 200 ms addition.
+
+\subsection{Completion latency}
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=12cm]{results/subplot_clat_bw_by_rw(emptydir-memory,2,4096).pdf}
+    \caption{Completion latency for memory-based emptyDir by runtime classes for 4096 bytes block size and two jobs}
+    \label{fig:ResultsEDMEMClatByRTC4096-2}
+  \end{center}
+\end{figure}
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=12cm]{results/subplot_clat_bw_by_rw(hostpath,2,4096).pdf}
+    \caption{Completion latency for hostPath by runtime classes for 4096 bytes block size and two jobs}
+    \label{fig:ResultsHPClatByRTC4096-2}
+  \end{center}
+\end{figure}
+
+Comparing bare-metal, runC, and Kata Containers runtimes are slightly challenging in terms of storage performance for multiple reasons. For read operations, especially random read, the span varies significantly, but caching skews the results significantly. Test environments orchestrated by Kubernetes are launched with Persistent Volume Claim of 10 GBs, whereas bare-metal read operations use the whole 100\% span of the 480 GB SSD \cite{IntelSSD} highly dropping the performance as the operations span across wider range in the SSD.
+
+Hypervisor caching highly affects the confidence in the test results for read operations, especially random pattern read. When fetching data from a storage volume, the system first checks memory-based cache for the request data. If it is found, the seek on a storage volume is skipped. As the size of each job file in Fio was relatively small, the hit for random read request is found often skewing the results in favor of Kata Containers runtimes. This effect of caching is clearly visible in Figure \ref{fig:ResultsVolumeByRTC4096-1} where Kata Containers runtimes outperform bare-metal and runC in all disk-based sequential and random pattern read tests by a clear margin. The same skew is also visible in Figure \ref{fig:ResultsHPClatByRTC4096-2}, where completion latency is lower for hostPath read operations.
+
+The performance of disk-based volumes is highly correlated, with no difference in performance for persistent and non-persistent volumes. As visualized in Figure \ref{} Disk-based emptyDir offers slightly better performance in comparison to hostPath and Persistent Volume. However, emptyDir volume is temporary and offers no storage over container or Pod reboot. The performance of VM-based runtimes perform highly alike with only minor differences.
+
+
 
 \subsection{CPU performance}
 
@@ -84,6 +141,8 @@ The architectural design of Kata Containers adds extra components to the system.
 Memory overhead
 
 \section{Evaluation}
+
+Key points here.
 
 \textcolor{red}{Results?}
 \textcolor{red}{What the results mean?}
