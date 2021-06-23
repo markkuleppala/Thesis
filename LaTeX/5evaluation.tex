@@ -35,7 +35,7 @@ The performance tests run with Fio \cite{FIO}, an I/O performance tester intendi
 \hline
 \textbf{Runtime} & \textbf{Jobs} & \textbf{Block size} & \textbf{I/O pattern} & \textbf{I/O device} \\ 
 \hline
-Bare metal & 1 & 512 & read & emptyDir (memory) \\
+Bare-metal & 1 & 512 & read & emptyDir (memory) \\
 \hline
 runC & 2 & 1024 & write & emptyDir (disk) \\ 
 \hline
@@ -53,9 +53,9 @@ QEMU VirtioFS & & 8192 & & \\
 \label{table:TestMatrix}
 \end{table}
 
-The test matrix consists of five columns: runtime, jobs, block size, I/O pattern, and I/O device, the runtime of the tests refers to the container runtime or hypervisor. In the case of bare metal, the test is run on the host without containerization. In bare-metal test runs, the performance test is launched with CPU affinity to an isolated CPU with taskset \cite{taskset} command. Jobs refer to the number of concurrent clones. Each clone of the job is spawned as an independent thread or process. Block size is the size in bytes for I/O units applying for reads and writes. I/O pattern has sequential and random pattern reads and writes. I/O type of the test is buffered. I/O device refers to the storage media used for the test destination. EmptyDir is created on the container, whereas the host maintains local Persistent Volume and hostPath.
+The test matrix consists of five columns: runtime, jobs, block size, I/O pattern, and I/O device, the runtime of the tests refers to the container runtime or hypervisor. In the case of bare-metal, the test is run directly on the host without containerization. In bare-metal test runs, the performance test is launched with CPU affinity to an isolated CPU with taskset \cite{taskset} command. Jobs refer to the number of concurrent clones. Each clone of the job is spawned as an independent thread or process. Block size is the size in bytes for I/O units applying for reads and writes. I/O pattern has sequential and random pattern reads and writes. I/O type of the test is buffered. I/O device refers to the storage media used for the test destination. EmptyDir is created on the container, whereas the host maintains local Persistent Volume and hostPath.
 
-Fio test suite is wrapped inside a Docker image with a Linux OS Alpine \cite{Alpine}, which aims to deliver general-purpose Linux with security, simplicity, and resource efficiency. The tests are deployed with Helm\cite{Helm}, a package manager for Kubernetes helping with the deployment of applications. The Kubernetes Pods are deployed as Guaranteed Quality-of-Service with two CPUs and 18GB of memory to support the tests. However, each Kata Containers VM and runC container gets assigned with only 1 CPU. This restriction allows comparing tests to bare metal tests run on an isolated single CPU environment. The system performance, to measure CPU and memory overhead, is logged with Prometheus and Grafana.
+Fio test suite is wrapped inside a Docker image with a Linux OS Alpine \cite{Alpine}, which aims to deliver general-purpose Linux with security, simplicity, and resource efficiency. The tests are deployed with Helm\cite{Helm}, a package manager for Kubernetes helping with the deployment of applications. The Kubernetes Pods are deployed as Guaranteed Quality-of-Service with two CPUs and 18GB of memory to support the tests. However, each Kata Containers VM and runC container gets assigned with only 1 CPU. This restriction allows comparing tests to bare-metal tests run on an isolated single CPU environment. The system performance, to measure CPU and memory overhead, is logged with Prometheus and Grafana.
 
 \section{Results}
 
@@ -127,9 +127,6 @@ Write operations are less affected by the caching and can be more reliably compa
 
 Caching of the hypervisor significantly affects the received performance results, and limits the absolute measurement of the micro VM's overhead. However, some objections can be derived from the acquired results with a great confidence. Firstly, Kata Containers acquires close to runC's performance with memory-based emptyDir I/O operations with XXX\% decrease in I/O operations and approximately 8\% increase in completion latency.
 
+Kata Containers adds latency to task completion for disk-based operations. For hostPath, the added latency averages around 250 ms even for the first percentile to complete. It is evident, that the architecture of Kata Containers includes a constant delay for the tasks, which stems from the data passing through more components, such as, kata-agent and the hypervisor, whereas runC relies on more simple environment. The similar performance trend follows in other disk-based volumes.
 
-
-\textcolor{red}{What the results mean?}
-
-
-% Overhead of 4kB eD mem BW
+Block size of the performance test also affects the results. For smaller block sizes between 512 and 8192, CLH outperforms QEMU-based runtime classes. However, the trend flips for the largest two block sizes in favor of QEMU and QEMU with VirtioFS.
