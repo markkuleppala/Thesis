@@ -1,8 +1,7 @@
 \chapter{Discussion}
 \label{chapter:discussion}
 
-Kata Containers' performance lacks behind the runC's performance in bandwidth and completion latency. Due to the caching of the hypervisor, no precise overhead number can be drawn from these tests for reading operations. For write operations, the overhead is around XXX.
-Kata Containers can add up to 500 ms to completion latency for the 50th percentile. The performance of Kata Containers also highly depends on the underlying system, such as memory-based storage volume, where the overhead is more negligible. However, proportionally in disk-based volumes, the overhead grows larger.
+Kata Containers' performance lacks behind the runC's performance in bandwidth and completion latency. Due to the caching of the hypervisor, no precise overhead number can be drawn from these tests for reading operations. For write operations, the overhead is around 33-40\% for the most common block size. Kata Containers can add up to 500 ms to completion latency for the 50th percentile. The performance of Kata Containers also highly depends on the underlying system, such as memory-based storage volume, where the overhead is more negligible. However, proportionally in disk-based volumes, the overhead grows larger.
 
 The provided performance could be enough for non-performance critical applications which require no real-time data processing and transmission, such as logging. However, applications with strict requirements for latency and bandwidth might find the added overhead more harmful than the increased security. Luckily, the Kubernetes environment can run multiple runtimes simultaneously, allowing the assignment of the most suitable runtime for each situation. So, for example, trusted and performance-critical applications could be assigned with runC, and untrusted workloads with no strict requirements could harness Kata Containers.
 

@@ -72,8 +72,7 @@ Tests are run individually to minimize interference, and the final results are a
 Figure \ref{fig:ResultsVolumeByRTC4096-1} visualizes the effect of runtime class for reading or write bandwidth for the four storage volumes. Bare-metal is not comparable with memory-based emptyDir, due to significantly different performance features, and thus it is not plotted for emptyDir on memory. Memory-based emptyDir achieves the highest bandwidth as it reaches over 2 GB/s with sequential read and over 1.9 GB/s with sequential write for all runtimes. The performance slightly degrades for random pattern read and write operations but achieves over 1.5 GB/s performance for all runtimes. Hypervisor-based runtimes seem to perform highly alike, with only minor differences between them. Based on the acquired test results in Figure \ref{fig:ResultsPVByBS-1}, CLH outperforms QEMU-based runtime classes in tests with smaller block sizes, 512 to 8192. The trends flip for tests with block sizes 32768 and 65536. Due to the caching, bare-metal and runC are not comparable against Kata Container runtimes in reading operations.
 
 Hypervisor caching highly affects the confidence in the test results for reading operations, especially random pattern read. When fetching data from a storage volume, the system first checks the memory-based cache for the request data. If it is found, the seek on a storage volume is skipped. As the size of each job file in Fio was relatively small, the hit for the random read request is found, often skewing the results in favor of Kata Containers runtimes. This effect of caching is visible in Figure \ref{fig:ResultsVolumeByRTC4096-1} where Kata Containers runtimes outperform bare-metal and runC in all disk-based sequential and random pattern read tests by a clear margin. The same skew is also visible in Figure \ref{fig:ResultsHPClatByRTC4096-2}, where completion latency is lower for hostPath read operations.
-
-
+s
 \begin{figure}[ht]
   \begin{center}
     \includegraphics[width=12cm]{results/subplot_bw_by_volume_with_bare(4096,1).pdf}
@@ -82,9 +81,11 @@ Hypervisor caching highly affects the confidence in the test results for reading
   \end{center}
 \end{figure}
 
-For sequential write operations, runC averages XXX-YYY MB/s on disk-based volumes. The sequential write operations perform poorly in 4 kB and bigger block sizes. In contrast, Kata Containers runtimes perform steadily, averaging XXX-YYY MB/s. In random write operations, runC performs similarly; however, hostPath performs the worst across all block sizes. Kata Containers runtimes perform on the same level, with no clear differences. The performance of disk-based volumes is highly correlated, with no difference in performance for persistent and non-persistent volumes.
-
+For write operations, runC averages 224 MB/s on sequential and 201 MB/s on random pattern with disk-based volumes. In contrast, Kata Containers runtimes perform very similarly, averaging 131-135 MB/s on sequential and 127-129 MB/s on random pattern write operations. This change is radical in comparison to the performance of memory-based emptyDir, which suggests leveraging memory for as much as possible. Kata Containers runtimes perform on the same level, with no clear differences in the performance across them. The performance of disk-based volumes is highly correlated, with no difference in performance for persistent and non-persistent volumes for Kata Containers runtimes.
+    
 Figure \ref{fig:ResultsPVByBS-1} visualizes the effect of block size on the bandwidth on Persistent Volume. The caching affects Kata Containers' runtimes results, interfered with by reading and writing operations over-performing the maximum disk bandwidth. Also, in this test, the bandwidth performance of Kata Containers runtimes makes no apparent difference.
+
+%The sequential write operations perform poorly in 4 kB and bigger block sizes???
 
 \begin{figure}[ht]
   \begin{center}
@@ -93,11 +94,6 @@ Figure \ref{fig:ResultsPVByBS-1} visualizes the effect of block size on the band
     \label{fig:ResultsPVByBS-1}
   \end{center}
 \end{figure}
- 
-
-%%%
-Random pattern read and write operations degrade the performance for all runtimes. However, ED mem's performance is degraded only by 250 to 500 MB/s or XX\% on average. 
-%%%
 
 Memory-based volume outperforms SSD-based storage volumes for two reasons. The bandwidth of memory is significantly higher due to architectural differences. Meanwhile, the latency of operations drops close to real-time. Memory-based emptyDir volume is at most 50\% of the memory assigned to the VM \cite{VolumesKubernetes}. The VMs are assigned with 16 GB of memory; thus, the memory-based emptyDir allows at most 8 GB volume. This storage allocation is slightly smaller concerning disk-based storage mediums ED disk and PV. Test environments orchestrated by Kubernetes are launched with a Persistent Volume Claim of 10 GBs. In contrast, bare-metal read operations use the whole 100\% span of the 480 GB SSD \cite{IntelSSD} highly dropping the performance as the operations span across a broader range in the SSD. The smaller volume size allows random seeks to hit with higher confidence, thus increasing the bandwidth of random read operations.
 
@@ -125,8 +121,8 @@ Write operations are less affected by the caching and can be more reliably compa
 
 \section{Evaluation}
 
-Caching of the hypervisor significantly affects the received performance results, and limits the absolute measurement of the micro VM's overhead. However, some objections can be derived from the acquired results with a great confidence. Firstly, Kata Containers acquires close to runC's performance with memory-based emptyDir I/O operations with XXX\% decrease in I/O operations and approximately 8\% increase in completion latency.
+Caching of the hypervisor significantly affects the received performance results, and limits the absolute measurement of the micro VM's overhead. However, some objections can be derived from the acquired results with a great confidence. Firstly, Kata Containers acquires close to runC's performance with memory-based emptyDir I/O operations with approximately 8\% increase in completion latency for 4 kB block size. 
 
-Kata Containers adds latency to task completion for disk-based operations. For hostPath, the added latency averages around 250 ms even for the first percentile to complete. It is evident, that the architecture of Kata Containers includes a constant delay for the tasks, which stems from the data passing through more components, such as, kata-agent and the hypervisor, whereas runC relies on more simple environment. The similar performance trend follows in other disk-based volumes.
+Kata Containers adds overhead to bandwidth and latency to task completion for disk-based operations. In disk-based write operations, the bandwidth overhead is approximately 33-40\% in comparison to runC. For hostPath, the added latency averages around 250 ms even for the first percentile to complete. It is evident, that the architecture of Kata Containers includes a constant delay for the tasks, which stems from the data passing through more components, such as, kata-agent and the hypervisor, whereas runC relies on more simple environment. The similar performance trend follows in other disk-based volumes.
 
 Block size of the performance test also affects the results. For smaller block sizes between 512 and 8192, CLH outperforms QEMU-based runtime classes. However, the trend flips for the largest two block sizes in favor of QEMU and QEMU with VirtioFS.
