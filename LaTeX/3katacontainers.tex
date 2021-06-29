@@ -59,6 +59,7 @@ gRPC manages the container engine, which is containerd in this Thesis. Using gRP
 However, gRPC requires a lot of memory overhead for importing packages and at runtime. While this is great for many services with low-density requirements, this can be a problem when running a large number of services on a single machine or a machine with a small amount of memory. ttRPC also offers harnessed security by limiting attack surface and improved observability via metrics about the runtime itself, the VMM, as well as the guest kernel. Kata Shim V2 offers the support for ttRPC protocol to communicate with the agent. \cite{ttRPC}
 
 \subsection{Hypervisor}
+\label{subsection:Hypervisor}
 
 VM of Kata Containers instance is launched by VMM, which consists of Virtual Machine Manager and a hypervisor. Kata Containers currently supports four different VMMs: ACRN hypervisor, Cloud Hypervisor, QEMU, and Firecracker. All these VMMs are open-source projects.
 
