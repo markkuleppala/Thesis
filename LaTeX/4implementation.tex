@@ -9,7 +9,7 @@ Telecommunication applications are computing heavy, which require efficient usag
 
 The core isolation is accomplished with a specific Kubernetes plugin, such as Intel CMK \cite{IntelCMK} or Nokia CPU Pooler \cite{NokiaCPUPooler}. These plugins manage predefined physically separated pools of resources between applications. CPU Pooler supports two explicit types of CPU pools; exclusive and shared. Kubernetes allocates resources to a container on container creation. If the container has not requested specific resources from these pools, it will be assigned to a third, named default, pool. The exclusive pool allows applications for uninterrupted resources and is preferred for latency-sensitive workloads.
 
-Kata Containers the architecture includes a Kata-agent and a guest kernel for each pod as described in Figure \ref{fig:KataContainersComponents}. These resources need to be assigned to a second core, a shared resource between other pods, or a core of the exclusive pool. The shared resources, defined by shared and default pools, can also host general cluster components such as monitoring and DNS.
+Kata Containers the architecture includes a Kata-Agent and a guest kernel for each pod as described in Figure \ref{fig:KataContainersArchitecture}. These resources need to be assigned to a second core, a shared resource between other pods, or a core of the exclusive pool. The shared resources, defined by shared and default pools, can also host general cluster components such as monitoring and DNS.
 
 \section{Memory}
 
