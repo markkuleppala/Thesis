@@ -1,7 +1,7 @@
 \chapter{Introduction}
 \label{chapter:intro}
 
-During the past years, technology companies have widely adopted virtualization technologies such as Docker. The virtualization brings a wide range of improvements to running the application on bare-metal. For example, wrapped Docker container applications are highly mobile standalone applications easily deployed on any environment supporting containers with minimal overhead. Also, the virtualized application supports orchestration features such as replication and automatic deployment. These virtualization technologies are leveraged in various parts of the mobile broadband network.
+During the past years, technology companies have widely adopted hardware virtualization technologies such as Docker. This virtualization allows a dynamic sharing of computing resources between applications running on the host system. The virtualization brings a wide range of improvements to running the application on bare-metal. For example, wrapped Docker container applications are highly mobile standalone applications easily deployed on any environment supporting containers with minimal overhead. Also, the platforms providing infrastructure for the virtualized application enables orchestration features such as replication and automatic deployment. These features could improve the infrastructure's performance, resource allocation, and uptime by automatically handling application errors or scaling or resources. These virtualization technologies are leveraged in various parts of the mobile broadband network to enhance service quality.
 
 Multi-access Edge Computing (MEC) greatly benefits from the adaption of virtualization technologies. MEC is a crucial technology enabler for Fifth Generation Technology Standard for Broadband Cellular Networks (5G) technologies to serve users with low-latency and high-throughput mobile network connections. This shift enables Mobile Network Operators (MNOs) to host various applications in physical proximity to the end-users. Far Edge Cloud takes computing further to the edge of the network by closing the physical distance between user and server to be at a maximum of 40 kilometers \cite{AirFrameOpenEdgeServer}. The MEC close to the user in Far Edge increases Quality-of-experience; meanwhile, end-users enjoy low-latency, on-premise data computing, and additional location services. The benefits of MEC for MNOs include additional revenues due to hosting third-party applications on the network.
 
@@ -26,12 +26,7 @@ The first part evaluates Kata Containers concerning the Far Edge Cloud environme
 \section{Results}
 \label{section:intro_results}
 
-Most critical features fulfilled (Multus, SR-IOV, HW acc, core isolation).
-BW degraded for all runtimes and disk-volumes. No clear difference in disk-volumes or runtimes performance.
-Use memory if possible.
-Delay added to clat curve, tail get slightly longer for the last 5\% ish.
-
-\textcolor{red}{Missing a piece here!}
+Kata Containers is evaluated against the requirements of Far Edge Cloud applications. It is found, Kata Containers supports the most critical features such as core isolation and hardware isolation. These features allow high-performing applications with dedicated computing resources. In the I/O performance evaluation, Kata Containers adds only a minor overhead for bandwidth and completion latency with memory-based volume. In contrast, with disk-based volumes, the overhead grows greater, resulting in up to 40\% bandwidth degradation and over 200 ms latency to completion latency.
 
 \section{Structure of the Thesis}
 \label{section:intro_structure}
