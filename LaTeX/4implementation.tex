@@ -5,7 +5,7 @@ Telco systems are a complex environment with multiple requirements for connectiv
 
 \section{CPU}
 
-Telecommunication applications are computing heavy, which require efficient usage of resources. Therefore, one of the requirements telco applications has for infrastructure is the support for core isolation. This feature allows dedicating a single core to minimizing interruptions for the computing task from other processes. Core isolation involves removing all user-space threads, unbound kernel threads and blocks interruptions from the system \cite{CPUisolation}. The benefit of a dedicated core for a process is enhanced performance and extended use of CPU caches.
+Telecommunication applications are computing heavy, which require efficient usage of resources. Therefore, one of the requirements telco applications has for infrastructure is the support for core isolation. This feature allows dedicating a single core to minimizing interruptions for the computing task from other processes. Core isolation involves removing all userspace threads, unbound kernel threads, and blocks interruptions from the system \cite{CPUisolation}. The benefit of a dedicated core for a process is enhanced performance and extended use of CPU caches.
 
 The core isolation is accomplished with a specific Kubernetes plugin, such as Intel CMK \cite{IntelCMK} or Nokia CPU Pooler \cite{NokiaCPUPooler}. These plugins manage predefined physically separated pools of resources between applications. For example, CPU Pooler supports two explicit types of CPU pools; exclusive and shared. Kubernetes allocates resources to a container on container creation. If the container has not requested specific resources from these pools, it will be assigned to a third, named default, pool. The exclusive pool allows applications for uninterrupted resources and is preferred for latency-sensitive workloads.
 
@@ -92,7 +92,7 @@ Plugins such as vAccel \cite{vAccel} offer QEMU and Firecracker VMM support for 
 		
 \section{Individual kernels}
 
-The micro VM of Kata Containers provides a guest kernel to the workload to increase the security. Moreover, this second kernel allows more robust deployment by removing a single point of failure. In single-kernel environments, a kernel panic or dump might render the whole environment useless until a reset. The second layer of Linux kernels allows easier debugging in the cluster and allows for better logging.
+The micro-VM of Kata Containers provides a guest kernel to the workload to increase the security. Moreover, this second kernel allows more robust deployment by removing a single point of failure. In single-kernel environments, a kernel panic or dump might render the whole environment useless until a reset. The second layer of Linux kernels allows easier debugging in the cluster and allows for better logging.
 
 The second benefit of individual kernels is logging. Containers should not store any persistent data. Therefore, logs should not be stored inside the container. Otherwise, a failure in the container would also destroy the logs \cite{Toimela2017}. However, logging to a directory or block device on the host via a persistent volume or hostPath is a viable option to store the logs in a safe and accessible way.
 
