@@ -30,3 +30,42 @@ filename_format=$jobnum.dat
 rw=${FIO_RW}
 \end{lstlisting}
 
+\chapter{Figure 5.4 detailed results}
+
+\begin{table}
+\centering
+\label{table:ResultsEDMEMClatByRTC4096-2}
+\caption{Completion latency (ms) for memory-based emptyDir by runtime classes for 4096 bytes block size and two jobs}
+\begin{tabular}{ |c|c|c|c|c|c| }
+ \hline
+ \multicolumn{2}{|c}{} & \multicolumn{4}{|c|}{Runtime} \\
+ \hline
+ I/O pattern & Percentile & runC & CLH & QEMU & QEMU-VFS \\
+ \hline
+ \multirow{4}{4em}{Sequential read} & 1\% & 12 & 12 & 12 & 13 \\
+ & 10\% & 12 & 12 & 13 & 13 \\
+ & 50\% & 13 & 12 & 13 & 13 \\
+ & 99\% & 19 & 23 & 23 & 22 \\
+ & 99.99\% & 27 & 5210 & 5253 & 5275 \\
+
+ \hline
+ \multirow{4}{4em}{Sequential write} & 1\% & 113 & 12 & 13 & 13 \\
+ & 10\% & 13 & 12 & 13 & 13 \\
+ & 50\% & 13 & 13 & 14 & 14 \\
+ & 99\% & 19 & 22 & 22 & 22 \\
+ & 99.99\% & 30 & 5231 & 5253 & 5275 \\
+ \hline
+ \multirow{4}{4em}{Random read} & 1\% & 114 & 16 & 16 & 16 \\
+ & 10\% & 15 & 17 & 17 & 17 \\
+ & 50\% & 15 & 18 & 18 & 18 \\
+ & 99\% & 21 & 31 & 31 & 31 \\
+ & 99.99\% & 30 & 5297 & 5319 & 5341 \\
+ \hline
+ \multirow{4}{4em}{Random write} & 1\% & 114 & 16 & 17 & 17 \\
+ & 10\% & 15 & 16 & 17 & 17 \\
+ & 50\% & 15 & 17 & 18 & 17 \\
+ & 99\% & 21 & 29 & 28 & 27 \\
+ & 99.99\% & 31 & 5341 & 5319 & 5363 \\
+ \hline
+\end{tabular}
+\end{table}
