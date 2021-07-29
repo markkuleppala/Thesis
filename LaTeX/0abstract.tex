@@ -5,7 +5,7 @@ Containerized applications have recently gained wide popularity due to portabili
 
 Apart from the security requirements, the challenge for virtualizing radio applications is the specific requirements for container runtime features. These features include, for example, the use of accelerators, direct access to NICs, and support for multiple interfaces, which might require elevated access rights. Operating containers with elevated privileges are considered risky, as the application might escape the container.
 
-This thesis explores Kata Containers as a potential solution for securing telco environment, as it provides runtime utilizing lightweight virtual machines running on top of a hypervisor. The solution is studied by developing an environment resembling a radio application and evaluating the performance.
+This thesis explores Kata Containers as a potential solution for securing telco environment, as it provides runtime utilizing lightweight virtual machines running on top of a hypervisor. The solution is studied by developing an environment resembling a radio application and evaluating the I/O performance.
 
 In this thesis, it was found out that Kata Containers provides security to telco environment supporting basic features required by the applications. Kata Containers adds overhead to the application performance while using disk-based storage volumes, which can be mitigated with design of the applications and deployment environment.
 }
